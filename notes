@@ -1,0 +1,154 @@
+WHEN YOU START
+
+apt install -y vim unzip curl git
+copy over minimal bashrc
+
+add to /var/www/html/sites/default/settings.php:
+$settings['trusted_host_patterns'] = [
+  '^localhost$',
+  '^127\.0\.0\.1$',
+  '^swislr\.org$',
+  '^www\.swislr\.org$',
+];
+
+cd /opt/drupal
+composer require --dev drush/drush
+
+composer require drupal/admin_toolbar
+drush en admin_toolbar admin_toolbar_tools
+drush en content_moderation (need to provide input [enter] here)
+composer require drupal/geofield
+drush en geofield
+composer require drupal/geofield_map drupal/geocoder
+drush en geofield_map geocoder
+
+#add content types. did this manually in dashboard
+#add permissions. this page has a table that helps: https://www.drupal.org/docs/8/core/modules/content-moderation/overview
+
+composer require drupal/token
+drush en token
+composer require drupal/pathauto
+drush en pathauto
+composer require drupal/entity_reference_revisions
+drush en entity_reference_revisions
+composer require drupal/webform
+drush en webform
+composer require drupal/smtp
+drush en smtp
+
+#install webform dependencies. don't actually need all of these. requires "y" input
+composer require wikimedia/composer-merge-plugin
+#add this to composer.json, under "extra":
+        "merge-plugin": {
+            "include": [
+                "web/modules/contrib/webform/composer.libraries.json"
+            ]
+        }
+
+composer update drupal/webform "drupal/webform-*" --with-dependencies
+
+#make a place for private files (resolves a warning)
+cd /opt
+mkdir drupal_private
+chown www-data:www-data drupal_private/
+chmod 700 drupal_private
+#add this to web/sites/default/settings.php:
+$settings['file_private_path'] = '/opt/drupal_private';
+drush cr
+
+composer require drupal/honeypot
+drush en honeypot
+
+composer require drupal/email_registration
+drush en email_registration 
+
+#enabling these requires input
+composer require drupal/leaflet drupal/geofield_map drupal/block_class
+drush en leaflet geofield_map block_class 
+
+
+
+------ DOCKER/COMPOSER COMMANDS -------
+
+docker-compose stop      # Pauses containers (they still exist), use that end of day
+docker-compose start     # Resumes them
+docker-compose restart
+
+docker-compose down         # Stops and removes containers, stops the network, database and data persist
+docker-compose down -v      # Also removes volumes, use for a fresh start
+docker-compose up -d	Starts or resumes your containers 
+
+docker ps				list running containers (and get their names)
+
+docker exec -it drupal-platform_drupal_1  bash		enter the container
+docker exec -it drupal-platform_db_1  bash		enter the database container?
+
+docker exec or composer		Use commands inside the running container, update code or modules
+
+composer require drupal/group
+composer require drupal/bootstrap5
+
+
+----- TIPS ----------
+
+if i'm ever going to develop themes or modules, do so outside the container, then mount from within
+volumes:
+  - ./themes:/var/www/html/themes
+  - ./modules:/var/www/html/modules
+
+is this contradictory? To develop themes or modules, mount them directly from your host machine instead of named volumes.
+For production, consider replacing `volumes:` with bind mounts and add HTTPS, caching (e.g., Varnish), and backup mechanisms.
+
+in dockerfile, build custom modules/themes (or anything that will change frequently) last.
+that way, the system can cache the earlier steps and build will be faster
+
+
+---- DIRECTORY ------------
+drupal home for my first build was /opt/drupal/web (and i think the dir "drupal" was specified by me?)
+alongside this home ("web") folder are vendor/, composer.json, and composer.lock
+
+1. core/
+    Contains built-in themes, modules, routing, and services
+    Leave this untouched; update it via Composer when needed
+2. modules/
+	modules/contrib/ → For downloaded modules (e.g., Group, Webform)
+	modules/custom/ → For modules you write yourself
+    These folders don’t exist by default, but you can create them.
+3. themes/
+	themes/contrib/ → Downloaded themes
+	themes/custom/ → Custom themes you create
+	Start with something like Classy, Bootstrap 5, or Olivero
+		Extend it as a subtheme
+	find themes here: https://www.drupal.org/project/project_theme
+	install like so: composer require drupal/bootstrap5
+4. sites/default/
+        settings.php: site config (DB, trusted hosts, etc.)
+        services.yml: service overrides (e.g., Twig debugging)
+        files/: uploaded user content
+    You can have multi-site setups, each under sites/example.com/, but default is typical
+5. profiles/
+    Installation profiles (like pre-built site templates)
+    Ignore this unless you're distributing your own "starter kit"
+
+
+
+
+-------- modules
+
+find modules here
+	https://www.drupal.org/project/project_module
+
+install like so
+	composer require drupal/group
+
+
+Group	Create collaborative spaces (research groups, labs, teams) with their own content and permissions
+File Entity	Manage uploaded files as standalone entities (with metadata, revisions)
+IMCE	User-friendly file browser/uploader for images/docs
+Media	Standardized media management (images, files, videos)
+Private Files	Restrict access to uploaded files
+Content Moderation	Workflow for draft/review/publish
+Webform	Flexible surveys, data collection, and contact forms
+Discussion	Enable commenting and threads on content
+Search API + Solr	Powerful search for content and files
+CAS / SAML / LDAP	Institutional login integration (if needed)
