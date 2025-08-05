@@ -1,0 +1,6 @@
+name: 'SWISLR Test'
+type: module
+description: 'Minimal test module for bind mount verification'
+core_version_requirement: ^9 || ^10
+package: Custom
+

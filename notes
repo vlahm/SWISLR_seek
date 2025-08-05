@@ -66,6 +66,8 @@ drush en email_registration
 composer require drupal/leaflet drupal/geofield_map drupal/block_class
 drush en leaflet geofield_map block_class 
 
+#enable custom modules
+mkdir -p /var/www/html/modules/custom
 
 
 ------ DOCKER/COMPOSER COMMANDS -------
