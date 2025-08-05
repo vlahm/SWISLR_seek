@@ -1,7 +1,27 @@
-WHEN YOU START
+------ DOCKER/COMPOSER COMMANDS -------
 
-apt install -y vim unzip curl git
-copy over minimal bashrc
+docker-compose stop      # Pauses containers (they still exist), use that end of day
+docker-compose start     # Resumes them
+docker-compose restart
+
+docker-compose down           # Stops and removes containers, stops the network, database and data persist
+docker-compose down -v        # Also removes volumes, use for a fresh start
+docker-compose up --build -d  # Starts or resumes your containers and builds Dockerfile
+docker-compose up -d	      # Starts or resumes your containers
+
+docker ps				list running containers (and get their names)
+docker cp container_id:path local_path		copy contents to/from container
+
+docker exec -it drupal-platform_drupal_1  bash		enter the container
+docker exec -it drupal-platform_db_1  bash		enter the database container?
+
+docker exec or composer		Use commands inside the running container, update code or modules
+
+composer require drupal/group
+composer require drupal/bootstrap5
+
+
+---------------- BUILD STEPS NOT YET AUTOMATED -----------------
 
 add to /var/www/html/sites/default/settings.php:
 $settings['trusted_host_patterns'] = [
@@ -10,9 +30,6 @@ $settings['trusted_host_patterns'] = [
   '^swislr\.org$',
   '^www\.swislr\.org$',
 ];
-
-cd /opt/drupal
-composer require --dev drush/drush
 
 composer require drupal/admin_toolbar
 drush en admin_toolbar admin_toolbar_tools
@@ -69,26 +86,9 @@ drush en leaflet geofield_map block_class
 #enable custom modules
 mkdir -p /var/www/html/modules/custom
 
+----- TO DO ----------
 
------- DOCKER/COMPOSER COMMANDS -------
-
-docker-compose stop      # Pauses containers (they still exist), use that end of day
-docker-compose start     # Resumes them
-docker-compose restart
-
-docker-compose down         # Stops and removes containers, stops the network, database and data persist
-docker-compose down -v      # Also removes volumes, use for a fresh start
-docker-compose up -d	Starts or resumes your containers 
-
-docker ps				list running containers (and get their names)
-
-docker exec -it drupal-platform_drupal_1  bash		enter the container
-docker exec -it drupal-platform_db_1  bash		enter the database container?
-
-docker exec or composer		Use commands inside the running container, update code or modules
-
-composer require drupal/group
-composer require drupal/bootstrap5
+when development is complete, copy composer.lock into the repo and version control it. ensure that it gets copied onto the container during build. it will lock dependencies
 
 
 ----- TIPS ----------
