@@ -5,6 +5,7 @@ swislr-map:
   css:
     theme:
       https://unpkg.com/leaflet@1.9.3/dist/leaflet.css: {}
+      css/swislr-homepage.css: {}
   dependencies:
     - core/drupal
     - core/jquery

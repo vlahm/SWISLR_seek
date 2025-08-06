@@ -32,7 +32,8 @@
         "drupal/honeypot": "*",
         "drupal/email_registration": "*",
         "drupal/leaflet": "*",
-        "drupal/block_class": "*"
+        "drupal/block_class": "*",
+		"drupal/bootstrap5": "*"
     },
     "require-dev": {
         "drush/drush": "*"
