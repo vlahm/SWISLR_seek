@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * swislr_homepage.module
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function swislr_homepage_theme($existing, $type, $theme, $path) {
+  return [
+    'swislr_homepage' => [
+      'variables' => [
+        // List variables you want to pass to the Twig template here.
+        // If your controller passes any, add them like:
+        // 'variable_name' => NULL,
+      ],
+      'template' => 'swislr-homepage', // This matches swislr-homepage.html.twig
+    ],
+  ];
+}
+

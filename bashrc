@@ -28,4 +28,5 @@ alias .....="cd ../../../.."
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+export PATH="/opt/drupal/vendor/bin:$PATH"
 

@@ -1,0 +1,8 @@
+swislr_homepage.landing:
+  path: '/landing'
+  defaults:
+    _controller: '\Drupal\swislr_homepage\Controller\LandingController::content'
+    _title: 'SWISLR Seek Platform'
+  requirements:
+    _permission: 'access content'
+

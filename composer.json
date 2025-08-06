@@ -32,8 +32,7 @@
         "drupal/honeypot": "*",
         "drupal/email_registration": "*",
         "drupal/leaflet": "*",
-        "drupal/block_class": "*",
-        "drupal-composer/drupal-libraries": "*"
+        "drupal/block_class": "*"
     },
     "require-dev": {
         "drush/drush": "*"

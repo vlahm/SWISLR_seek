@@ -21,7 +21,7 @@ composer require drupal/group
 composer require drupal/bootstrap5
 
 
----------------- BUILD STEPS NOT YET AUTOMATED -----------------
+---------------- BUILD STEPS NOW AUTOMATED -----------------
 
 add to /var/www/html/sites/default/settings.php:
 $settings['trusted_host_patterns'] = [
@@ -87,6 +87,9 @@ drush en leaflet geofield_map block_class
 mkdir -p /var/www/html/modules/custom
 
 ----- TO DO ----------
+composer require --dev drush/drush
+run the post install script
+might need to change ownership for all the files that are bind mounted
 
 when development is complete, copy composer.lock into the repo and version control it. ensure that it gets copied onto the container during build. it will lock dependencies
 

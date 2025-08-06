@@ -1,0 +1,8 @@
+name: 'SWISLR Seek Homepage'
+type: module
+description: 'Custom landing page with map and buttons.'
+core_version_requirement: ^9 || ^10
+package: 'Custom'
+dependencies:
+  - leaflet
+

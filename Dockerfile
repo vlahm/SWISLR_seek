@@ -19,7 +19,7 @@ COPY post_install_steps.sh /opt/drupal/
 COPY composer.json /opt/drupal/
 RUN composer update --no-interaction
 #RUN composer update --no-interaction #use this for deploy
-ENV PATH="/opt/vendor/bin:${PATH}"
+#ENV PATH="/opt/vendor/bin:${PATH}"
 
 # Install Composer dependencies early to leverage caching
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \

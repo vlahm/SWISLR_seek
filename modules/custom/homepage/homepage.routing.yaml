@@ -1,8 +1,0 @@
-swislr_test.hello:
-  path: '/hello-swislr'
-  defaults:
-    _controller: '\Drupal\Core\Controller\ControllerBase::renderTest'
-    _title: 'Hello SWISLR'
-  requirements:
-    _permission: 'access content'
-
