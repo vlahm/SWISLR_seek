@@ -1,0 +1,20 @@
+uuid: cf1c45af-d614-4e09-8375-3fa75f8368fc
+langcode: en
+status: true
+dependencies:
+  module:
+    - geofield
+    - node
+id: node.field_bounds
+field_name: field_bounds
+entity_type: node
+type: geofield
+settings:
+  backend: geofield_backend_default
+module: geofield
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -20,6 +20,17 @@ docker exec or composer		Use commands inside the running container, update code 
 composer require drupal/group
 composer require drupal/bootstrap5
 
+good to enter maintenance mode before doing these:
+	(or these: Use maintenance mode when making major updates, particularly if the updates could disrupt visitors or the update process. Examples include upgrading, importing or exporting content, modifying a theme, modifying content types, and making backups.)
+
+drush archive:dump --destination=/var/www/html/modules/custom/backup.tar.gz  --exclude-code-paths=web/sites/default/settings.php
+	backup files and database, excluding the settings file which contains secrets.
+	can put secrets in settings.local.php, but whatevs
+
+composer update "drupal/core-*" --with-all-dependencies
+	update core, but first recommended to clear all errors and run backup
+	then run: drush updatedb
+	then drush cr
 
 ---------------- BUILD STEPS NOW AUTOMATED -----------------
 

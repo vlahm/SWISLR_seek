@@ -1,0 +1,19 @@
+uuid: 9ac4c39d-9a70-468e-9b24-5cf2d0a83502
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_email_address
+    - node.type.suggested_member
+id: node.suggested_member.field_email_address
+field_name: field_email_address
+entity_type: node
+bundle: suggested_member
+label: 'Email Address'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

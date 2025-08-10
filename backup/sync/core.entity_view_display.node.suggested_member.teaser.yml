@@ -1,0 +1,26 @@
+uuid: 6ccbd6bb-63fb-42ae-a5d9-07280ac14088
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.suggested_member.field_affiliation
+    - field.field.node.suggested_member.field_email_address
+    - field.field.node.suggested_member.field_full_name
+    - node.type.suggested_member
+  module:
+    - user
+id: node.suggested_member.teaser
+targetEntityType: node
+bundle: suggested_member
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_affiliation: true
+  field_email_address: true
+  field_full_name: true

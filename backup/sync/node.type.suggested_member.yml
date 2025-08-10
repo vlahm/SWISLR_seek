@@ -1,0 +1,18 @@
+uuid: 11d3772a-9b6f-4c52-add7-21b6816a2d34
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: 'Suggested Member'
+type: suggested_member
+description: 'Suggest other members of the community who might want to join swislr.org'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: true

@@ -1,0 +1,19 @@
+uuid: db543594-f75d-4086-a1e2-ce3bd0361ad9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_affiliation
+    - node.type.suggested_member
+id: node.suggested_member.field_affiliation
+field_name: field_affiliation
+entity_type: node
+bundle: suggested_member
+label: Affiliation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

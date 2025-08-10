@@ -1,0 +1,51 @@
+uuid: b7db18ea-21b2-45ca-817a-0aee728dba95
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.dataset.field_bounds
+    - field.field.node.dataset.field_file
+    - field.field.node.dataset.field_image
+    - field.field.node.dataset.field_tags
+    - field.field.node.dataset.field_title
+    - field.field.node.dataset.field_url_doi
+    - image.style.medium
+    - node.type.dataset
+  module:
+    - image
+    - user
+id: node.dataset.teaser
+targetEntityType: node
+bundle: dataset
+mode: teaser
+content:
+  field_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: content
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: -1
+    region: content
+  field_tags:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_bounds: true
+  field_file: true
+  field_title: true
+  field_url_doi: true

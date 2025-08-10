@@ -1,0 +1,63 @@
+uuid: 7c994eb5-8e71-443b-90b6-1a9a46651e99
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.article
+    - node.type.dataset
+    - node.type.page
+    - taxonomy.vocabulary.tags
+    - workflows.workflow.editorial
+  module:
+    - comment
+    - content_moderation
+    - contextual
+    - file
+    - node
+    - path
+    - system
+    - taxonomy
+    - toolbar
+_core:
+  default_config_hash: e_wG1u7SrGaJbY2-Szgbgl-c8T3kdirU3uTNq2c_QJQ
+id: content_editor
+label: 'Content editor'
+weight: 2
+is_admin: false
+permissions:
+  - 'access administration pages'
+  - 'access content overview'
+  - 'access contextual links'
+  - 'access files overview'
+  - 'access toolbar'
+  - 'administer url aliases'
+  - 'create article content'
+  - 'create dataset content'
+  - 'create page content'
+  - 'create terms in tags'
+  - 'create url aliases'
+  - 'delete article revisions'
+  - 'delete dataset revisions'
+  - 'delete own article content'
+  - 'delete own dataset content'
+  - 'delete own files'
+  - 'delete own page content'
+  - 'delete page revisions'
+  - 'edit own article content'
+  - 'edit own comments'
+  - 'edit own dataset content'
+  - 'edit own page content'
+  - 'edit terms in tags'
+  - 'revert all revisions'
+  - 'revert dataset revisions'
+  - 'use editorial transition archive'
+  - 'use editorial transition archived_draft'
+  - 'use editorial transition archived_published'
+  - 'use editorial transition create_new_draft'
+  - 'use editorial transition publish'
+  - 'view all revisions'
+  - 'view any unpublished content'
+  - 'view dataset revisions'
+  - 'view latest version'
+  - 'view own unpublished content'
+  - 'view the administration theme'

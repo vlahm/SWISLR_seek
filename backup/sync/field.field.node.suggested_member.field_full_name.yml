@@ -1,0 +1,19 @@
+uuid: a31afa59-0fa2-453b-ac2d-25f8888f4239
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_full_name
+    - node.type.suggested_member
+id: node.suggested_member.field_full_name
+field_name: field_full_name
+entity_type: node
+bundle: suggested_member
+label: 'Full Name'
+description: 'Name of potential community member'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

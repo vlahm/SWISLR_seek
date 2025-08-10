@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
   unzip \
   curl \
   git \
+#  mariadb-client \
   && rm -rf /var/lib/apt/lists/*
 
 # Install Drush (global, not project-local)
@@ -24,3 +25,5 @@ RUN composer update --no-interaction
 # Install Composer dependencies early to leverage caching
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 && composer install --prefer-dist --no-dev --no-interaction
+
+RUN chown -R www-data:www-data web/modules/contrib && chmod -R u+w web/modules/contrib

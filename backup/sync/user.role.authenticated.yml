@@ -1,0 +1,37 @@
+uuid: cfdaeebb-a05e-49bf-b168-66f432f8ea70
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+    - filter.format.webform_default
+    - node.type.suggested_member
+  module:
+    - comment
+    - contact
+    - file
+    - filter
+    - node
+    - search
+    - shortcut
+    - system
+_core:
+  default_config_hash: cFrlqjtkTfvY3RGccjJkPf1SGIfJ942IrxTLWAO4mgA
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access shortcuts'
+  - 'access site-wide contact form'
+  - 'create suggested_member content'
+  - 'delete own files'
+  - 'delete own suggested_member content'
+  - 'edit own suggested_member content'
+  - 'post comments'
+  - 'search content'
+  - 'skip comment approval'
+  - 'use text format basic_html'
+  - 'use text format webform_default'

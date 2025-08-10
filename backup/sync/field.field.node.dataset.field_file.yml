@@ -1,0 +1,27 @@
+uuid: f95da242-79f3-47bf-851f-d04133297c68
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_file
+    - node.type.dataset
+  module:
+    - file
+id: node.dataset.field_file
+field_name: field_file
+entity_type: node
+bundle: dataset
+label: File
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'txt csv dat tsv xlsx xls zip geojson json xml rds rda nc tif tiff img shp dbf prj shx kml kmz gpkg grib grb hdf h5 geotiff asc xyz bin parquet feather bil nc4'
+  max_filesize: '1 GB'
+  description_field: true
+field_type: file

@@ -1,0 +1,81 @@
+uuid: 189613b4-5560-44b0-bfd7-eccecc43cc10
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.dataset.field_bounds
+    - field.field.node.dataset.field_file
+    - field.field.node.dataset.field_image
+    - field.field.node.dataset.field_tags
+    - field.field.node.dataset.field_title
+    - field.field.node.dataset.field_url_doi
+    - image.style.wide
+    - node.type.dataset
+  module:
+    - file
+    - geofield
+    - image
+    - user
+id: node.dataset.default
+targetEntityType: node
+bundle: dataset
+mode: default
+content:
+  field_bounds:
+    type: geofield_default
+    label: above
+    settings:
+      output_format: wkt
+      output_escape: true
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_file:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: wide
+      image_loading:
+        attribute: eager
+    third_party_settings: {  }
+    weight: -1
+    region: content
+  field_tags:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_url_doi:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

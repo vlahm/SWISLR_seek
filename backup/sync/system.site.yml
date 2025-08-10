@@ -1,0 +1,15 @@
+_core:
+  default_config_hash: ijfbzDTN4CbE7Sr-6ubWzy_t1vH4OtU1doNCLssVz-4
+langcode: en
+uuid: a71788e0-af6c-445b-a5c2-ca8eb6111ac3
+name: 'SWISLR Seek'
+mail: mail@swislr.org
+slogan: 'A platform for connecting scholars and experts interested in saltwater intrusion and sea level rise'
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+default_langcode: en
+mail_notification: ''
