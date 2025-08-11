@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
 COPY bashrc /root/.bashrc
 COPY post_install_steps.sh /opt/drupal/
 COPY composer.json /opt/drupal/
+COPY misc_config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 RUN composer update --no-interaction
 #RUN composer update --no-interaction #use this for deploy
 #ENV PATH="/opt/vendor/bin:${PATH}"
