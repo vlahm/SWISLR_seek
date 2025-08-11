@@ -5,10 +5,10 @@ dependencies:
   config:
     - field.field.node.publication.field_abstract
     - field.field.node.publication.field_tags
-    - field.field.node.publication.field_title
     - field.field.node.publication.field_url_doi
     - node.type.publication
   module:
+    - link
     - text
     - user
 id: node.publication.default
@@ -31,21 +31,17 @@ content:
     third_party_settings: {  }
     weight: 10
     region: content
-  field_title:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 103
-    region: content
   field_url_doi:
-    type: string
+    type: link
     label: above
     settings:
-      link_to_entity: false
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
-    weight: 104
+    weight: 106
     region: content
   links:
     settings: {  }

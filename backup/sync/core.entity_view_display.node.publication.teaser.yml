@@ -6,7 +6,6 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.publication.field_abstract
     - field.field.node.publication.field_tags
-    - field.field.node.publication.field_title
     - field.field.node.publication.field_url_doi
     - node.type.publication
   module:
@@ -31,5 +30,4 @@ content:
     region: content
 hidden:
   field_abstract: true
-  field_title: true
   field_url_doi: true

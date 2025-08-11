@@ -1,18 +1,16 @@
-uuid: acb24350-80d9-4578-aee3-2cf490931022
+uuid: 545f473a-4d3f-47ce-8cd0-ad0d2487fa38
 langcode: en
 status: true
 dependencies:
   module:
+    - link
     - node
 id: node.field_url_doi
 field_name: field_url_doi
 entity_type: node
-type: string
-settings:
-  max_length: 5000
-  case_sensitive: false
-  is_ascii: false
-module: core
+type: link
+settings: {  }
+module: link
 locked: false
 cardinality: 1
 translatable: true

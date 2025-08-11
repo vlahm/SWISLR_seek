@@ -8,10 +8,10 @@ dependencies:
     - field.field.node.dataset.field_image
     - field.field.node.dataset.field_tags
     - field.field.node.dataset.field_title
-    - field.field.node.dataset.field_url_doi
     - image.style.thumbnail
     - node.type.dataset
   module:
+    - content_moderation
     - file
     - geofield
     - image
@@ -67,13 +67,11 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_url_doi:
-    type: string_textfield
-    weight: 124
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
     region: content
-    settings:
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   path:
     type: path

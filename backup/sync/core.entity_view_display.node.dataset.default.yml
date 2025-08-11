@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.dataset.field_image
     - field.field.node.dataset.field_tags
     - field.field.node.dataset.field_title
-    - field.field.node.dataset.field_url_doi
     - image.style.wide
     - node.type.dataset
   module:
@@ -64,14 +63,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 103
-    region: content
-  field_url_doi:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 104
     region: content
   links:
     settings: {  }

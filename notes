@@ -26,6 +26,7 @@ good to enter maintenance mode before doing these:
 drush archive:dump --destination=/var/www/html/modules/custom/backup.tar.gz  --exclude-code-paths=web/sites/default/settings.php
 	backup files and database, excluding the settings file which contains secrets.
 	can put secrets in settings.local.php, but whatevs
+	for regular-basis backups during development, sql:dump is probs fine
 
 composer update "drupal/core-*" --with-all-dependencies
 	update core, but first recommended to clear all errors and run backup
