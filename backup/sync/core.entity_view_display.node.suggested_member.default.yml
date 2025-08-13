@@ -6,8 +6,10 @@ dependencies:
     - field.field.node.suggested_member.field_affiliation
     - field.field.node.suggested_member.field_email_address
     - field.field.node.suggested_member.field_full_name
+    - field.field.node.suggested_member.field_roles
     - node.type.suggested_member
   module:
+    - options
     - user
 id: node.suggested_member.default
 targetEntityType: node
@@ -36,6 +38,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 101
+    region: content
+  field_roles:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
     region: content
   links:
     settings: {  }

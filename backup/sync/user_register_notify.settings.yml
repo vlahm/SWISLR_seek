@@ -1,0 +1,44 @@
+_core:
+  default_config_hash: hpWLdd5VAF-3d5GvAxpnWzqBP7lYuWYaU7emaPhnVko
+type: disabled
+mail_to: ''
+roles: {  }
+events: {  }
+created_roles_mode: exclude
+created_roles: {  }
+created_subject: 'New User registration "[user:name]" at [site:name] ([site:url], [current-date:short]'
+created_body: |-
+  User "[user:name]" ([user:url]) was created
+  at [site:name] ([site:url]), [current-date:short]
+
+  View user: [user:url]
+  Edit user: [user:edit-url]
+  Delete user: [user:cancel-url]
+
+  ---
+  The user was created by [current-user:name] ([current-user:url])
+updated_roles_mode: exclude
+updated_roles: {  }
+updated_subject: 'Existing User "[user:name]" was updated / edited at [site:name] ([site:url], [current-date:short]'
+updated_body: |-
+  User "[user:name]" ([user:url]) was updated / edited
+  at [site:name] ([site:url]), [current-date:short]
+
+  View user: [user:url]
+  Edit user: [user:edit-url]
+  Delete user: [user:cancel-url]
+
+  ---
+  The user was edited by [current-user:name] ([current-user:url])
+deleted_roles_mode: exclude
+deleted_roles: {  }
+deleted_subject: 'User [user:name] was deleted at [site:name] ([site:url], [current-date:short]'
+deleted_body: |-
+  User "[user:name]" ([user:url]) was deleted at [site:name] ([site:url]), [current-date:short]
+
+  ---
+  The user was deleted by [current-user:name] ([current-user:url])
+mail_message_ids_header_overwrite_header: {  }
+mail_from: ''
+mail_reply_to: ''
+enable_logging: false

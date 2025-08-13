@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.suggested_member.field_affiliation
     - field.field.node.suggested_member.field_email_address
     - field.field.node.suggested_member.field_full_name
+    - field.field.node.suggested_member.field_roles
     - node.type.suggested_member
   module:
     - content_moderation
@@ -44,6 +45,12 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_roles:
+    type: options_select
+    weight: 124
+    region: content
+    settings: {  }
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default

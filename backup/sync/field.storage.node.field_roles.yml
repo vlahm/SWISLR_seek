@@ -1,0 +1,51 @@
+uuid: 0fa14f86-617b-43e2-935e-c9207d43ddeb
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_roles
+field_name: field_roles
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: researcher
+      label: research
+    -
+      value: management
+      label: management
+    -
+      value: engineering
+      label: engineering
+    -
+      value: urban_planning
+      label: 'urban planning'
+    -
+      value: policy
+      label: policy
+    -
+      value: public_health
+      label: 'public health'
+    -
+      value: law
+      label: law
+    -
+      value: risk_management
+      label: 'risk management'
+    -
+      value: community
+      label: community
+    -
+      value: gis
+      label: GIS
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

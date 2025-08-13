@@ -11,6 +11,7 @@ drush en -y smtp
 drush en -y honeypot
 drush en -y email_registration
 drush en -y leaflet block_class
+drush en -y user_register_notify
 
 # Fix private file warning
 mkdir -p /opt/drupal_private

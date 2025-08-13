@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.suggested_member.field_affiliation
     - field.field.node.suggested_member.field_email_address
     - field.field.node.suggested_member.field_full_name
+    - field.field.node.suggested_member.field_roles
     - node.type.suggested_member
   module:
     - user
@@ -24,3 +25,4 @@ hidden:
   field_affiliation: true
   field_email_address: true
   field_full_name: true
+  field_roles: true
