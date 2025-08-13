@@ -1,0 +1,5 @@
+name: "SWISLR Tweaks"
+type: module
+description: Site-wide UX tweaks and small alterations.
+core_version_requirement: ^10
+package: SWISLR_tweaks
