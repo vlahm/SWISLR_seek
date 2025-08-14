@@ -14,6 +14,7 @@ drush en -y leaflet block_class
 drush en -y user_register_notify
 drush en -y swislr_homepage
 drush en -y swislr_tweaks
+drush en -y name
 
 # Fix private file warning
 mkdir -p /opt/drupal_private

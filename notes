@@ -17,6 +17,7 @@ docker exec -it drupal-platform_db_1  bash		enter the database container?
 
 docker exec or composer		Use commands inside the running container, update code or modules
 
+#must run these from project root (on container)! that's where composer.json is found.
 composer require drupal/group
 composer require drupal/bootstrap5
 

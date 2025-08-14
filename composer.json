@@ -34,7 +34,8 @@
         "drupal/leaflet": "^10.3",
         "drupal/block_class": "^4.0",
 		"drupal/bootstrap5": "^4.0",
-		"drupal/user_register_notify": "dev-2.x"
+		"drupal/user_register_notify": "dev-2.x",
+		"drupal/name": "^1.0'"
     },
     "require-dev": {
         "drush/drush": "*"
