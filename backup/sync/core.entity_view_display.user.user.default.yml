@@ -3,10 +3,19 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_affiliation
+    - field.field.user.user.field_bio
+    - field.field.user.user.field_domain
+    - field.field.user.user.field_full_name
+    - field.field.user.user.field_public_email
+    - field.field.user.user.field_role_job_title
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
     - image
+    - name
+    - options
+    - text
     - user
 _core:
   default_config_hash: mZLyuWM9CQx2ZJVqFGSbzgFnHzudVbHBYmdU256A5Wk
@@ -15,6 +24,58 @@ targetEntityType: user
 bundle: user
 mode: default
 content:
+  field_affiliation:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_bio:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_domain:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_full_name:
+    type: name_default
+    label: above
+    settings:
+      format: default
+      markup: none
+      list_format: ''
+      link_target: ''
+      preferred_field_reference: ''
+      preferred_field_reference_separator: ', '
+      alternative_field_reference: ''
+      alternative_field_reference_separator: ', '
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_public_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_role_job_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 11
+    region: content
   member_for:
     weight: 5
     region: content
@@ -22,8 +83,8 @@ content:
     type: image
     label: hidden
     settings:
-      image_style: thumbnail
       image_link: content
+      image_style: thumbnail
       image_loading:
         attribute: lazy
     third_party_settings: {  }

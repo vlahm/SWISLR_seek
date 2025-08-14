@@ -1,0 +1,54 @@
+uuid: ed335b8a-a420-4906-ae21-0399801bc7bb
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - user
+id: user.field_domain
+field_name: field_domain
+entity_type: user
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: research
+      label: Research
+    -
+      value: management
+      label: Management
+    -
+      value: engineering
+      label: Engineering
+    -
+      value: urban_planning
+      label: 'Urban Planning'
+    -
+      value: policy
+      label: Policy
+    -
+      value: public_health
+      label: 'Public Health'
+    -
+      value: law
+      label: Law
+    -
+      value: risk_management
+      label: 'Risk Management'
+    -
+      value: community
+      label: Community
+    -
+      value: gis
+      label: GIS
+    -
+      value: other
+      label: Other
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 3
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

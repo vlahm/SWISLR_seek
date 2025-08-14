@@ -4,6 +4,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.compact
+    - field.field.user.user.field_affiliation
+    - field.field.user.user.field_bio
+    - field.field.user.user.field_domain
+    - field.field.user.user.field_full_name
+    - field.field.user.user.field_public_email
+    - field.field.user.user.field_role_job_title
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
@@ -20,12 +26,18 @@ content:
     type: image
     label: hidden
     settings:
-      image_style: thumbnail
       image_link: content
+      image_style: thumbnail
       image_loading:
         attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
+  field_affiliation: true
+  field_bio: true
+  field_domain: true
+  field_full_name: true
+  field_public_email: true
+  field_role_job_title: true
   member_for: true

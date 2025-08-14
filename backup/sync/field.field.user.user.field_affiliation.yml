@@ -1,0 +1,20 @@
+uuid: 76023252-60a0-4964-badd-750d55b50173
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_affiliation
+  module:
+    - user
+id: user.user.field_affiliation
+field_name: field_affiliation
+entity_type: user
+bundle: user
+label: Affiliation
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

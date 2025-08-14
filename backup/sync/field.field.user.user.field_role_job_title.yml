@@ -1,0 +1,20 @@
+uuid: 50b54620-bcb5-40d7-8045-39a7476a2755
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_role_job_title
+  module:
+    - user
+id: user.user.field_role_job_title
+field_name: field_role_job_title
+entity_type: user
+bundle: user
+label: 'Role/Job Title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
