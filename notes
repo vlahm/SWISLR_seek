@@ -33,6 +33,10 @@ composer update "drupal/core-*" --with-all-dependencies
 	then run: drush updatedb
 	then drush cr
 
+drush en <module>				enable module (-y flag if desired)
+drush pm:uninstall <module>		always run this before removing module files!
+drush wd-show					logs
+
 ---------------- BUILD STEPS NOW AUTOMATED -----------------
 
 add to /var/www/html/sites/default/settings.php:

@@ -3,3 +3,4 @@
 *.gz
 .aider*
 .env.cpt
+temp/
