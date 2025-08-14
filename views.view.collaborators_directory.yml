@@ -1,0 +1,137 @@
+uuid: d5f2a8c0-4a29-11e5-8d8a-00163e02c8e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_affiliation
+    - field.storage.user.field_bio
+    - field.storage.user.field_domain
+    - field.storage.user.field_full_name
+    - field.storage.user.user_picture
+    - field.storage.user.field_public_email
+    - field.storage.user.field_role_job_title
+  module:
+    - user
+id: collaborators_directory
+label: 'Collaborators Directory'
+module: views
+description: 'Searchable directory of collaborator users.'
+tag: ''
+base_table: users_field_data
+base_field: uid
+display:
+  default:
+    id: default
+    display_title: Master
+    display_plugin: default
+    position: 0
+    display_options:
+      title: Collaborators
+      fields:
+        field_full_name:
+          id: field_full_name
+          table: users_field_data
+          field: field_full_name
+          plugin_id: field
+          label: 'Full Name'
+          settings:
+            link_to_entity: true
+        field_affiliation:
+          id: field_affiliation
+          table: users_field_data
+          field: field_affiliation
+          plugin_id: field
+          label: 'Affiliation'
+        field_role_job_title:
+          id: field_role_job_title
+          table: users_field_data
+          field: field_role_job_title
+          plugin_id: field
+          label: 'Role/Job Title'
+        field_public_email:
+          id: field_public_email
+          table: users_field_data
+          field: field_public_email
+          plugin_id: field
+          label: 'Public Email'
+        field_domain:
+          id: field_domain
+          table: users_field_data
+          field: field_domain
+          plugin_id: field
+          label: 'Domain'
+        field_bio:
+          id: field_bio
+          table: users_field_data
+          field: field_bio
+          plugin_id: field
+          label: 'Bio'
+        user_picture:
+          id: user_picture
+          table: users_field_data
+          field: user_picture
+          plugin_id: field
+          label: 'Picture'
+      pager:
+        type: full
+        options:
+          items_per_page: 20
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      sorts:
+        name:
+          id: name
+          table: users_field_data
+          field: name
+          order: ASC
+      filters:
+        status:
+          id: status
+          table: users_field_data
+          field: status
+          plugin_id: boolean
+          value: '1'
+          expose:
+            operator: ''
+      style:
+        type: table
+        options:
+          default: '-1'
+      row:
+        type: fields
+      query:
+        type: views_query
+  page_1:
+    id: page_1
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      path: collaborators
+      menu:
+        type: normal
+        title: 'Collaborators'
+        description: ''
+        weight: 0
+        expanded: false
+        menu_name: main
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+cache_metadata:
+  max-age: -1
+  contexts:
+    - 'languages:language_content'
+    - 'languages:language_interface'
+  tags: {  }
