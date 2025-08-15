@@ -1,0 +1,507 @@
+uuid: 7f7a5f2a-1111-4e2b-aaaa-222222222222
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_affiliation
+    - field.storage.user.field_bio
+    - field.storage.user.field_domain
+    - field.storage.user.field_full_name
+    - field.storage.user.field_public_email
+    - field.storage.user.field_role_job_title
+    - field.storage.user.user_picture
+    - image.style.thumbnail
+  module:
+    - image
+    - name
+    - options
+    - text
+    - user
+id: collaborators_directory
+label: 'Collaborators Directory'
+module: views
+description: 'Searchable directory of site users for collaboration.'
+tag: ''
+base_table: users_field_data
+base_field: uid
+display:
+  default:
+    id: default
+    display_title: Master
+    display_plugin: default
+    position: 0
+    display_options:
+      title: Collaborators
+      fields:
+        user_picture:
+          id: user_picture
+          table: user__user_picture
+          field: user_picture
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Picture
+          exclude: false
+          alter:
+            alter_text: false
+          element_default_classes: true
+          click_sort_column: target_id
+          type: image
+          settings:
+            image_link: content
+            image_style: thumbnail
+          group_rows: true
+          delta_limit: 1
+        field_full_name:
+          id: field_full_name
+          table: user__field_full_name
+          field: field_full_name
+          plugin_id: field
+          label: 'Full Name'
+          exclude: false
+          alter:
+            alter_text: false
+          element_default_classes: true
+          click_sort_column: value
+          type: name_default
+          settings: {  }
+        field_role_job_title:
+          id: field_role_job_title
+          table: user__field_role_job_title
+          field: field_role_job_title
+          plugin_id: field
+          label: 'Role/Job Title'
+          exclude: false
+          alter:
+            alter_text: false
+          element_default_classes: true
+          click_sort_column: value
+          type: string
+          settings: {  }
+        field_affiliation:
+          id: field_affiliation
+          table: user__field_affiliation
+          field: field_affiliation
+          plugin_id: field
+          label: Affiliation
+          exclude: false
+          alter:
+            alter_text: false
+          element_default_classes: true
+          click_sort_column: value
+          type: string
+          settings: {  }
+        field_domain:
+          id: field_domain
+          table: user__field_domain
+          field: field_domain
+          plugin_id: field
+          label: Domain
+          exclude: false
+          alter:
+            alter_text: false
+          element_default_classes: true
+          click_sort_column: value
+          type: list_default
+          settings:
+            separator: ', '
+        field_public_email:
+          id: field_public_email
+          table: user__field_public_email
+          field: field_public_email
+          plugin_id: field
+          label: 'Public Email'
+          exclude: false
+          alter:
+            alter_text: false
+          element_default_classes: true
+          click_sort_column: value
+          type: email_mailto
+          settings:
+            link_to_mailto: true
+        field_bio:
+          id: field_bio
+          table: user__field_bio
+          field: field_bio
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Bio
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: text_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      pager:
+        type: full
+        options:
+          offset: 0
+          pagination_heading_level: h4
+          items_per_page: 20
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'access user profiles'
+      cache:
+        type: tag
+      sorts:
+        created:
+          id: created
+          table: users_field_data
+          field: created
+          plugin_id: date
+          order: DESC
+      filters:
+        status:
+          id: status
+          table: users_field_data
+          field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+        field_domain_value:
+          id: field_domain_value
+          table: user__field_domain
+          field: field_domain_value
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          exposed: true
+          expose:
+            label: Domain
+            identifier: domain
+        field_full_name:
+          id: field_full_name
+          table: user__field_full_name
+          field: field_full_name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: name_fulltext
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_full_name_op
+            label: 'Full Name'
+            description: ''
+            use_operator: false
+            operator: field_full_name_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_full_name
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+              author: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_affiliation_value:
+          id: field_affiliation_value
+          table: user__field_affiliation
+          field: field_affiliation_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_affiliation_value_op
+            label: Affiliation
+            description: ''
+            use_operator: false
+            operator: field_affiliation_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_affiliation_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+              author: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_role_job_title_value:
+          id: field_role_job_title_value
+          table: user__field_role_job_title
+          field: field_role_job_title_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_role_job_title_value_op
+            label: 'Role/Job Title'
+            description: ''
+            use_operator: false
+            operator: field_role_job_title_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_role_job_title_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+              author: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            user_picture: user_picture
+            field_full_name: field_full_name
+            field_role_job_title: field_role_job_title
+            field_affiliation: field_affiliation
+            field_domain: field_domain
+            field_public_email: field_public_email
+            field_bio: field_bio
+          default: '-1'
+          info:
+            user_picture:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_full_name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_role_job_title:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_affiliation:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_domain:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_public_email:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_bio:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: true
+          caption: ''
+          description: ''
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+      query:
+        type: views_query
+        options:
+          distinct: true
+      relationships: {  }
+      css_class: ''
+      group_by: false
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          plugin_id: text
+          empty: true
+          content:
+            value: "<div style=\"display:flex; justify-content:center; margin-bottom:0.75rem;\">\r\n  <a class=\"btn btn-primary\" href=\"/collaborators/invite\">Invite collaborator</a>\r\n</div>"
+            format: full_html
+          tokenize: false
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags:
+        - 'config:field.storage.user.field_affiliation'
+        - 'config:field.storage.user.field_bio'
+        - 'config:field.storage.user.field_domain'
+        - 'config:field.storage.user.field_full_name'
+        - 'config:field.storage.user.field_public_email'
+        - 'config:field.storage.user.field_role_job_title'
+        - 'config:field.storage.user.user_picture'
+  page_1:
+    id: page_1
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: collaborators
+      menu:
+        type: none
+        title: ''
+        description: ''
+        weight: 0
+        expanded: false
+        menu_name: main
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags:
+        - 'config:field.storage.user.field_affiliation'
+        - 'config:field.storage.user.field_bio'
+        - 'config:field.storage.user.field_domain'
+        - 'config:field.storage.user.field_full_name'
+        - 'config:field.storage.user.field_public_email'
+        - 'config:field.storage.user.field_role_job_title'
+        - 'config:field.storage.user.user_picture'
+    "cache\e[I_metadata":
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags: {  }

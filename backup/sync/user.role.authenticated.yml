@@ -5,6 +5,8 @@ dependencies:
   config:
     - filter.format.basic_html
     - filter.format.webform_default
+    - node.type.dataset
+    - node.type.publication
     - node.type.suggested_member
   module:
     - comment
@@ -26,12 +28,23 @@ permissions:
   - 'access content'
   - 'access shortcuts'
   - 'access site-wide contact form'
+  - 'access user contact forms'
+  - 'access user profiles'
+  - 'cancel account'
+  - 'change own username'
+  - 'create dataset content'
+  - 'create publication content'
   - 'create suggested_member content'
+  - 'delete own dataset content'
   - 'delete own files'
+  - 'delete own publication content'
   - 'delete own suggested_member content'
+  - 'edit own dataset content'
   - 'edit own suggested_member content'
   - 'post comments'
   - 'search content'
   - 'skip comment approval'
+  - 'use advanced search'
   - 'use text format basic_html'
   - 'use text format webform_default'
+  - 'view own unpublished content'

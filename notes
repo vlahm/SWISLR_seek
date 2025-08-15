@@ -11,6 +11,8 @@ docker-compose up -d	      # Starts or resumes your containers
 
 docker ps				list running containers (and get their names)
 docker cp container_id:path local_path		copy contents to/from container
+docker cp 2a7a964274ee:/opt/drupal/web/sites/default/files/config_gCohTr204_tUOHEoCSoqQdwbSTu87xtRCQZHJalG7RX3qSVKy3vy5Se3bI1B9pRplYijH-tFCA/sync backup/
+	use from backup/
 
 docker exec -it drupal-platform_drupal_1  bash		enter the container
 docker exec -it drupal-platform_db_1  bash		enter the database container?

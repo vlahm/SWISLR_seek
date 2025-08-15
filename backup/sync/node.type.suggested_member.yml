@@ -13,6 +13,6 @@ name: 'Suggested Member'
 type: suggested_member
 description: 'Suggest other members of the community who might want to join swislr.org'
 help: null
-new_revision: true
+new_revision: false
 preview_mode: 1
 display_submitted: true

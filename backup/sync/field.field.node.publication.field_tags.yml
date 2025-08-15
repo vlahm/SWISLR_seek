@@ -11,8 +11,8 @@ field_name: field_tags
 entity_type: node
 bundle: publication
 label: Tags
-description: 'Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio"'
-required: false
+description: 'Enter a comma-separated list. For example: review, aquifer recharge, "Durham, North Carolina"'
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

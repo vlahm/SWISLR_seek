@@ -4,10 +4,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.suggested_member.field_affiliation
     - field.field.node.suggested_member.field_email_address
-    - field.field.node.suggested_member.field_full_name
-    - field.field.node.suggested_member.field_roles
+    - field.field.node.suggested_member.field_message
+    - field.field.node.suggested_member.field_name
     - node.type.suggested_member
   module:
     - user
@@ -22,7 +21,6 @@ content:
     weight: 100
     region: content
 hidden:
-  field_affiliation: true
   field_email_address: true
-  field_full_name: true
-  field_roles: true
+  field_message: true
+  field_name: true

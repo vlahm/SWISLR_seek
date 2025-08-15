@@ -6,6 +6,8 @@ dependencies:
     - node.type.article
     - node.type.dataset
     - node.type.page
+    - node.type.publication
+    - node.type.suggested_member
     - taxonomy.vocabulary.tags
     - workflows.workflow.editorial
   module:
@@ -43,13 +45,22 @@ permissions:
   - 'delete own files'
   - 'delete own page content'
   - 'delete page revisions'
+  - 'delete publication revisions'
+  - 'delete suggested_member revisions'
+  - 'edit any dataset content'
+  - 'edit any publication content'
+  - 'edit any suggested_member content'
   - 'edit own article content'
   - 'edit own comments'
   - 'edit own dataset content'
   - 'edit own page content'
   - 'edit terms in tags'
   - 'revert all revisions'
+  - 'revert article revisions'
   - 'revert dataset revisions'
+  - 'revert page revisions'
+  - 'revert publication revisions'
+  - 'revert suggested_member revisions'
   - 'use editorial transition archive'
   - 'use editorial transition archived_draft'
   - 'use editorial transition archived_published'
@@ -57,7 +68,11 @@ permissions:
   - 'use editorial transition publish'
   - 'view all revisions'
   - 'view any unpublished content'
+  - 'view article revisions'
   - 'view dataset revisions'
   - 'view latest version'
   - 'view own unpublished content'
+  - 'view page revisions'
+  - 'view publication revisions'
+  - 'view suggested_member revisions'
   - 'view the administration theme'
