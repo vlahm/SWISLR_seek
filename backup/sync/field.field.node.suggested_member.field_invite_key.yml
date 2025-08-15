@@ -1,17 +1,17 @@
-uuid: f4b4a78a-b25c-4bc1-9e80-141f835963d0
+uuid: a248f8b9-8209-4d40-bfb0-8cb4c0d25825
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_name
+    - field.storage.node.field_invite_key
     - node.type.suggested_member
-id: node.suggested_member.field_name
-field_name: field_name
+id: node.suggested_member.field_invite_key
+field_name: field_invite_key
 entity_type: node
 bundle: suggested_member
-label: 'Invitee Name'
+label: 'invite key'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

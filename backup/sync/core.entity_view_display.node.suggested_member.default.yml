@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.suggested_member.field_email_address
+    - field.field.node.suggested_member.field_invite_key
+    - field.field.node.suggested_member.field_invite_status
     - field.field.node.suggested_member.field_message
     - field.field.node.suggested_member.field_name
     - node.type.suggested_member
@@ -15,18 +17,18 @@ bundle: suggested_member
 mode: default
 content:
   field_email_address:
-    type: basic_string
+    type: email_mailto
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 102
+    weight: 2
     region: content
   field_message:
     type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 104
+    weight: 3
     region: content
   field_name:
     type: string
@@ -34,11 +36,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 103
+    weight: 1
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
-hidden: {  }
+hidden:
+  field_invite_key: true
+  field_invite_status: true

@@ -1,0 +1,143 @@
+<?php
+
+use Drupal\Core\Mail\MailManagerInterface;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_entity_presave().
+ * - Generates a secret key for new invites.
+ * - Ensures default status.
+ */
+function swislr_invites_entity_presave(\Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity instanceof NodeInterface && $entity->bundle() === 'suggested_member') {
+    if ($entity->isNew()) {
+      // Generate a 32-char random key.
+      $key = bin2hex(random_bytes(16));
+      $entity->set('field_invite_key', $key);
+      if ($entity->get('field_invite_status')->isEmpty()) {
+        $entity->set('field_invite_status', 'pending');
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ * - Sends the invitation email after the node is created.
+ */
+function swislr_invites_entity_insert(\Drupal\Core\Entity\EntityInterface $entity) {
+  if (!($entity instanceof NodeInterface) || $entity->bundle() !== 'suggested_member') {
+    return;
+  }
+
+  $to = trim((string) $entity->get('field_email_address')->value);
+  if (!$to) {
+    \Drupal::logger('swislr_invites')->warning('Suggested member @nid has no email.', ['@nid' => $entity->id()]);
+    return;
+  }
+
+  $author = $entity->getOwner();
+  // $affil = $author && !$author->get('field_affiliation')->isEmpty()
+  //   ? implode(', ', array_filter($author->get('field_affiliation')->getValue(), fn($v) => !empty($v['value'])))
+  //   : '';
+
+  // Build affiliation as a comma-separated string.
+  $affil_values = [];
+  if ($author && $author->hasField('field_affiliation') && !$author->get('field_affiliation')->isEmpty()) {
+    foreach ($author->get('field_affiliation')->getValue() as $row) {
+      if (!empty($row['value'])) {
+        $affil_values[] = $row['value'];
+      }
+    }
+  }
+  $affil_str = implode('; ', $affil_values);
+  
+  // Build absolute URLs.
+  $base = \Drupal::request()->getSchemeAndHttpHost();
+  $accept_url = Url::fromRoute('swislr_invites.accept', [
+      'nid' => $entity->id(),
+      'key' => $entity->get('field_invite_key')->value,
+    ], ['absolute' => TRUE])->toString();
+  $decline_url = Url::fromRoute('swislr_invites.decline', [
+      'nid' => $entity->id(),
+      'key' => $entity->get('field_invite_key')->value,
+    ], ['absolute' => TRUE])->toString();
+  $inviter_profile = $author ? $author->toUrl('canonical', ['absolute' => TRUE])->toString() : $base;
+
+  // Message bits.
+  $custom_msg = trim((string) $entity->get('field_message')->value);
+  $custom_block = $custom_msg ? $custom_msg . "\n\n" : '';
+
+  // Subject and body with tokens (keep it simple; token replacement optional).
+  $site_name = \Drupal::config('system.site')->get('name') ?: 'SWISLR Seek';
+  $subject = "$site_name: Invitation to connect and collaborate";
+
+  $body = <<<EOT
+You’re receiving this invitation via the SWISLR Seek platform.
+
+{$custom_block}• Inviter: {$author?->getDisplayName()}
+• Affiliation: {$affil_str}
+• What this is: An invitation to connect and potentially collaborate with other people working on SWISLR (Salt Water Intrusion and Sea Level Rise).
+
+View the inviter’s profile: {$inviter_profile}
+Accept invitation: {$accept_url}
+Decline invitation: {$decline_url}
+EOT;
+
+  /** @var MailManagerInterface $mail_manager */
+  $mail_manager = \Drupal::service('plugin.manager.mail');
+  $params = [
+    'subject' => $subject,
+    'message' => $body,
+  ];
+
+  // Use a simple mail key 'invite_send'. Implement hook_mail() to set headers.
+  $langcode = $entity->language()->getId();
+  $result = $mail_manager->mail('swislr_invites', 'invite_send', $to, $langcode, $params, NULL, TRUE);
+
+  if (empty($result['result'])) {
+    \Drupal::logger('swislr_invites')->error('Failed to send invite for node @nid to @to.', ['@nid' => $entity->id(), '@to' => $to]);
+
+    // Keep the default “created/saved” message so they know the node exists,
+    // and add an error prompting them to try again.
+    \Drupal::messenger()->addError(t('The invitation email could not be sent. Please try again or contact an administrator.'));
+  } else {
+    // Replace Drupal’s default “created/saved” status with our own.
+    // (If you have other important status messages on this request, skip deletion.)
+    \Drupal::messenger()->deleteByType('status');
+    \Drupal::messenger()->addStatus(t('Invitation sent to @email.', ['@email' => $to]));
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function swislr_invites_mail($key, &$message, $params) {
+  if ($key === 'invite_send') {
+    $message['subject'] = $params['subject'] ?? 'Invitation';
+    $message['body'] = [$params['message'] ?? ''];
+    // Optional: force plain text.
+    $message['headers']['Content-Type'] = 'text/plain; charset=UTF-8';
+  }
+}
+
+/**
+ * alter the suggested member form
+ */
+function swislr_invites_form_node_suggested_member_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // change page title
+  $form['#title'] = t('Invite Others to SWISLR Seek');
+
+  // Remove Preview button.
+  if (isset($form['actions']['preview'])) {
+    $form['actions']['preview']['#access'] = FALSE;   // or unset($form['actions']['preview']);
+  }
+
+  // Change "Save" to "Send".
+  if (isset($form['actions']['submit'])) {
+    $form['actions']['submit']['#value'] = t('Send');
+  }
+}
+

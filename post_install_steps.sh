@@ -15,6 +15,7 @@ drush en -y user_register_notify
 drush en -y swislr_homepage
 drush en -y swislr_tweaks
 drush en -y name
+drush en -y auto_entitylabel
 
 # Fix private file warning
 mkdir -p /opt/drupal_private

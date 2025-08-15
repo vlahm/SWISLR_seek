@@ -1,0 +1,10 @@
+name: SWISLR Invites
+type: module
+description: Sends invitation emails for Suggested member nodes and handles accept/decline responses.
+core_version_requirement: ^10 || ^11
+package: SWISLR
+dependencies:
+  - drupal:node
+  - drupal:user
+  - drupal:system
+  - drupal:token

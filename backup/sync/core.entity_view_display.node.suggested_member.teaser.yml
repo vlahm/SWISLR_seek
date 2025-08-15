@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.suggested_member.field_email_address
+    - field.field.node.suggested_member.field_invite_key
+    - field.field.node.suggested_member.field_invite_status
     - field.field.node.suggested_member.field_message
     - field.field.node.suggested_member.field_name
     - node.type.suggested_member
@@ -22,5 +24,7 @@ content:
     region: content
 hidden:
   field_email_address: true
+  field_invite_key: true
+  field_invite_status: true
   field_message: true
   field_name: true

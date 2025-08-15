@@ -9,7 +9,7 @@ id: node.suggested_member.field_email_address
 field_name: field_email_address
 entity_type: node
 bundle: suggested_member
-label: 'Email Address'
+label: 'Invitee Email Address'
 description: ''
 required: true
 translatable: false

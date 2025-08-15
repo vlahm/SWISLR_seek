@@ -14,5 +14,5 @@ type: suggested_member
 description: 'Suggest other members of the community who might want to join swislr.org'
 help: null
 new_revision: false
-preview_mode: 1
+preview_mode: 0
 display_submitted: true

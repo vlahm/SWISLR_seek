@@ -9,8 +9,8 @@ id: node.suggested_member.field_message
 field_name: field_message
 entity_type: node
 bundle: suggested_member
-label: Message
-description: ''
+label: 'Welcome Message'
+description: 'Optional. We will send an invitation email with boilerplate welcome text.'
 required: false
 translatable: false
 default_value: {  }

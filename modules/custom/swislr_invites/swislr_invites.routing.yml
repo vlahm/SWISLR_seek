@@ -1,0 +1,18 @@
+swislr_invites.accept:
+  path: '/invite/{nid}/{key}/accept'
+  defaults:
+    _controller: '\Drupal\swislr_invites\Controller\InviteResponseController::accept'
+    _title: 'Invitation accepted'
+  requirements:
+    _permission: 'access content'
+    nid: '\d+'
+
+swislr_invites.decline:
+  path: '/invite/{nid}/{key}/decline'
+  defaults:
+    _controller: '\Drupal\swislr_invites\Controller\InviteResponseController::decline'
+    _title: 'Invitation declined'
+  requirements:
+    _permission: 'access content'
+    nid: '\d+'
+

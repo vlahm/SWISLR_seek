@@ -442,10 +442,13 @@ display:
           id: area
           table: views
           field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
           plugin_id: text
           empty: true
           content:
-            value: "<div style=\"display:flex; justify-content:center; margin-bottom:0.75rem;\">\r\n  <a class=\"btn btn-primary\" href=\"/collaborators/invite\">Invite collaborator</a>\r\n</div>"
+            value: "<div style=\"display:flex; justify-content:center; margin-bottom:0.75rem;\">\r\n  <a class=\"btn btn-primary\" href=\"/node/add/suggested_member?destination=/collaborators\r\n\">Invite collaborator</a>\r\n</div>"
             format: full_html
           tokenize: false
       display_extenders: {  }
