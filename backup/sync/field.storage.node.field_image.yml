@@ -25,7 +25,7 @@ settings:
     height: null
 module: image
 locked: false
-cardinality: 1
+cardinality: 3
 translatable: true
 indexes:
   target_id:

@@ -38,11 +38,61 @@
         "Land Cover": landCover
       };
 
+	  const layerControl = L.control.layers(null, null, { collapsed: false }).addTo(map);
+
       L.control.layers(baseMaps).addTo(map);
 
       L.control.zoom({
         position: 'topright'
       }).addTo(map);
+
+	  // Stories from the Field layer
+      const storiesUrl = '/stories.geojson'; // from the Views GeoJSON display
+      
+      // Optional: an icon for story markers (or omit for default)
+      // const storyIcon = L.icon({ iconUrl: '/themes/custom/yourtheme/images/pin.svg', iconSize: [28, 28] });
+      
+      const storiesLayer = L.markerClusterGroup(); // requires leaflet.markercluster; otherwise use L.geoJSON directly
+      
+      fetch(storiesUrl, { credentials: 'same-origin' })
+        .then(r => r.json())
+        .then(geojson => {
+          const featureLayer = L.geoJSON(geojson, {
+            // pointToLayer: (feature, latlng) => L.marker(latlng, { icon: storyIcon }),
+            onEachFeature: (feature, layer) => {
+              const p = feature.properties || {};
+              const title = p.title || 'Story';
+              const path = p.path || '#';
+              const date = p.date || '';
+              const img = p.image || '';
+              const tags = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
+      
+              const imgHtml = img ? `<div style="margin-bottom:.5rem;"><img src="${img}" alt="" style="max-width:220px; height:auto; border-radius:8px;"></div>` : '';
+              const html = `
+                ${imgHtml}
+                <div style="max-width:260px;">
+                  <h3 style="margin:.2rem 0 0.4rem 0; font-size:1rem;">
+                    <a href="${path}" style="text-decoration:none;">${title}</a>
+                  </h3>
+                  ${date ? `<div style="font-size:.85rem; opacity:.8;">${date}</div>` : ''}
+                  ${tags ? `<div style="font-size:.85rem; margin-top:.25rem;">Tags: ${tags}</div>` : ''}
+                  <div style="margin-top:.5rem;">
+                    <a href="${path}" class="btn btn-sm btn-primary">Read story</a>
+                  </div>
+                </div>
+              `;
+              layer.bindPopup(html, { maxWidth: 320 });
+            }
+          });
+      
+          storiesLayer.addLayer(featureLayer);
+          storiesLayer.addTo(map);
+      
+          // add to the layer control if you have one:
+          if (layerControl) layerControl.addOverlay(storiesLayer, 'Stories from the Field');
+        })
+        .catch(console.error);
+
     }
   };
 })(Drupal);

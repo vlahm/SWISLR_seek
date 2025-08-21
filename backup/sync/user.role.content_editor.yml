@@ -7,6 +7,7 @@ dependencies:
     - node.type.dataset
     - node.type.page
     - node.type.publication
+    - node.type.story
     - node.type.suggested_member
     - taxonomy.vocabulary.tags
     - workflows.workflow.editorial
@@ -38,17 +39,20 @@ permissions:
   - 'create page content'
   - 'create terms in tags'
   - 'create url aliases'
+  - 'delete any story content'
   - 'delete article revisions'
   - 'delete dataset revisions'
   - 'delete own article content'
   - 'delete own dataset content'
   - 'delete own files'
   - 'delete own page content'
+  - 'delete own story content'
   - 'delete page revisions'
   - 'delete publication revisions'
   - 'delete suggested_member revisions'
   - 'edit any dataset content'
   - 'edit any publication content'
+  - 'edit any story content'
   - 'edit any suggested_member content'
   - 'edit own article content'
   - 'edit own comments'

@@ -36,7 +36,10 @@
 		"drupal/bootstrap5": "^4.0",
 		"drupal/user_register_notify": "dev-2.x",
 		"drupal/name": "^1.0'",
-		"drupal/auto_entitylabel": "^3.4"
+		"drupal/auto_entitylabel": "^3.4",
+		"drupal/orcid": "1.x-dev@dev",
+		"drupal/date_popup": "^2.0",
+		"drupal/views_geojson": "^1.4"
     },
     "require-dev": {
         "drush/drush": "*"

@@ -11,11 +11,16 @@ drush en -y smtp
 drush en -y honeypot
 drush en -y email_registration
 drush en -y leaflet block_class
+drush en -y leaflet_views
+drush en -y leaflet_markercluster
 drush en -y user_register_notify
 drush en -y swislr_homepage
 drush en -y swislr_tweaks
 drush en -y name
 drush en -y auto_entitylabel
+drush en -y orcid
+drush en -y date_popup
+drush en -y views_geojson
 
 # Fix private file warning
 mkdir -p /opt/drupal_private

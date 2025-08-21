@@ -1,0 +1,21 @@
+uuid: b81b5bf9-a20d-4953-8f57-fc5f2c3e0508
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_location
+    - node.type.story
+  module:
+    - geofield
+id: node.story.field_location
+field_name: field_location
+entity_type: node
+bundle: story
+label: Location
+description: 'The location where this story occurred.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: geofield
