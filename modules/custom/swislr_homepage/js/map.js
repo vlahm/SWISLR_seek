@@ -106,42 +106,6 @@
 
       const layerControl = L.control.layers(baseMaps, overlays, { collapsed: false }).addTo(map);
       
-      // Keep overlays on top when toggled:
-      //map.on('overlayadd', e => {
-      //  if (e.layer && e.layer.bringToFront) e.layer.bringToFront();
-      //});
-      //
-      //L.control.zoom({ position: 'topright' }).addTo(map);
-
-      //const OpacityControl = L.Control.extend({
-      //  options: { position: 'topright' },
-      //  onAdd: function() {
-      //    const div = L.DomUtil.create('div', 'leaflet-bar');
-      //    div.style.padding = '8px';
-      //    div.style.background = 'white';
-      //    div.style.lineHeight = '1.1';
-      //    div.style.minWidth = '160px';
-      //    div.innerHTML = `
-      //      <div style="font-weight:600; margin-bottom:6px;">Overlay opacity</div>
-      //      <label style="font-size:12px; display:block; margin-top:6px;">MODIS LC</label>
-      //      <input id="modisRange" type="range" min="0" max="1" step="0.05" value="${modisLC.options.opacity ?? 1}" style="width:140px;">
-      //    `;
-      //    // prevent map drag when using sliders
-      //    L.DomEvent.disableClickPropagation(div);
-      //    L.DomEvent.on(div, 'mousewheel', L.DomEvent.stopPropagation);
-      //
-      //    setTimeout(() => {
-      //      const n = div.querySelector('#nlcdRange');
-      //      const m = div.querySelector('#modisRange');
-      //      if (n) n.addEventListener('input', e => nlcd2021.setOpacity(parseFloat(e.target.value)));
-      //      if (m) m.addEventListener('input', e => modisLC.setOpacity(parseFloat(e.target.value)));
-      //    }, 0);
-      //
-      //    return div;
-      //  }
-      //});
-      //map.addControl(new OpacityControl());
-
 
       // -------- Show slider + legend only when MODIS GIBS is toggled on --------
       
@@ -215,151 +179,194 @@
       refreshGibsUi();
 
 		
-	 // ---- NOAA SLR overlays (U.S. coastal) ----
-     // Helpers to build service names/URLs for 0–10 ft increments (0.5 allowed)
-     function slrServiceName(feet) {
-       // 0.5 => "0_5", 3 => "3"
-       const tag = (feet % 1 === 0) ? String(feet) : String(feet).replace('.', '_');
-       return `slr_${tag}ft`;
-     }
-     function confServiceName(feet) {
-       const tag = (feet % 1 === 0) ? String(feet) : String(feet).replace('.', '_');
-       return `conf_${tag}ft`;
-     }
-     function slrLayer(feet, opts = {}) {
-       const url = `https://www.coast.noaa.gov/arcgis/rest/services/dc_slr/${slrServiceName(feet)}/MapServer/tile/{z}/{y}/{x}`;
-       return L.tileLayer(url, {
-         maxZoom: 16,
-         opacity: opts.opacity ?? 1,
-         attribution: 'NOAA OCM Sea Level Rise (screening tool)'
-       });
-     }
-     function confLayer(feet, opts = {}) {
-       const url = `https://www.coast.noaa.gov/arcgis/rest/services/dc_slr/${confServiceName(feet)}/MapServer/tile/{z}/{y}/{x}`;
-       return L.tileLayer(url, {
-         maxZoom: 16,
-         opacity: opts.opacity ?? 0.6,
-         attribution: 'NOAA OCM SLR Mapping Confidence'
-       });
-     }
-     
-     // Active layers
-     let currentFeet = 3;
-     let slr = slrLayer(currentFeet, { opacity: 0.9 });
-     let slrConf = null; // created on demand
-     
-     // Add to your existing layers control if you like:
-     if (typeof layerControl !== 'undefined') {
-       layerControl.addOverlay(slr, `NOAA SLR ${currentFeet} ft (depth)`);
-     }
-     
-     // Keep overlays on top
-     map.on('overlayadd', e => { e.layer?.bringToFront?.(); });
-     
-     // ---- Legend fetcher (ArcGIS REST /legend?f=pjson) ----
-     async function buildNoaaLegend(feet) {
-       const svc = slrServiceName(feet);
-       const url = `https://www.coast.noaa.gov/arcgis/rest/services/dc_slr/${svc}/MapServer/legend?f=pjson`;
-       const res = await fetch(url, { credentials: 'omit' });
-       const json = await res.json();
-       // Find the raster layer legend (Depth)
-       const depth = json.layers.find(l => String(l.layerName).includes('Depth')) || json.layers[1];
-       if (!depth) return '';
-       const items = depth.legend || [];
-       return items.map(it => {
-         const img = `data:${it.contentType};base64,${it.imageData}`;
-         const label = it.label || '';
-         return `<div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
-                   <img src="${img}" width="${it.width}" height="${it.height}" alt="">
-                   <span style="font-size:12px;">${label}</span>
-                 </div>`;
-       }).join('');
-     }
-     
-     // ---- UI Control: feet select, opacity slider, legend, confidence toggle ----
-     const SlrControl = L.Control.extend({
-       options: { position: 'topright' },
-       onAdd: function () {
-         const box = L.DomUtil.create('div', 'leaflet-bar');
-         box.style.background = 'white'; box.style.padding = '8px'; box.style.minWidth = '200px';
-     
-         const feetOpts = Array.from({length: 21}, (_, i) => (i * 0.5).toFixed(1))  // 0.0..10.0
-           .map(v => v.endsWith('.0') ? String(parseInt(v)) : v);
-     
-         box.innerHTML = `
-           <div style="font-weight:600;margin-bottom:6px;">Sea Level Rise (NOAA)</div>
-           <label style="font-size:12px;">Feet above MHHW</label>
-           <select id="slrFeet" style="width:100%;margin:2px 0 6px 0;">
-             ${feetOpts.map(v => `<option value="${v}" ${v==currentFeet? 'selected':''}>${v} ft</option>`).join('')}
-           </select>
-           <label style="font-size:12px;">Opacity</label>
-           <input id="slrOpacity" type="range" min="0" max="1" step="0.05" value="${slr.options.opacity ?? 1}" style="width:100%;">
-           <label style="font-size:12px; display:flex; gap:6px; align-items:center; margin-top:6px;">
-             <input id="slrConfChk" type="checkbox"> Show confidence
-           </label>
-           <div id="slrLegend" style="margin-top:6px; font-size:12px; opacity:.9;">Loading legend…</div>
-         `;
-     
-         L.DomEvent.disableClickPropagation(box);
-         L.DomEvent.on(box, 'mousewheel', L.DomEvent.stopPropagation);
-     
-         const sel = box.querySelector('#slrFeet');
-         const rng = box.querySelector('#slrOpacity');
-         const chk = box.querySelector('#slrConfChk');
-         const leg = box.querySelector('#slrLegend');
-     
-         const refreshLegend = async () => { leg.innerHTML = await buildNoaaLegend(currentFeet); };
-     
-         // Initialize default layer on map
-         slr.addTo(map);
-         refreshLegend();
-     
-         sel.addEventListener('change', async (e) => {
-           const newFeet = e.target.value.includes('.') ? parseFloat(e.target.value) : parseInt(e.target.value, 10);
-           // swap SLR layer
-           const wasOn = map.hasLayer(slr);
-           if (wasOn) map.removeLayer(slr);
-           if (typeof layerControl !== 'undefined') {
-             try { layerControl.removeLayer(slr); } catch(_) {}
-           }
-           currentFeet = newFeet;
-           slr = slrLayer(currentFeet, { opacity: parseFloat(rng.value) });
-           if (wasOn) slr.addTo(map);
-           if (typeof layerControl !== 'undefined') {
-             layerControl.addOverlay(slr, `NOAA SLR ${currentFeet} ft (depth)`);
-           }
-           // swap confidence layer if shown
-           if (chk.checked) {
-             if (slrConf && map.hasLayer(slrConf)) map.removeLayer(slrConf);
-             slrConf = confLayer(currentFeet, { opacity: 0.6 }); slrConf.addTo(map);
-           }
-           refreshLegend();
-         });
-     
-         rng.addEventListener('input', (e) => {
-           const v = parseFloat(e.target.value);
-           slr.setOpacity(v);
-           slr.bringToFront?.();
-         });
-     
-         chk.addEventListener('change', (e) => {
-           const on = e.target.checked;
-           if (on) {
-             slrConf = confLayer(currentFeet, { opacity: 0.6 });
-             slrConf.addTo(map);
-             slrConf.bringToFront?.();
-             if (typeof layerControl !== 'undefined') layerControl.addOverlay(slrConf, `SLR Confidence ${currentFeet} ft`);
-           } else if (slrConf) {
-             if (map.hasLayer(slrConf)) map.removeLayer(slrConf);
-             if (typeof layerControl !== 'undefined') try { layerControl.removeLayer(slrConf); } catch(_) {}
-             slrConf = null;
-           }
-         });
-     
-         return box;
-       }
-     });
-     map.addControl(new SlrControl());
+	 // ---- NOAA SLR (single overlay entry + dynamic content) ----
+
+	 // Utility: normalize to 0.5ft steps and convert to service tag
+	 function feetToTag(feet) {
+	   const n = Math.max(0, Math.min(10, Math.round(feet * 2) / 2)); // clamp 0–10, round to .5
+	   return (n % 1 === 0) ? String(n) : n.toFixed(1).replace('.', '_'); // 3 -> "3", 0.5 -> "0_5"
+	 }
+	 function slrUrl(feetTag) {
+	   return `https://www.coast.noaa.gov/arcgis/rest/services/dc_slr/slr_${feetTag}ft/MapServer/tile/{z}/{y}/{x}`;
+	 }
+	 function confUrl(feetTag) {
+	   return `https://www.coast.noaa.gov/arcgis/rest/services/dc_slr/conf_${feetTag}ft/MapServer/tile/{z}/{y}/{x}`;
+	 }
+
+	 // Dynamic overlay is a LayerGroup; it stays constant in the Layer Control.
+	 const slrGroup = L.layerGroup();
+
+	 // Register ONE overlay in your existing control:
+	 if (typeof layerControl !== 'undefined') {
+	   layerControl.addOverlay(slrGroup, 'Sea Level Rise (NOAA)');
+	 }
+
+	 // State
+	 let slrFeet = 3;              // current feet
+	 let slrOpacity = 0.9;         // current depth opacity
+	 let showConf = false;         // uncertainty toggle
+	 let slrTile = null;           // current depth tile
+	 let confTile = null;          // current conf tile
+
+	 function rebuildSlrTiles() {
+	   const tag = feetToTag(slrFeet);
+	   // clear old children
+	   slrGroup.clearLayers();
+
+	   // depth tile
+	   slrTile = L.tileLayer(slrUrl(tag), {
+	 	maxZoom: 16,
+	 	opacity: slrOpacity,
+	 	attribution: 'NOAA OCM Sea Level Rise (screening)'
+	   }).addTo(slrGroup);
+
+	   // optional confidence tile
+	   if (showConf) {
+	 	confTile = L.tileLayer(confUrl(tag), {
+	 	  maxZoom: 16,
+	 	  opacity: 0.6,
+	 	  attribution: 'NOAA OCM SLR Mapping Confidence'
+	 	}).addTo(slrGroup);
+	   } else {
+	 	confTile = null;
+	   }
+
+	   // keep on top
+	   slrTile.bringToFront?.();
+	   confTile?.bringToFront?.();
+	 }
+
+	 // Legends
+	 async function legendHtmlFor(serviceName) {
+	   const url = `https://www.coast.noaa.gov/arcgis/rest/services/dc_slr/${serviceName}/MapServer/legend?f=pjson`;
+	   try {
+	 	const res = await fetch(url, { credentials: 'omit' });
+	 	const json = await res.json();
+	 	const layers = json.layers || [];
+	 	const legends = layers.flatMap(l => l.legend || []);
+	 	return legends.map(it => `
+	 	  <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+	 		<img src="data:${it.contentType};base64,${it.imageData}" width="${it.width}" height="${it.height}" alt="">
+	 		<span style="font-size:12px;">${it.label || ''}</span>
+	 	  </div>`).join('') || '<em style="font-size:12px;">No legend</em>';
+	   } catch {
+	 	return '<em style="font-size:12px;">Legend unavailable</em>';
+	   }
+	 }
+	 async function refreshLegends(box) {
+	   const tag = feetToTag(slrFeet);
+	   const depthHtml = await legendHtmlFor(`slr_${tag}ft`);
+	   box.querySelector('#slrLegend').innerHTML = depthHtml;
+
+	   const confBox = box.querySelector('#confLegendWrap');
+	   if (showConf) {
+	 	confBox.style.display = '';
+	 	confBox.querySelector('#confLegend').innerHTML =
+	 	  await legendHtmlFor(`conf_${tag}ft`);
+	   } else {
+	 	confBox.style.display = 'none';
+	   }
+	 }
+
+	 // UI control (appears only when overlay is on)
+	 const SlrControl = L.Control.extend({
+	   options: { position: 'topright' },
+	   onAdd: function() {
+	 	const box = L.DomUtil.create('div', 'leaflet-bar slr-ui');
+	 	box.style.padding = '8px';
+	 	box.style.background = 'white';
+	 	box.style.minWidth = '220px';
+	 	box.style.display = 'none'; // hidden until overlay is enabled
+
+	 	// depth slider uses 0..20 steps = 0..10 ft in 0.5 ft increments
+	 	const stepFromFeet = f => Math.round(f * 2);
+	 	const feetFromStep = s => (Number(s) / 2);
+
+	 	box.innerHTML = `
+	 	  <div style="font-weight:600; margin-bottom:6px;">Sea Level Rise</div>
+	 	  <div style="display:flex; justify-content:space-between; align-items:center;">
+	 		<label style="font-size:12px;">Depth (ft above MHHW)</label>
+	 		<div id="slrFeetLabel" style="font-size:12px; font-weight:600;">${slrFeet.toFixed(1).replace(/\.0$/, '')} ft</div>
+	 	  </div>
+	 	  <input id="slrFeetRange" type="range" min="0" max="20" step="1"
+	 			 value="${stepFromFeet(slrFeet)}" style="width:100%; margin:4px 0 8px 0;">
+
+	 	  <label style="font-size:12px;">Opacity</label>
+	 	  <input id="slrOpacityRange" type="range" min="0" max="1" step="0.05"
+	 			 value="${slrOpacity}" style="width:100%; margin:2px 0 6px 0;">
+
+	 	  <label style="font-size:12px; display:flex; gap:6px; align-items:center; margin-top:4px;">
+	 		<input id="slrConfChk" type="checkbox"> Show uncertainty
+	 	  </label>
+
+	 	  <div style="margin-top:8px;">
+	 		<div style="font-size:12px; opacity:.85;">Depth legend</div>
+	 		<div id="slrLegend" style="margin-top:4px;"></div>
+	 	  </div>
+
+	 	  <div id="confLegendWrap" style="margin-top:8px; display:none;">
+	 		<div style="font-size:12px; opacity:.85;">Uncertainty legend</div>
+	 		<div id="confLegend" style="margin-top:4px;"></div>
+	 	  </div>
+	 	`;
+
+	 	// stop map interactions on UI
+	 	L.DomEvent.disableClickPropagation(box);
+	 	L.DomEvent.on(box, 'mousewheel', L.DomEvent.stopPropagation);
+
+	 	// wire controls
+	 	const feetRange = box.querySelector('#slrFeetRange');
+	 	const feetLabel = box.querySelector('#slrFeetLabel');
+	 	const opRange = box.querySelector('#slrOpacityRange');
+	 	const confChk = box.querySelector('#slrConfChk');
+
+	 	feetRange.addEventListener('input', async e => {
+	 	  slrFeet = feetFromStep(e.target.value);
+	 	  feetLabel.textContent = `${slrFeet.toFixed(1).replace(/\.0$/, '')} ft`;
+	 	  if (map.hasLayer(slrGroup)) {
+	 		rebuildSlrTiles();
+	 		refreshLegends(box);
+	 	  }
+	 	});
+
+	 	opRange.addEventListener('input', e => {
+	 	  slrOpacity = parseFloat(e.target.value);
+	 	  if (slrTile) slrTile.setOpacity(slrOpacity);
+	 	});
+
+	 	confChk.addEventListener('change', async e => {
+	 	  showConf = !!e.target.checked;
+	 	  if (map.hasLayer(slrGroup)) {
+	 		rebuildSlrTiles();
+	 		refreshLegends(box);
+	 	  }
+	 	});
+
+	 	// expose helpers for show/hide + refresh
+	 	this._box = box;
+	 	this.refreshLegends = () => refreshLegends(box);
+	 	this.show = () => { box.style.display = ''; };
+	 	this.hide = () => { box.style.display = 'none'; };
+
+	 	return box;
+	   }
+	 });
+	 const slrControl = new SlrControl().addTo(map);
+
+	 // When the overlay is toggled in the Layers control, show/hide the UI and build tiles.
+	 map.on('overlayadd', e => {
+	   if (e.layer === slrGroup) {
+	 	slrControl.show();
+	 	rebuildSlrTiles();
+	 	slrControl.refreshLegends();
+	   }
+	 });
+	 map.on('overlayremove', e => {
+	   if (e.layer === slrGroup) {
+	 	slrControl.hide();
+	 	slrGroup.clearLayers();
+	   }
+	 });
 
 
 
