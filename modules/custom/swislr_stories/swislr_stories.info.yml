@@ -1,0 +1,6 @@
+name: 'SWISLR Stories'
+type: module
+description: 'Story-only template + CSS without changing the site theme.'
+core_version_requirement: ^10 || ^11
+package: SWISLR
+
