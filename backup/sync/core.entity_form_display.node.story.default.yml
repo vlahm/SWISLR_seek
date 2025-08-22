@@ -73,13 +73,13 @@ content:
       toolbar:
         position: topright
         marker: defaultMarker
-        drawPolyline: true
-        drawRectangle: true
-        drawPolygon: true
+        drawPolyline: false
+        drawRectangle: false
+        drawPolygon: false
         drawCircle: false
         drawText: false
-        editMode: true
-        dragMode: true
+        editMode: false
+        dragMode: false
         cutPolygon: false
         removalMode: true
         rotateMode: false

@@ -10,12 +10,16 @@ dependencies:
     - node.type.publication
     - node.type.story
     - node.type.suggested_member
+    - rest.resource.comment
+    - rest.resource.comments
+    - rest.resource.me
   module:
     - comment
     - contact
     - file
     - filter
     - node
+    - rest
     - search
     - shortcut
     - system
@@ -47,6 +51,12 @@ permissions:
   - 'edit own story content'
   - 'edit own suggested_member content'
   - 'post comments'
+  - 'restful delete comment'
+  - 'restful get comments'
+  - 'restful get me'
+  - 'restful patch comment'
+  - 'restful post comments'
+  - 'restful put comment'
   - 'search content'
   - 'skip comment approval'
   - 'use advanced search'

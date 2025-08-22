@@ -1,0 +1,21 @@
+uuid: 0586b632-3b5d-4960-9ae0-31b2d5f8f5e4
+langcode: en
+status: true
+dependencies:
+  module:
+    - react_comments
+    - serialization
+    - user
+_core:
+  default_config_hash: ZTzQlPp5MxfvEWEx-Sz5Y7JQHf4Xee5YA8BfuIQJmwQ
+id: comments
+plugin_id: comments
+granularity: resource
+configuration:
+  methods:
+    - GET
+    - POST
+  formats:
+    - json
+  authentication:
+    - cookie

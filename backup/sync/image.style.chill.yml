@@ -1,0 +1,15 @@
+uuid: 9faade42-c1f8-4ab6-bc9c-e03a16c568e1
+langcode: en
+status: true
+dependencies: {  }
+name: chill
+label: chill
+effects:
+  6c723fc8-1da3-42e2-91bf-cf5f65a3ada9:
+    uuid: 6c723fc8-1da3-42e2-91bf-cf5f65a3ada9
+    id: image_scale
+    weight: 1
+    data:
+      width: null
+      height: 400
+      upscale: false

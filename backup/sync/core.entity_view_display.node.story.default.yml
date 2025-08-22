@@ -11,7 +11,7 @@ dependencies:
     - field.field.node.story.field_location
     - field.field.node.story.field_tags
     - field.field.node.story.field_title
-    - image.style.wide
+    - image.style.chill
     - node.type.story
   module:
     - comment
@@ -55,7 +55,7 @@ content:
     label: hidden
     settings:
       image_link: ''
-      image_style: wide
+      image_style: chill
       image_loading:
         attribute: eager
     third_party_settings: {  }
