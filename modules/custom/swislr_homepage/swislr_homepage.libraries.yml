@@ -1,12 +1,27 @@
+leaflet-core:
+  js:
+    https://unpkg.com/leaflet@1.9.3/dist/leaflet.js: { type: external, minified: true }
+  css:
+    theme:
+      https://unpkg.com/leaflet@1.9.3/dist/leaflet.css: { type: external }
+
+markercluster:
+  js:
+    https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js: { type: external, minified: true }
+  css:
+    theme:
+      https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css: { type: external }
+      https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css: { type: external }
+  dependencies:
+    - swislr_homepage/leaflet-core
+
 swislr-map:
   js:
-    https://unpkg.com/leaflet@1.9.3/dist/leaflet.js: {}
     js/map.js: {}
   css:
     theme:
-      https://unpkg.com/leaflet@1.9.3/dist/leaflet.css: {}
       css/swislr-homepage.css: {}
   dependencies:
+    - swislr_homepage/markercluster
     - core/drupal
     - core/jquery
-

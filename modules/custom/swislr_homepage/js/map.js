@@ -61,11 +61,11 @@
             // pointToLayer: (feature, latlng) => L.marker(latlng, { icon: storyIcon }),
             onEachFeature: (feature, layer) => {
               const p = feature.properties || {};
-              const title = p.title || 'Story';
-              const path = p.path || '#';
-              const date = p.date || '';
-              const img = p.image || '';
-              const tags = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
+              const title = p.name || 'Story';
+              const path = p.view_node || '#';
+              const date = p.field_date || '';
+              const img = p.field_image || '';
+              const tags = Array.isArray(p.field_tags) ? p.field_tags.join(', ') : (p.field_tags || '');
       
               const imgHtml = img ? `<div style="margin-bottom:.5rem;"><img src="${img}" alt="" style="max-width:220px; height:auto; border-radius:8px;"></div>` : '';
               const html = `
