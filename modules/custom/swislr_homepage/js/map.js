@@ -181,6 +181,38 @@
 		
 	 // ---- NOAA SLR (single overlay entry + dynamic content) ----
 
+     let confOpacity = 0.6;      // separate opacity for uncertainty
+     let confGrayscale = true;   // set false if you ever want the original colors
+     
+     function applyConfFilters() {
+       if (!confTile || !confTile.getContainer) return;
+       const el = confTile.getContainer();
+       if (!el) return;
+       el.style.filter = confGrayscale ? 'grayscale(100%)' : '';
+     }
+     
+     function rebuildSlrTiles() {
+       const tag = feetToTag(slrFeet);
+       slrGroup.clearLayers();
+     
+       // depth
+       slrTile = L.tileLayer(slrUrl(tag), { maxZoom: 16, opacity: slrOpacity,
+         attribution: 'NOAA OCM Sea Level Rise (screening)' }).addTo(slrGroup);
+     
+       // uncertainty
+       if (showConf) {
+         confTile = L.tileLayer(confUrl(tag), { maxZoom: 16, opacity: confOpacity,
+           attribution: 'NOAA OCM SLR Mapping Confidence' }).addTo(slrGroup);
+         confTile.on('load', applyConfFilters); // when tiles first arrive
+         // also try immediately in case tiles are cached:
+         setTimeout(applyConfFilters, 0);
+       } else {
+         confTile = null;
+       }
+     
+       slrTile.bringToFront?.(); confTile?.bringToFront?.();
+     }
+
 	 // Utility: normalize to 0.5ft steps and convert to service tag
 	 function feetToTag(feet) {
 	   const n = Math.max(0, Math.min(10, Math.round(feet * 2) / 2)); // clamp 0–10, round to .5
@@ -295,19 +327,26 @@
 	 	  <input id="slrOpacityRange" type="range" min="0" max="1" step="0.05"
 	 			 value="${slrOpacity}" style="width:100%; margin:2px 0 6px 0;">
 
-	 	  <label style="font-size:12px; display:flex; gap:6px; align-items:center; margin-top:4px;">
-	 		<input id="slrConfChk" type="checkbox"> Show uncertainty
-	 	  </label>
-
-	 	  <div style="margin-top:8px;">
-	 		<div style="font-size:12px; opacity:.85;">Depth legend</div>
-	 		<div id="slrLegend" style="margin-top:4px;"></div>
-	 	  </div>
-
+          <label style="font-size:12px; display:flex; gap:6px; align-items:center; margin-top:4px;">
+            <input id="slrConfChk" type="checkbox"> Show uncertainty
+          </label>
+          
+          <div id="confControls" style="display:none; margin:6px 0 0 0;">
+            <label style="font-size:12px;">Uncertainty opacity</label>
+            <input id="confOpacityRange" type="range" min="0" max="1" step="0.05"
+                   value="0.6" style="width:100%; margin-top:2px;">
+          </div>
+          
+          <div style="margin-top:8px;">
+            <div style="font-size:12px; opacity:.85;">Depth legend</div>
+            <div id="slrLegend" style="margin-top:4px;"></div>
+          </div>
+          
 	 	  <div id="confLegendWrap" style="margin-top:8px; display:none;">
 	 		<div style="font-size:12px; opacity:.85;">Uncertainty legend</div>
 	 		<div id="confLegend" style="margin-top:4px;"></div>
 	 	  </div>
+
 	 	`;
 
 	 	// stop map interactions on UI
@@ -319,6 +358,8 @@
 	 	const feetLabel = box.querySelector('#slrFeetLabel');
 	 	const opRange = box.querySelector('#slrOpacityRange');
 	 	const confChk = box.querySelector('#slrConfChk');
+		const confWrap = box.querySelector('#confControls');
+		const confRange = box.querySelector('#confOpacityRange');
 
 	 	feetRange.addEventListener('input', async e => {
 	 	  slrFeet = feetFromStep(e.target.value);
@@ -334,13 +375,19 @@
 	 	  if (slrTile) slrTile.setOpacity(slrOpacity);
 	 	});
 
-	 	confChk.addEventListener('change', async e => {
-	 	  showConf = !!e.target.checked;
-	 	  if (map.hasLayer(slrGroup)) {
-	 		rebuildSlrTiles();
-	 		refreshLegends(box);
-	 	  }
-	 	});
+		confChk.addEventListener('change', async e => {
+		  showConf = !!e.target.checked;
+		  confWrap.style.display = showConf ? '' : 'none';
+		  if (map.hasLayer(slrGroup)) {
+			rebuildSlrTiles();
+			this.refreshLegends();
+		  }
+		});
+
+		confRange.addEventListener('input', e => {
+		  confOpacity = parseFloat(e.target.value);
+		  if (confTile) confTile.setOpacity(confOpacity);
+		});
 
 	 	// expose helpers for show/hide + refresh
 	 	this._box = box;
