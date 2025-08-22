@@ -415,6 +415,7 @@
 	   }
 	 });
 
+     slrGroup.addTo(map);
 
 
 	  // Stories from the Field layer
