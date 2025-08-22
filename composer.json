@@ -39,7 +39,8 @@
 		"drupal/auto_entitylabel": "^3.4",
 		"drupal/orcid": "1.x-dev@dev",
 		"drupal/date_popup": "^2.0",
-		"drupal/views_geojson": "^1.4"
+		"drupal/views_geojson": "^1.4",
+		"drupal/react_comments": "^2.0@beta"
     },
     "require-dev": {
         "drush/drush": "*"

@@ -21,6 +21,7 @@ drush en -y auto_entitylabel
 drush en -y orcid
 drush en -y date_popup
 drush en -y views_geojson
+drush en -y react_comments
 
 # Fix private file warning
 mkdir -p /opt/drupal_private

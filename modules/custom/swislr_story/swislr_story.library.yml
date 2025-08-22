@@ -1,5 +1,5 @@
 story-node:
   css:
     theme:
-      css/story-node.css: {}
+      css/story.css: {}
 

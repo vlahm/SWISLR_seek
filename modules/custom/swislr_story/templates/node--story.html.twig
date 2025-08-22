@@ -1,0 +1,84 @@
+{{ attach_library('swislr_story/story-node') }}
+
+{#
+  Custom full-page layout for Story nodes.
+  Prints only the fields we care about in a clean order:
+  - Title + meta
+  - Hero image
+  - Body
+  - Location map
+  - Tags
+  - Comments (all together at the end)
+#}
+
+{% set classes = [
+  'node',
+  'node--type-story',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'story-layout'
+] %}
+
+<article{{ attributes.addClass(classes) }}>
+  <header class="story-hero">
+
+    {# Date (no label)
+    {% if node.field_date.value %}
+      <time class="story-date" datetime="{{ node.field_date.value|date('c') }}">
+        {{ node.field_date.value|date('M d, y') }}
+      </time>
+    {% endif %}
+    #}
+    <time class="story-date" datetime="{{ node.getCreatedTime|date('c') }}">
+      {{ node.getCreatedTime|date('M d, Y') }}
+    </time>
+
+
+    {% if content.field_image is defined and content.field_image %}
+      <div class="story-image">
+        {{ content.field_image }}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="story-grid">
+    <main class="story-main">
+      {% if content.body is defined %}
+        <br>
+        <div class="story-body">{{ content.body }}</div>
+      {% endif %}
+
+      {#{% if content.field_location is defined and content.field_location %}
+        <div class="story-location">
+          <h2 class="story-h2">Location</h2>
+          {{ content.field_location }}
+        </div>
+      {% endif %}#}
+
+      {% if content.field_tags is defined and content.field_tags %}
+        <div class="story-tags">
+          {{ content.field_tags }}
+        </div>
+      {% endif %}
+
+    </main>
+
+    <aside class="story-aside">
+      {# Put any extra widgets/links here later if you like. #}
+    </aside>
+  </div>
+
+  {% if content.field_comment is defined and content.field_comment %}
+    <section class="story-comments">
+      <br>
+      {{ content.field_comment }}
+    </section>
+  {% endif %}
+
+  {% if content.links is defined and content.links %}
+    <div class="story-links">
+      {{ content.links }}
+    </div>
+  {% endif %}
+  <br>
+</article>
+

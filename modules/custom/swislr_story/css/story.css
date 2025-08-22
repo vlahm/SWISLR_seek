@@ -1,0 +1,102 @@
+/* Scope everything tightly to Story full pages */
+.node--type-story.story-layout {
+  --story-max: 1100px;
+  --gap: 1.25rem;
+  --gap-lg: 2rem;
+  --border: 1px solid #e5e7eb; /* neutral */
+  --muted: #6b7280;
+  max-width: var(--story-max);
+  margin: 0 auto;
+  padding: var(--gap-lg) var(--gap);
+}
+
+.story-title {
+  margin: 0 0 .25rem 0;
+  line-height: 1.2;
+}
+
+.story-meta {
+  display: flex;
+  gap: .75rem;
+  color: var(--muted);
+  font-size: .95rem;
+  margin-bottom: .75rem;
+}
+
+.story-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  margin: .75rem 0 0 0;
+}
+
+/* Layout */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-lg);
+  margin-top: var(--gap-lg);
+}
+
+@media (min-width: 900px) {
+  .story-grid {
+    grid-template-columns: 2.2fr 1fr; /* main + aside */
+    align-items: start;
+  }
+}
+
+.story-main {
+  display: grid;
+  gap: var(--gap-lg);
+}
+
+.story-body {
+  line-height: 1.65;
+  font-size: 1.04rem;
+}
+
+.story-h2 {
+  font-size: 1.1rem;
+  margin: 0 0 .5rem 0;
+}
+
+.story-location,
+.story-tags {
+  padding: 1rem;
+  border: var(--border);
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+/* Comments grouped at the end */
+.story-comments {
+  margin-top: calc(var(--gap-lg) * 1.25);
+  padding-top: var(--gap-lg);
+  border-top: var(--border);
+}
+
+.story-comments h2 {
+  margin: 0 0 .75rem 0;
+}
+
+/* Comment list + form spacing (classes come from core Comment module) */
+.story-comments .indented {
+  margin-left: 1.25rem;
+}
+
+.story-comments form.comment-form {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: var(--border);
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Links at very bottom (e.g., "Add new comment") */
+.story-links {
+  margin-top: var(--gap);
+  font-size: .95rem;
+}
+
