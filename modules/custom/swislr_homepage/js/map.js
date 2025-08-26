@@ -107,78 +107,54 @@
       const layerControl = L.control.layers(baseMaps, overlays, { collapsed: false }).addTo(map);
       
 
-      // -------- Show slider + legend only when MODIS GIBS is toggled on --------
+	  // Stories from the Field layer
+      const storiesUrl = '/stories.geojson'; // from the Views GeoJSON display
       
-      // Legend image (vertical SVG from GIBS for the IGBP land-cover layer)
-      const gibsLegendUrl =
-        //'https://gibs.earthdata.nasa.gov/legends/MODIS_IGBP_Land_Cover_Type_V.svg';
-		'https://svs.gsfc.nasa.gov/vis/a000000/a002200/a002264/legend.jpg';
+      // Optional: an icon for story markers (or omit for default)
+      // const storyIcon = L.icon({ iconUrl: '/themes/custom/yourtheme/images/pin.svg', iconSize: [28, 28] });
       
-      // Minimal control with an opacity slider + legend image
-      const GibsControl = L.Control.extend({
-        options: { position: 'topright' },
-        onAdd: function () {
-          const box = L.DomUtil.create('div', 'leaflet-bar gibs-ui');
-          box.style.padding = '8px';
-          box.style.background = 'white';
-          box.style.lineHeight = '1.1';
-          box.style.minWidth = '160px';
-          box.style.display = 'none'; // start hidden
+      const storiesLayer = L.markerClusterGroup(); // requires leaflet.markercluster; otherwise use L.geoJSON directly
       
-          box.innerHTML = `
-            <div style="font-weight:600; margin-bottom:6px;">MODIS Land Cover</div>
-            <label style="font-size:12px;">Opacity</label>
-            <input id="gibsOpacity" type="range" min="0" max="1" step="0.05" value="1" style="width:140px;">
-            <div style="margin-top:6px; font-size:12px; opacity:.8;">Legend</div>
-            <img src="${gibsLegendUrl}" alt="IGBP Legend"
-                 style="width: 300px; height: auto; display:block; margin-top:4px;">
-          `;
+      fetch(storiesUrl, { credentials: 'same-origin' })
+        .then(r => r.json())
+        .then(geojson => {
+          const featureLayer = L.geoJSON(geojson, {
+            // pointToLayer: (feature, latlng) => L.marker(latlng, { icon: storyIcon }),
+            onEachFeature: (feature, layer) => {
+              const p = feature.properties || {};
+              const title = p.name || 'Story';
+              const path = p.view_node || '#';
+              const date = p.field_date || '';
+              const img = p.field_image || '';
+              const tags = Array.isArray(p.field_tags) ? p.field_tags.join(', ') : (p.field_tags || '');
       
-          // block map interactions while using the UI
-          L.DomEvent.disableClickPropagation(box);
-          L.DomEvent.on(box, 'mousewheel', L.DomEvent.stopPropagation);
-      
-          // wire the slider
-          const slider = box.querySelector('#gibsOpacity');
-          slider.addEventListener('input', e => {
-            const v = parseFloat(e.target.value);
-            modisLC.setOpacity(v);
-            // keep overlay on top while changing opacity
-            if (map.hasLayer(modisLC) && modisLC.bringToFront) modisLC.bringToFront();
+              const imgHtml = img ? `<div style="margin-bottom:.5rem;"><img src="${img}" alt="" style="max-width:220px; height:auto; border-radius:8px;"></div>` : '';
+              const html = `
+                ${imgHtml}
+                <div style="max-width:260px;">
+                  <h3 style="margin:.2rem 0 0.4rem 0; font-size:1rem;">
+                    <a href="${path}" style="text-decoration:none;">${title}</a>
+                  </h3>
+                  ${date ? `<div style="font-size:.85rem; opacity:.8;">${date}</div>` : ''}
+                  ${tags ? `<div style="font-size:.85rem; margin-top:.25rem;">Tags: ${tags}</div>` : ''}
+                  <div style="margin-top:.5rem;">
+                    <a href="${path}" class="btn btn-sm btn-primary">Read story</a>
+                  </div>
+                </div>
+              `;
+              layer.bindPopup(html, { maxWidth: 320 });
+            }
           });
       
-          // stash for show/hide
-          this._box = box;
-          this._slider = slider;
-          return box;
-        },
-        show() { if (this._box) this._box.style.display = ''; },
-        hide() { if (this._box) this._box.style.display = 'none'; },
-        setSlider(v) { if (this._slider) this._slider.value = String(v); }
-      });
+          storiesLayer.addLayer(featureLayer);
+          storiesLayer.addTo(map);
       
-      const gibsControl = new GibsControl().addTo(map);
-      
-      // helper to sync control visibility with overlay state
-      function refreshGibsUi() {
-        if (map.hasLayer(modisLC)) {
-          gibsControl.show();
-          // reflect current layer opacity in the slider (defaults to 1 if unset)
-          const current = (modisLC.options.opacity ?? 1);
-          gibsControl.setSlider(current);
-        } else {
-          gibsControl.hide();
-        }
-      }
-      
-      // react to layer toggles from the layer control
-      map.on('overlayadd',  e => { if (e.layer === modisLC) refreshGibsUi(); });
-      map.on('overlayremove', e => { if (e.layer === modisLC) refreshGibsUi(); });
-      
-      // also run once on init (in case you programmatically add modisLC by default)
-      refreshGibsUi();
-
+          // add to the layer control if you have one:
+          if (layerControl) layerControl.addOverlay(storiesLayer, 'Stories from the Field');
+        })
+        .catch(console.error);
 		
+
 	 // ---- NOAA SLR (single overlay entry + dynamic content) ----
 
      let confOpacity = 0.6;      // separate opacity for uncertainty
@@ -417,53 +393,88 @@
 
      slrGroup.addTo(map);
 
-
-	  // Stories from the Field layer
-      const storiesUrl = '/stories.geojson'; // from the Views GeoJSON display
+	  
+      // -------- Show slider + legend only when MODIS GIBS is toggled on --------
       
-      // Optional: an icon for story markers (or omit for default)
-      // const storyIcon = L.icon({ iconUrl: '/themes/custom/yourtheme/images/pin.svg', iconSize: [28, 28] });
+      // Legend image (vertical SVG from GIBS for the IGBP land-cover layer)
+      const gibsLegendUrl =
+        //'https://gibs.earthdata.nasa.gov/legends/MODIS_IGBP_Land_Cover_Type_V.svg';
+		'https://svs.gsfc.nasa.gov/vis/a000000/a002200/a002264/legend.jpg';
       
-      const storiesLayer = L.markerClusterGroup(); // requires leaflet.markercluster; otherwise use L.geoJSON directly
+      // Minimal control with an opacity slider + legend image
+      const GibsControl = L.Control.extend({
+        options: { position: 'topright' },
+        onAdd: function () {
+          const box = L.DomUtil.create('div', 'leaflet-bar gibs-ui');
+          box.style.padding = '8px';
+          box.style.background = 'white';
+          box.style.lineHeight = '1.1';
+          box.style.minWidth = '160px';
+          box.style.display = 'none'; // start hidden
       
-      fetch(storiesUrl, { credentials: 'same-origin' })
-        .then(r => r.json())
-        .then(geojson => {
-          const featureLayer = L.geoJSON(geojson, {
-            // pointToLayer: (feature, latlng) => L.marker(latlng, { icon: storyIcon }),
-            onEachFeature: (feature, layer) => {
-              const p = feature.properties || {};
-              const title = p.name || 'Story';
-              const path = p.view_node || '#';
-              const date = p.field_date || '';
-              const img = p.field_image || '';
-              const tags = Array.isArray(p.field_tags) ? p.field_tags.join(', ') : (p.field_tags || '');
+          box.innerHTML = `
+            <div style="font-weight:600; margin-bottom:6px;">MODIS Land Cover</div>
+            <label style="font-size:12px;">Opacity</label>
+            <input id="gibsOpacity" type="range" min="0" max="1" step="0.05" value="1" style="width:140px;">
+            <div style="margin-top:6px; font-size:12px; opacity:.8;">Legend</div>
+            <img src="${gibsLegendUrl}" alt="IGBP Legend"
+                 style="width: 300px; height: auto; display:block; margin-top:4px;">
+          `;
       
-              const imgHtml = img ? `<div style="margin-bottom:.5rem;"><img src="${img}" alt="" style="max-width:220px; height:auto; border-radius:8px;"></div>` : '';
-              const html = `
-                ${imgHtml}
-                <div style="max-width:260px;">
-                  <h3 style="margin:.2rem 0 0.4rem 0; font-size:1rem;">
-                    <a href="${path}" style="text-decoration:none;">${title}</a>
-                  </h3>
-                  ${date ? `<div style="font-size:.85rem; opacity:.8;">${date}</div>` : ''}
-                  ${tags ? `<div style="font-size:.85rem; margin-top:.25rem;">Tags: ${tags}</div>` : ''}
-                  <div style="margin-top:.5rem;">
-                    <a href="${path}" class="btn btn-sm btn-primary">Read story</a>
-                  </div>
-                </div>
-              `;
-              layer.bindPopup(html, { maxWidth: 320 });
-            }
+          // block map interactions while using the UI
+          L.DomEvent.disableClickPropagation(box);
+          L.DomEvent.on(box, 'mousewheel', L.DomEvent.stopPropagation);
+      
+          // wire the slider
+          const slider = box.querySelector('#gibsOpacity');
+          slider.addEventListener('input', e => {
+            const v = parseFloat(e.target.value);
+            modisLC.setOpacity(v);
+            // keep overlay on top while changing opacity
+            if (map.hasLayer(modisLC) && modisLC.bringToFront) modisLC.bringToFront();
+       		slrTile.bringToFront?.(); confTile?.bringToFront?.();
           });
       
-          storiesLayer.addLayer(featureLayer);
-          storiesLayer.addTo(map);
+          // stash for show/hide
+          this._box = box;
+          this._slider = slider;
+          return box;
+        },
+        show() { if (this._box) this._box.style.display = ''; },
+        hide() { if (this._box) this._box.style.display = 'none'; },
+        setSlider(v) { if (this._slider) this._slider.value = String(v); }
+      });
       
-          // add to the layer control if you have one:
-          if (layerControl) layerControl.addOverlay(storiesLayer, 'Stories from the Field');
-        })
-        .catch(console.error);
+      const gibsControl = new GibsControl().addTo(map);
+      
+      // helper to sync control visibility with overlay state
+      function refreshGibsUi() {
+        if (map.hasLayer(modisLC)) {
+          gibsControl.show();
+          // reflect current layer opacity in the slider (defaults to 1 if unset)
+          const current = (modisLC.options.opacity ?? 1);
+          gibsControl.setSlider(current);
+        } else {
+          gibsControl.hide();
+        }
+
+		if (map.hasLayer(slrTile)) {
+       		slrTile.bringToFront?.();
+		}
+		if (map.hasLayer(confTile)) {
+       		confTile.bringToFront?.();
+		}
+		if (map.hasLayer(storiesLayer)) {
+       		storiesLayer.bringToFront?.();
+		}
+      }
+      
+      // react to layer toggles from the layer control
+      map.on('overlayadd',  e => { if (e.layer === modisLC) refreshGibsUi(); });
+      map.on('overlayremove', e => { if (e.layer === modisLC) refreshGibsUi(); });
+      
+      // also run once on init (in case you programmatically add modisLC by default)
+      refreshGibsUi();
 
     }
   };
