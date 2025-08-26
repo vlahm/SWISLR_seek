@@ -80,3 +80,9 @@
   color: #fff;                                /* count text */
   border: 2px solid #742E98;                  /*  rim */
 }
+
+.leaflet-popup-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

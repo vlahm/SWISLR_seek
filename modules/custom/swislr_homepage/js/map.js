@@ -136,21 +136,46 @@
               const img = p.field_image || '';
               const tags = Array.isArray(p.field_tags) ? p.field_tags.join(', ') : (p.field_tags || '');
       
-              const imgHtml = img ? `<div style="margin-bottom:.5rem;"><img src="${img}" alt="" style="max-width:220px; height:auto; border-radius:8px;"></div>` : '';
-              const html = `
-                ${imgHtml}
-                <div style="max-width:260px;">
-                  <h3 style="margin:.2rem 0 0.4rem 0; font-size:1rem;">
-                    <a href="${path}" style="text-decoration:none;">${title}</a>
-                  </h3>
-                  ${date ? `<div style="font-size:.85rem; opacity:.8;">${date}</div>` : ''}
-                  ${tags ? `<div style="font-size:.85rem; margin-top:.25rem;">Tags: ${tags}</div>` : ''}
-                  <!-- <div style="margin-top:.5rem;">
-                    <a href="${path}" class="btn btn-sm btn-primary">Read story</a>
-                  </div> -->
-                </div>
-              `;
-              layer.bindPopup(html, { maxWidth: 320 });
+				const imgHtml = img
+				  ? `<div style="margin-bottom:.5rem;">
+					   <img src="${img}" alt="" style="display:block;width:100%;height:auto;border-radius:8px;">
+					 </div>`
+				  : '';
+
+				const html = `
+				  <div class="story-popup-inner" style="max-width:320px;">
+					${imgHtml}
+					<div>
+					  <h3 style="margin:.2rem 0 0.4rem 0; font-size:1rem;">
+						<a href="${path}" style="text-decoration:none;">${title}</a>
+					  </h3>
+					  ${date ? `<div style="font-size:.85rem; opacity:.8;">${date}</div>` : ''}
+					  ${tags ? `<div style="font-size:.85rem; margin-top:.25rem;">Tags: ${tags}</div>` : ''}
+					</div>
+				  </div>
+				`;
+
+				layer.bindPopup(html, { maxWidth: 340, className: 'story-popup' });
+
+				// ensure popup resizes after images load
+				layer.on('popupopen', (e) => {
+				  const el = e.popup.getElement?.() || e.popup._container; // compat
+				  if (!el) return;
+				  const imgs = el.querySelectorAll('img');
+				  imgs.forEach(img => {
+					// set width to the image's intrinsic width (capped), then update popup
+					const adjust = () => {
+					  const content = el.querySelector('.story-popup-inner');
+					  if (content && img.naturalWidth) {
+						const w = Math.min(img.naturalWidth, 320);
+						content.style.width = w + 'px';
+					  }
+					  e.popup.update();
+					};
+					if (img.complete) { adjust(); }
+					else { img.addEventListener('load', adjust, { once: true }); }
+				  });
+				});
             }
           });
       
