@@ -12,7 +12,7 @@ features:
   node_user_picture: 1
   comment_user_picture: 1
   comment_user_verification: 1
-  favicon: 1
+  favicon: 0
 logo:
   use_default: 0
   path: ''
@@ -20,5 +20,5 @@ favicon:
   use_default: 0
   path: ''
 subtheme_folder: themes/custom
-subtheme_name: swislr_bootstrap
-subtheme_machine_name: swislr_bootstrap
+subtheme_name: 'SWISLR Story Styling'
+subtheme_machine_name: swislr_story_styling

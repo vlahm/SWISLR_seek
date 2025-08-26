@@ -28,7 +28,6 @@
         "drupal/pathauto": "^1.13",
         "drupal/entity_reference_revisions": "^1.12",
         "drupal/webform": "^6.2",
-        "drupal/smtp": "^1.4",
         "drupal/honeypot": "^2.2",
         "drupal/email_registration": "^1.4",
         "drupal/leaflet": "^10.3",
@@ -40,7 +39,9 @@
 		"drupal/orcid": "1.x-dev@dev",
 		"drupal/date_popup": "^2.0",
 		"drupal/views_geojson": "^1.4",
-		"drupal/react_comments": "^2.0@beta"
+		"drupal/react_comments": "^2.0@beta",
+		"drupal/content_moderation_notifications": "^3.6",
+		"drupal/symfony_mailer": "^1.6"
     },
     "require-dev": {
         "drush/drush": "*"

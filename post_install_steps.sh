@@ -15,13 +15,17 @@ drush en -y leaflet_views
 drush en -y leaflet_markercluster
 drush en -y user_register_notify
 drush en -y swislr_homepage
-drush en -y swislr_tweaks
 drush en -y name
 drush en -y auto_entitylabel
 drush en -y orcid
 drush en -y date_popup
 drush en -y views_geojson
 drush en -y react_comments
+drush en -y content_moderation_notifications
+drush en -y symfony_mailer
+drush en -y swislr_story
+drush en -y swislr_invites
+drush en -y swislr_attach_theme_css
 
 # Fix private file warning
 mkdir -p /opt/drupal_private

@@ -1,0 +1,6 @@
+name: SWISLR Attach Theme CSS
+type: module
+description: 'Attaches a subtheme library on Story nodes, because bootstrap5 subtheme not working directly'
+core_version_requirement: ^10
+package: SWISLR
+

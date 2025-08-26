@@ -1,0 +1,9 @@
+uuid: aaefb96c-8024-4c98-bd4d-16913238aa2d
+langcode: en
+status: true
+dependencies: {  }
+id: dsn
+label: DSN
+plugin: dsn
+configuration:
+  dsn: 'smtp://grdouser%40gmail.com:rswrzrofvinxgqpd@smtp.gmail.com:587?encryption=tls&auth_mode=login'

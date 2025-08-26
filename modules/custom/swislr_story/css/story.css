@@ -100,3 +100,35 @@
   font-size: .95rem;
 }
 
+/* Scope to this view only */
+.view-stories-directory td.views-field-field-image {
+  /* Make the cell a flex row of thumbnails */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-start;
+
+  /* If you can't change the separator to a blank, this hides the comma text nodes */
+  color: transparent;
+}
+
+/* Grid */
+.view-stories-directory .view-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+/* Tidy card internals, only when rendering the Story card view mode */
+.node--type-story.node--view-mode-story-card .field--name-field-image {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.node--type-story.node--view-mode-story-card .field--name-field-image img {
+  width: 120px;
+  height: auto;
+  border-radius: 6px;
+}
+

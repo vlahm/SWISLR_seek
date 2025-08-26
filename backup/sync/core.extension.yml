@@ -16,6 +16,7 @@ module:
   config: 0
   contact: 0
   content_moderation: 0
+  content_moderation_notifications: 0
   contextual: 0
   date_popup: 0
   datetime: 0
@@ -39,6 +40,7 @@ module:
   leaflet_markercluster: 0
   leaflet_views: 0
   link: 0
+  mailer_transport: 0
   menu_link_content: 0
   menu_ui: 0
   mysql: 0
@@ -54,10 +56,11 @@ module:
   search: 0
   serialization: 0
   shortcut: 0
-  smtp: 0
+  swislr_attach_theme_css: 0
   swislr_homepage: 0
   swislr_invites: 0
   swislr_story: 0
+  symfony_mailer: 0
   system: 0
   taxonomy: 0
   text: 0
@@ -74,7 +77,6 @@ module:
   views: 10
   standard: 1000
 theme:
-  olivero: 0
   claro: 0
   stable9: 0
   bootstrap5: 0

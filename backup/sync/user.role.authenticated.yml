@@ -13,9 +13,11 @@ dependencies:
     - rest.resource.comment
     - rest.resource.comments
     - rest.resource.me
+    - workflows.workflow.editorial
   module:
     - comment
     - contact
+    - content_moderation
     - file
     - filter
     - node
@@ -60,6 +62,7 @@ permissions:
   - 'search content'
   - 'skip comment approval'
   - 'use advanced search'
+  - 'use editorial transition publish'
   - 'use text format basic_html'
   - 'use text format restricted_html'
   - 'use text format webform_default'
