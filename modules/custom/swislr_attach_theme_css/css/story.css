@@ -1,0 +1,22 @@
+/* Style the story image container */
+.story-image .field__items {
+  display: flex;
+  flex-wrap: wrap; /* allow wrapping if there are many images */
+  gap: 12px;       /* uniform spacing between images */
+  justify-content: center; /* center the row of images */
+}
+
+/* Ensure images resize nicely */
+.story-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px; /* soften corners */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* subtle shadow */
+  transition: transform 0.2s ease;
+}
+
+/* Add a hover effect */
+.story-image img:hover {
+  transform: scale(1.03);
+}
+
