@@ -13,6 +13,6 @@ name: Story
 type: story
 description: 'Stories from the field'
 help: 'Brief tales and anecdotes. Can be entertaining, educational, whatever. Just not offensive, please : )'
-new_revision: false
-preview_mode: 0
+new_revision: true
+preview_mode: 1
 display_submitted: true

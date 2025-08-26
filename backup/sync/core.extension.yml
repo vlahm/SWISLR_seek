@@ -51,12 +51,12 @@ module:
   page_cache: 0
   path: 0
   path_alias: 0
-  react_comments: 0
   rest: 0
   search: 0
   serialization: 0
   shortcut: 0
   swislr_attach_theme_css: 0
+  swislr_comment_spice: 0
   swislr_homepage: 0
   swislr_invites: 0
   swislr_story: 0

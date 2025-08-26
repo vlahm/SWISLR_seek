@@ -1,0 +1,19 @@
+{#
+  Theme override for the comment field wrapper (machine name: comment).
+  Based on core field--comment.html.twig, with our nicer wrapper/classes.
+#}
+<section id="sw-comments" class="sw-comments">
+  {{ title_prefix }}
+  {% if label %}
+    <h2 class="sw-comments__title">{{ label }}</h2>
+  {% endif %}
+  {{ title_suffix }}
+
+  {{ comments }}
+  {{ pager }}
+
+  <div class="sw-comment-form">
+    {{ comment_form }}
+  </div>
+</section>
+

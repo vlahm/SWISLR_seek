@@ -12,7 +12,7 @@ dependencies:
     - field.field.node.story.field_location
     - field.field.node.story.field_tags
     - field.field.node.story.field_title
-    - image.style.chill
+    - image.style.thumbnail
     - node.type.story
   module:
     - comment
@@ -61,8 +61,8 @@ content:
     type: image
     label: hidden
     settings:
-      image_link: ''
-      image_style: chill
+      image_link: content
+      image_style: thumbnail
       image_loading:
         attribute: eager
     third_party_settings: {  }
@@ -81,7 +81,7 @@ content:
     type: string
     label: above
     settings:
-      link_to_entity: false
+      link_to_entity: true
     third_party_settings: {  }
     weight: 4
     region: content

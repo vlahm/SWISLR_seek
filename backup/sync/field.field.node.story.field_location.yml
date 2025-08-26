@@ -11,8 +11,8 @@ id: node.story.field_location
 field_name: field_location
 entity_type: node
 bundle: story
-label: Location
-description: 'The location where this story occurred.'
+label: "Location (Select just ONE, or your story won't render right)"
+description: "Where did this story occur? (select only <strong>one</strong> map location or your story won't render right)."
 required: true
 translatable: false
 default_value: {  }

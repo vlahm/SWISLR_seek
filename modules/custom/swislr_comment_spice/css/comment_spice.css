@@ -1,15 +1,324 @@
-.sw-comments { margin-top: 2rem; }
-.sw-comments__title { margin: 0 0 1rem; font-weight: 700; }
-.sw-comment {
-  background: var(--swc-bg, #fff);
-  border: 1px solid var(--swc-border, #e5e7eb);
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-.sw-comment__meta { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
-.sw-comment__author { font-weight: 600; }
-.sw-comment__time { color: #666; font-size: .9rem; margin-left: .5rem; }
-.sw-comment__actions { margin-top: .5rem; opacity: .9; }
-form.comment-form textarea { max-height: 50vh; overflow-y: auto; }
+/* ============================
+   SWISLR Comment Spice — “React-y” look
+   Scope everything under .sw-comments to avoid theme collisions
+   ============================ */
 
+.sw-comments {
+  /* --- Theme tokens --- */
+  --swc-bg: #ffffff;
+  --swc-soft: #f8fafc;              /* soft background for inputs */
+  --swc-ink-muted: #0f172a;               /* slate-900 */
+  --swc-ink: #475569;         /* slate-600 */
+  --swc-border: #e5e7eb;            /* gray-200 */
+  --swc-border-strong: #d1d5db;     /* gray-300 */
+  --swc-accent: #2563eb;            /* blue-600 */
+  --swc-accent-ink: #ffffff;
+  --swc-danger: #b91c1c;
+  --swc-focus: 0 0 0 3px rgba(37, 99, 235, .2);
+  --swc-shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 24px rgba(0,0,0,.06);
+
+  color: var(--swc-ink);
+  background: transparent;
+  margin-top: 2rem;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* Title */
+.sw-comments__title {
+  margin: 0 0 1rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--swc-ink);
+}
+
+/* ============================
+   Single Comment Card
+   (works with templates/comment.html.twig)
+   ============================ */
+.sw-comment {
+  background: var(--swc-bg);
+  border: 1px solid var(--swc-border);
+  border-radius: 14px;
+  padding: 1rem;
+  margin: 0 0 0.85rem;
+  box-shadow: var(--swc-shadow);
+}
+
+.sw-comment__meta {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: .5rem;
+}
+
+/* Core outputs author_picture inside .user-picture */
+.sw-comment__meta .user-picture img,
+.sw-comment__meta img {
+  width: 40px; height: 40px;
+  border-radius: 999px;
+  display: block;
+  object-fit: cover;
+  border: 1px solid var(--swc-border-strong);
+  background: #fff;
+}
+
+.sw-comment__byline {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.sw-comment__author {
+  font-weight: 700;
+  color: var(--swc-ink);
+}
+
+.sw-comment__time {
+  color: var(--swc-ink-muted);
+  font-size: .9rem;
+}
+
+.sw-comment__permalink a {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  color: var(--swc-ink-muted);
+  text-decoration: none;
+  font-size: .9rem;
+}
+.sw-comment__permalink a:hover { color: var(--swc-ink); text-decoration: underline; }
+
+.sw-comment__body {
+  color: var(--swc-ink);
+  font-size: 1rem;
+}
+.sw-comment__body p { margin: 0.4rem 0; }
+.sw-comment__body a { color: var(--swc-accent); }
+.sw-comment__body code,
+.sw-comment__body pre {
+  background: var(--swc-soft);
+  border: 1px solid var(--swc-border);
+  border-radius: 8px;
+  padding: .15rem .4rem;
+}
+
+/* Core "links" (Reply/Edit/Delete) come through {{ links }} */
+.sw-comment__actions {
+  margin-top: .5rem;
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.sw-comment__actions a,
+.sw-comments .links a {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .35rem .6rem;
+  border: 1px solid var(--swc-border);
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--swc-ink);
+  background: #fff;
+  font-size: .9rem;
+}
+.sw-comment__actions a:hover,
+.sw-comments .links a:hover {
+  border-color: var(--swc-border-strong);
+  background: var(--swc-soft);
+}
+
+/* ============================
+   Threaded indentation & connectors
+   Core wraps replies in .indented
+   ============================ */
+.sw-comments .indented {
+  margin-left: 1.75rem;
+  position: relative;
+}
+.sw-comments .indented::before {
+  content: "";
+  position: absolute;
+  left: -1rem;
+  top: 0.75rem;
+  bottom: 0.75rem;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--swc-border-strong), transparent);
+  border-radius: 2px;
+}
+
+/* Pager (if present) */
+.sw-comments .pager { margin-top: 1rem; }
+.sw-comments .pager__items li a {
+  border-radius: 10px;
+  border: 1px solid var(--swc-border);
+  padding: .35rem .6rem;
+}
+
+/* ============================
+   Comment Form — fix dark-theme bleed & modernize
+   ============================ */
+.sw-comments form.comment-form,
+.sw-comment-form form.comment-form {
+  background: var(--swc-bg);
+  color: var(--swc-ink);                /* <- ensures readable text */
+  border: 1px solid var(--swc-border);
+  border-radius: 14px;
+  box-shadow: var(--swc-shadow);
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+/* Labels & help text */
+.sw-comments form.comment-form .form-item label {
+  font-weight: 600;
+  color: var(--swc-ink);
+}
+.sw-comments form.comment-form .description {
+  color: var(--swc-ink-muted);
+  font-size: .92rem;
+  margin-top: .25rem;
+}
+
+/* Text inputs & textareas */
+.sw-comments form.comment-form input[type="text"],
+.sw-comments form.comment-form input[type="email"],
+.sw-comments form.comment-form input[type="url"],
+.sw-comments form.comment-form .form-text,
+.sw-comments form.comment-form .form-textarea {
+  width: 100%;
+  background: var(--swc-soft);
+  color: var(--swc-ink);
+  border: 1px solid var(--swc-border);
+  border-radius: 12px;
+  padding: .7rem .9rem;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.sw-comments form.comment-form .form-textarea {
+  min-height: 120px;
+  max-height: 60vh;
+  resize: vertical;
+}
+.sw-comments form.comment-form .form-text::placeholder,
+.sw-comments form.comment-form .form-textarea::placeholder {
+  color: var(--swc-ink-muted);
+  opacity: .8;
+}
+.sw-comments form.comment-form input:focus,
+.sw-comments form.comment-form .form-text:focus,
+.sw-comments form.comment-form .form-textarea:focus {
+  border-color: var(--swc-accent);
+  box-shadow: var(--swc-focus);
+  background: #fff;
+}
+
+/* CKEditor 5 */
+.sw-comments .ck.ck-editor__main .ck-content {
+  background: var(--swc-soft) !important;
+  color: var(--swc-ink) !important;
+  border-radius: 12px;
+  border: 1px solid var(--swc-border);
+  padding: .6rem .8rem;
+}
+.sw-comments .ck.ck-toolbar {
+  border-radius: 10px 10px 0 0;
+}
+.sw-comments .ck.ck-editor__editable_inline:focus {
+  box-shadow: var(--swc-focus) !important;
+  border-color: var(--swc-accent) !important;
+  background: #fff !important;
+}
+
+/* Errors */
+.sw-comments .form-item--error,
+.sw-comments .form-item--error-message {
+  color: var(--swc-danger);
+}
+.sw-comments .form-item--error .form-text,
+.sw-comments .form-item--error .form-textarea {
+  border-color: var(--swc-danger);
+  box-shadow: 0 0 0 2px rgba(185,28,28,.15);
+}
+
+/* Actions */
+.sw-comments form.comment-form .form-actions {
+  margin-top: .8rem;
+  display: flex;
+  gap: .6rem;
+  flex-wrap: wrap;
+}
+
+.sw-comments form.comment-form .button,
+.sw-comments form.comment-form .button--primary,
+.sw-comments form.comment-form input[type="submit"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .55rem 1rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--swc-accent);
+  color: var(--swc-accent-ink);
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter .15s ease, transform .02s ease-in;
+}
+.sw-comments form.comment-form .button:hover { filter: brightness(1.02); }
+.sw-comments form.comment-form .button:active { transform: translateY(1px); }
+
+.sw-comments form.comment-form .button--secondary,
+.sw-comments form.comment-form .cancel {
+  background: #fff;
+  color: var(--swc-ink);
+  border-color: var(--swc-border-strong);
+}
+
+/* Misc form layout niceties */
+.sw-comments form.comment-form .js-form-item {
+  margin-bottom: .85rem;
+}
+
+/* Make sure any theme “dark form” styles don’t leak in */
+.sw-comments form.comment-form,
+.sw-comments form.comment-form * {
+  color-scheme: light;
+}
+
+/* ============================
+   Small screens
+   ============================ */
+@media (max-width: 640px) {
+  .sw-comment__meta .user-picture img { width: 34px; height: 34px; }
+  .sw-comment { padding: .85rem; }
+  .sw-comments form.comment-form { padding: .85rem; }
+}
+
+/* ============================
+   Optional: Auto dark-mode (if your site has dark pages)
+   This only applies if you ever want it; comment out if not needed.
+   ============================ */
+@media (prefers-color-scheme: dark) {
+  .dark .sw-comments {
+    --swc-bg: #0b1220;         /* panel */
+    --swc-soft: #0f172a;       /* editor bg */
+    --swc-ink: #e5e7eb;
+    --swc-ink-muted: #94a3b8;
+    --swc-border: #1f2937;
+    --swc-border-strong: #334155;
+    --swc-accent: #60a5fa;
+    --swc-accent-ink: #0b1220;
+    --swc-focus: 0 0 0 3px rgba(96,165,250,.25);
+    --swc-shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 24px rgba(0,0,0,.4);
+  }
+}
+
+/* more custom */
+.node__links a[href$="#comment-form"] {
+  display: none;
+}

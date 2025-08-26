@@ -13,6 +13,7 @@ dependencies:
     - image.style.thumbnail
     - node.type.story
   module:
+    - comment
     - datetime
     - image
     - leaflet
@@ -31,6 +32,12 @@ content:
       summary_rows: 3
       placeholder: ''
       show_summary: false
+    third_party_settings: {  }
+  field_comment:
+    type: comment_default
+    weight: 6
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_date:
     type: datetime_default
@@ -51,7 +58,7 @@ content:
     weight: 3
     region: content
     settings:
-      geometry_validation: false
+      geometry_validation: true
       map:
         leaflet_map: 'OSM Mapnik'
         height: 400
@@ -68,7 +75,7 @@ content:
           zoomFiner: 0
         scroll_zoom_enabled: 1
       input:
-        show: true
+        show: false
         readonly: false
       toolbar:
         position: topright
@@ -140,7 +147,6 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  field_comment: true
   field_title: true
   moderation_state: true
   path: true
