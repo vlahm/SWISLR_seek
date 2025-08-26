@@ -68,10 +68,15 @@
   z-index: 5000;
 }
 
+.marker-cluster {
+  background-color: #C1A32D;
+}
+
 .marker-cluster-small div,
 .marker-cluster-medium div,
 .marker-cluster-large div {
-  background-color: rgba(126, 87, 194, 0.9); /* deep purple interior */
+/*  background-color: rgba(126, 87, 194, 0.9); */
+  background-color: #9C2BCB;
   color: #fff;                                /* count text */
-  border: 2px solid #4a2c82;                  /* darker rim */
+  border: 2px solid #742E98;                  /*  rim */
 }

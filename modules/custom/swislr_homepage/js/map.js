@@ -109,7 +109,15 @@
 
 	  // Stories from the Field layer
       const storiesUrl = '/stories.geojson'; // from the Views GeoJSON display
-      
+
+	const storyIcon = new L.Icon({
+	  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
+	  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+	  iconSize: [15, 28],
+	  iconAnchor: [12, 41],
+	  popupAnchor: [1, -34],
+	  shadowSize: [41, 41]
+	});
       // Optional: an icon for story markers (or omit for default)
       // const storyIcon = L.icon({ iconUrl: '/themes/custom/yourtheme/images/pin.svg', iconSize: [28, 28] });
       
@@ -119,7 +127,7 @@
         .then(r => r.json())
         .then(geojson => {
           const featureLayer = L.geoJSON(geojson, {
-            // pointToLayer: (feature, latlng) => L.marker(latlng, { icon: storyIcon }),
+            pointToLayer: (feature, latlng) => L.marker(latlng, { icon: storyIcon }),
             onEachFeature: (feature, layer) => {
               const p = feature.properties || {};
               const title = p.name || 'Story';
@@ -137,9 +145,9 @@
                   </h3>
                   ${date ? `<div style="font-size:.85rem; opacity:.8;">${date}</div>` : ''}
                   ${tags ? `<div style="font-size:.85rem; margin-top:.25rem;">Tags: ${tags}</div>` : ''}
-                  <div style="margin-top:.5rem;">
+                  <!-- <div style="margin-top:.5rem;">
                     <a href="${path}" class="btn btn-sm btn-primary">Read story</a>
-                  </div>
+                  </div> -->
                 </div>
               `;
               layer.bindPopup(html, { maxWidth: 320 });
