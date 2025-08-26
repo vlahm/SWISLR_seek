@@ -20,7 +20,6 @@ drush en -y auto_entitylabel
 drush en -y orcid
 drush en -y date_popup
 drush en -y views_geojson
-drush en -y react_comments
 drush en -y content_moderation_notifications
 drush en -y symfony_mailer
 drush en -y swislr_story

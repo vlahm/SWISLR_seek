@@ -1,22 +1,251 @@
-/* Style the story image container */
+/* ====== Layout shell ====== */
+.story-layout {
+  --card-bg: #ffffff;
+  --ink: #222;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --chip-bg: #f3f4f6;
+  --accent: #2563eb;
+  --shadow: 0 2px 12px rgba(0,0,0,.06);
+
+  color: var(--ink);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: clamp(16px, 3vw, 28px);
+  max-width: 980px;
+  margin: 24px auto;
+}
+
+/* Respect dark mode */
+@media (prefers-color-scheme: dark) {
+  .story-layout {
+    --card-bg: #0f1216;
+    --ink: #e5e7eb;
+    --muted: #9aa3b2;
+    --border: #1f2937;
+    --chip-bg: #111827;
+    --accent: #60a5fa;
+    --shadow: 0 2px 12px rgba(0,0,0,.35);
+  }
+}
+
+/* ====== Hero (date + images) ====== */
+.story-hero {
+  display: grid;
+  gap: 14px;
+  margin-bottom: clamp(16px, 2.5vw, 28px);
+}
+
+/* Date pill */
+.story-date {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+/* ====== Image row (side-by-side with spacing) ====== */
 .story-image .field__items {
   display: flex;
-  flex-wrap: wrap; /* allow wrapping if there are many images */
-  gap: 12px;       /* uniform spacing between images */
-  justify-content: center; /* center the row of images */
+  flex-wrap: wrap;
+  gap: 12px;              /* spacing between images */
+  justify-content: center;
 }
 
-/* Ensure images resize nicely */
+.story-image .field__item {
+  /* responsive columns: 2–3 per row depending on width */
+  flex: 1 1 clamp(240px, 30%, 420px);
+  max-width: 100%;
+}
+
 .story-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.story-image img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+}
+
+/* ====== Main grid (content + aside) ====== */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+@media (min-width: 980px) {
+  .story-grid {
+    grid-template-columns: minmax(0, 1fr) 300px; /* main + aside */
+  }
+}
+
+/* ====== Body text ====== */
+.story-main {
+  min-width: 0;
+}
+
+.story-body {
+  font-size: 1.06rem;
+  line-height: 1.7;
+}
+
+.story-body p {
+  margin: 0 0 1rem;
+}
+
+.story-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Subtle dividers for sections inside main */
+.story-main > * + * {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+
+/* ====== Tags (as chips) ====== */
+.story-tags .field__label {
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: .01em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.story-tags .field__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.story-tags .field__item a {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color .15s ease, transform .1s ease, background-color .2s ease;
+  font-size: .95rem;
+}
+
+.story-tags .field__item a:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--chip-bg) 70%, var(--accent) 30%);
+}
+
+/* ====== Aside ====== */
+.story-aside {
+  position: relative;
+}
+
+.story-aside:empty {
+  display: none; /* hide if you don’t render aside content */
+}
+
+/* 1) Hide aside when it has no real elements (ignores whitespace) */
+.story-aside:not(:has(*)) {
+  display: none;
+}
+
+/* 2) Only allocate the 2-column grid when an aside with content exists */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* default: single column */
+  gap: 22px;
+}
+
+@media (min-width: 980px) {
+  .story-grid:has(.story-aside:has(*)) {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}
+
+.story-aside:not(:empty) {
+  background: var(--chip-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.story-aside > * + * {
+  margin-top: 10px;
+}
+
+/* ====== Comments ====== */
+.story-comments {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.comments-app-container {
+  background: var(--chip-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+/* ====== Links section ====== */
+.story-links {
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+}
+
+.story-links a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  transition: color .15s ease, border-color .15s ease;
+}
+
+.story-links a:hover {
+  color: color-mix(in srgb, var(--accent) 80%, white);
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* ====== Small niceties ====== */
+/* Remove stray <br> gaps sometimes emitted by renderers */
+.story-main br:first-child,
+.story-comments br:first-child {
+  display: none;
+}
+
+/* Make any inline images inside body look tidy */
+.story-body img {
   max-width: 100%;
   height: auto;
-  border-radius: 8px; /* soften corners */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* subtle shadow */
-  transition: transform 0.2s ease;
+  border-radius: 10px;
+  border: 1px solid var(--border);
 }
 
-/* Add a hover effect */
-.story-image img:hover {
-  transform: scale(1.03);
+/* Keep Bootstrap’s .img-fluid behavior but add rounding here only in story */
+.story-layout .img-fluid {
+  border-radius: 12px;
+}
+
+/* Tighten field blocks’ default spacing */
+.story-layout .field {
+  margin: 0;
 }
 

@@ -1,0 +1,10 @@
+ui:
+  js:
+    js/comment_spice.js: {}
+  css:
+    component:
+      css/comment_spice.css: {}
+  dependencies:
+    - core/drupal
+    - core/once
+

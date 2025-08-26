@@ -1,0 +1,8 @@
+name: SWISLR Comment Spice
+type: module
+description: "Polish for core comments: nicer markup, styles, and small UX boosts."
+package: SWISLR
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:comment
+

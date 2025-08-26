@@ -1,0 +1,15 @@
+.sw-comments { margin-top: 2rem; }
+.sw-comments__title { margin: 0 0 1rem; font-weight: 700; }
+.sw-comment {
+  background: var(--swc-bg, #fff);
+  border: 1px solid var(--swc-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.sw-comment__meta { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
+.sw-comment__author { font-weight: 600; }
+.sw-comment__time { color: #666; font-size: .9rem; margin-left: .5rem; }
+.sw-comment__actions { margin-top: .5rem; opacity: .9; }
+form.comment-form textarea { max-height: 50vh; overflow-y: auto; }
+

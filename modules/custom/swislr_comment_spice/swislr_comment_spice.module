@@ -1,0 +1,37 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
+/**
+ * Attach our UI assets on node pages that have a comment field.
+ */
+function swislr_comment_spice_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($entity->getEntityTypeId() === 'node' && $entity->hasField('comment')) {
+    // Load CSS/JS.
+    $build['#attached']['library'][] = 'swislr_comment_spice/ui';
+    // Add an anchor so #comment-form links scroll to the thread.
+    $build['swislr_comment_anchor'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'a',
+      '#attributes' => ['id' => 'comment-form'],
+      '#weight' => -50,
+    ];
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function swislr_comment_spice_theme_registry_alter(array &$registry) {
+  $path = \Drupal::service('extension.path.resolver')->getPath('module', 'swislr_comment_spice') . '/templates';
+
+  if (isset($registry['comment'])) {
+    $registry['comment']['path'] = $path;
+    $registry['comment']['template'] = 'comment';
+  }
+  if (isset($registry['comment__wrapper'])) {
+    $registry['comment__wrapper']['path'] = $path;
+    $registry['comment__wrapper']['template'] = 'comment-wrapper';
+  }
+}

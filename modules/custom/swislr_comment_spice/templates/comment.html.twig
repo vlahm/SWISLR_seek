@@ -1,0 +1,21 @@
+{# Simple, classy card markup; based on core comment.html.twig variables #}
+<article{{ attributes.addClass('sw-comment','comment') }}>
+  <header class="sw-comment__meta">
+    {{ author_picture }}
+    <div class="sw-comment__byline">
+      <span class="sw-comment__author">{{ author }}</span>
+	  <time class="sw-comment__time"
+	  	  datetime="{{ comment.created.value|date('c') }}">
+	    {{ created }}
+	  </time>
+      <span class="sw-comment__permalink">{{ permalink }}</span>
+    </div>
+  </header>
+
+  <div class="sw-comment__body">{{ content }}</div>
+
+  {% if links %}
+    <footer class="sw-comment__actions">{{ links }}</footer>
+  {% endif %}
+</article>
+
