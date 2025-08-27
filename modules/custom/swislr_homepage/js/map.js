@@ -11,7 +11,7 @@
         [49.5, -66.9] // Northeast corner
       ];
       map.fitBounds(conusBounds);
-      map.setMaxBounds(conusBounds);
+      // map.setMaxBounds(conusBounds);
       map.setMinZoom(map.getZoom());
 
       //L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -37,7 +37,7 @@
       //  'https://tiles.arcgis.com/tiles/CD5mKowwN6nIaqd8/arcgis/rest/services/NLCD_2021_RBS/MapServer/tile/{z}/{y}/{x}',
       //  { maxZoom: 15, attribution: 'USGS MRLC NLCD 2021', opacity: 0.8 }
       //); // :contentReference[oaicite:2]{index=2}
-      
+
       // (B) NASA GIBS Land Cover (IGBP, annual) via WMS — valid layer id + time:
       const modisLC = L.tileLayer.wms(
         'https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi',
@@ -48,14 +48,14 @@
           time: '2019-01-01' // pick any supported year in the layer’s time domain
         }
       ); // :contentReference[oaicite:3]{index=3}
-      
+
 
       // 1) OSM Standard — neutral + fast
       //const osmStd = L.tileLayer(
       //  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       //  { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }
       //);
-      
+
       // 2) CARTO Positron (light gray)
       //    Tip: use _nolabels for choropleths or to place your own labels
       const cartoPositron = L.tileLayer(
@@ -67,7 +67,7 @@
       //  { maxZoom: 19, attribution: 'Map tiles by CARTO, © OpenStreetMap' }
       //);
       // (CARTO’s terms require attribution and a paid key for heavy/commercial use.) :contentReference[oaicite:0]{index=0}
-      
+
       // 3) Esri Light Gray Canvas (very low contrast)
       //    (Raster tiles; no separate label layer here, so it behaves like “no labels”.)
       //const esriLightGray = L.tileLayer(
@@ -75,14 +75,14 @@
       //  { maxZoom: 16, attribution: 'Esri, HERE, Garmin, FAO, NOAA, USGS' }
       //);
       // Esri documents basemap style access & usage here. :contentReference[oaicite:1]{index=1}
-      
+
       // 4) OpenTopoMap — cleaner than USGSTopo, still topographic
       const openTopo = L.tileLayer(
         'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
         { maxZoom: 17, attribution: 'Map data © OpenStreetMap contributors, SRTM | Map style © OpenTopoMap' }
       );
       // (Community docs/examples reference this template.) :contentReference[oaicite:2]{index=2}
-      
+
       // 5) Esri World Imagery — for an aerial/satellite option
       const esriImagery = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -105,109 +105,199 @@
       };
 
       const layerControl = L.control.layers(baseMaps, overlays, { collapsed: false }).addTo(map);
-      
 
-	  // Stories from the Field layer
-      const storiesUrl = '/stories.geojson'; // from the Views GeoJSON display
 
-	const storyIcon = new L.Icon({
-	  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
-	  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-	  iconSize: [15, 28],
-	  iconAnchor: [12, 41],
-	  popupAnchor: [1, -34],
-	  shadowSize: [41, 41]
-	});
-      // Optional: an icon for story markers (or omit for default)
-      // const storyIcon = L.icon({ iconUrl: '/themes/custom/yourtheme/images/pin.svg', iconSize: [28, 28] });
-      
-      const storiesLayer = L.markerClusterGroup(); // requires leaflet.markercluster; otherwise use L.geoJSON directly
-      
-      fetch(storiesUrl, { credentials: 'same-origin' })
-        .then(r => r.json())
-        .then(geojson => {
-          const featureLayer = L.geoJSON(geojson, {
-            pointToLayer: (feature, latlng) => L.marker(latlng, { icon: storyIcon }),
-            onEachFeature: (feature, layer) => {
-              const p = feature.properties || {};
-              const title = p.name || 'Story';
-              const path = p.view_node || '#';
-              const date = p.field_date || '';
-              const img = p.field_image || '';
-              const tags = Array.isArray(p.field_tags) ? p.field_tags.join(', ') : (p.field_tags || '');
-      
-				const imgHtml = img
-				  ? `<div style="margin-bottom:.5rem;">
-					   <img src="${img}" alt="" style="display:block;width:100%;height:auto;border-radius:8px;">
-					 </div>`
-				  : '';
+// Stories from the Field layer (clustered points)
+const storiesUrl = '/stories.geojson'; // from the Views GeoJSON display
+const publicationsUrl = '/publications.geojson';
+const datasetUrl = '/dataset.geojson';
 
-				const html = `
-				  <div class="story-popup-inner" style="max-width:320px;">
-					${imgHtml}
-					<div>
-					  <h3 style="margin:.2rem 0 0.4rem 0; font-size:1rem;">
-						<a href="${path}" style="text-decoration:none;">${title}</a>
-					  </h3>
-					  ${date ? `<div style="font-size:.85rem; opacity:.8;">${date}</div>` : ''}
-					  ${tags ? `<div style="font-size:.85rem; margin-top:.25rem;">Tags: ${tags}</div>` : ''}
-					</div>
-				  </div>
-				`;
+const storyIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [15, 28],
+  iconAnchor: [12, 28],   // align to iconSize; avoids odd click targets
+  popupAnchor: [1, -24],
+  shadowSize: [0, 0],
+});
+const publicationIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [15, 28],
+  iconAnchor: [12, 28],   // align to iconSize; avoids odd click targets
+  popupAnchor: [1, -24],
+  shadowSize: [0, 0],
+});
+const datasetIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [15, 28],
+  iconAnchor: [12, 28],   // align to iconSize; avoids odd click targets
+  popupAnchor: [1, -24],
+  shadowSize: [0, 0],
+});
 
-				layer.bindPopup(html, { maxWidth: 340, className: 'story-popup' });
+const storiesCluster = L.markerClusterGroup(); // clustered points
+const publicationsCluster = L.markerClusterGroup(); // clustered points
+const datasetCluster = L.markerClusterGroup(); // clustered points
 
-				// ensure popup resizes after images load
-				layer.on('popupopen', (e) => {
-				  const el = e.popup.getElement?.() || e.popup._container; // compat
-				  if (!el) return;
-				  const imgs = el.querySelectorAll('img');
-				  imgs.forEach(img => {
-					// set width to the image's intrinsic width (capped), then update popup
-					const adjust = () => {
-					  const content = el.querySelector('.story-popup-inner');
-					  if (content && img.naturalWidth) {
-						const w = Math.min(img.naturalWidth, 320);
-						content.style.width = w + 'px';
-					  }
-					  e.popup.update();
-					};
-					if (img.complete) { adjust(); }
-					else { img.addEventListener('load', adjust, { once: true }); }
-				  });
-				});
-            }
-          });
-      
-          storiesLayer.addLayer(featureLayer);
-          storiesLayer.addTo(map);
-      
-          // add to the layer control if you have one:
-          if (layerControl) layerControl.addOverlay(storiesLayer, 'Stories from the Field');
-        })
-        .catch(console.error);
-		
+// Shared popup builder (same content for every geometry of the same story)
+function buildPopupHTML(p) {
+  const title = p?.name || 'Story';
+  const path  = p?.view_node || '#';
+  const date  = p?.field_date || '';
+  const img   = p?.field_image || '';
+  const tags  = Array.isArray(p?.field_tags) ? p.field_tags.join(', ') : (p?.field_tags || '');
+
+  const imgHtml = img
+    ? `<div style="margin-bottom:.5rem;">
+         <img src="${img}" alt="" style="display:block;width:100%;height:auto;border-radius:8px;">
+       </div>`
+    : '';
+
+  return `
+    <div class="story-popup-inner" style="max-width:320px;">
+      ${imgHtml}
+      <div>
+        <h3 style="margin:.2rem 0 0.4rem 0; font-size:1rem;">
+          <a href="${path}" style="text-decoration:none;">${title}</a>
+        </h3>
+        ${date ? `<div style="font-size:.85rem; opacity:.8;">${date}</div>` : ''}
+        ${tags ? `<div style="font-size:.85rem; margin-top:.25rem;">Tags: ${tags}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+// Ensure popup resizes after images load
+function attachPopupAutoResize(layer) {
+  layer.on('popupopen', (e) => {
+    const el = (typeof e.popup.getElement === 'function') ? e.popup.getElement() : e.popup._container;
+    if (!el) return;
+    el.querySelectorAll('img').forEach(img => {
+      const adjust = () => {
+        const content = el.querySelector('.story-popup-inner');
+        if (content && img.naturalWidth) {
+          const w = Math.min(img.naturalWidth, 320);
+          content.style.width = w + 'px';
+        }
+        e.popup.update();
+      };
+      if (img.complete) adjust();
+      else img.addEventListener('load', adjust, { once: true });
+    });
+  });
+}
+
+// // --- Layer 1: clustered POINTS, with the popup fix ---
+// fetch(storiesUrl, { credentials: 'same-origin' })
+//   .then(r => r.json())
+//   .then(geojson => {
+//     L.geoJSON(geojson, {
+//       pointToLayer: (feature, latlng) => L.marker(latlng, { icon: storyIcon }),
+//       onEachFeature: (feature, layer) => {
+//         const html = buildPopupHTML(feature.properties || {});
+//         layer.bindPopup(html, { maxWidth: 340, className: 'story-popup' });
+//         attachPopupAutoResize(layer);
+
+//         // IMPORTANT: add each marker to the cluster, not the whole geoJSON layer
+//         storiesCluster.addLayer(layer);
+//       }
+//     });
+
+//     storiesCluster.addTo(map);
+//     if (layerControl) layerControl.addOverlay(storiesCluster, 'Stories from the Field');
+//   })
+//   .catch(console.error);
+
+// stories
+const storiesPoints = L.geoJSON(null, {
+  pointToLayer: (feature, latlng) => {
+    // simple circles with outline; color can come from a property, else fallback
+    const p = feature.properties || {};
+    const color = p.color || '#3b82f6'; // fallback blue
+    return L.marker(latlng, { icon: storyIcon });
+  },
+  style: (feature) => {
+    // polygon styling; use same color logic to match points
+    const p = feature.properties || {};
+    const color = p.color || '#3b82f6';
+    return {
+      color: color,
+      weight: 1.25,
+      fillOpacity: 0.25
+    };
+  },
+  onEachFeature: (feature, layer) => {
+    const html = buildPopupHTML(feature.properties || {});
+    layer.bindPopup(html, { maxWidth: 340, className: 'story-popup' });
+    attachPopupAutoResize(layer);
+  }
+}).addTo(map);
+
+// If you have a separate GeoJSON for polygons/colored points, load it here;
+// otherwise you can reuse the same endpoint if it contains both geometries.
+fetch(storiesUrl, { credentials: 'same-origin' })
+  .then(r => r.json())
+  .then(geojson => {
+    storiesPoints.addData(geojson);
+    if (layerControl) layerControl.addOverlay(storiesPoints, 'Stories');
+  })
+  .catch(console.error);
+
+// publications
+const publicationsPoints = L.geoJSON(null, {
+  pointToLayer: (feature, latlng) => {
+    const p = feature.properties || {};
+    const color = p.color || '#3b82f6'; // fallback blue
+    return L.marker(latlng, { icon: publicationIcon });
+  },
+  style: (feature) => {
+    // polygon styling; use same color logic to match points
+    const p = feature.properties || {};
+    const color = p.color || '#3b82f6';
+    return {
+      color: color,
+      weight: 1.25,
+      fillOpacity: 0.25
+    };
+  },
+  onEachFeature: (feature, layer) => {
+    const html = buildPopupHTML(feature.properties || {});
+    layer.bindPopup(html, { maxWidth: 340, className: 'story-popup' });
+    attachPopupAutoResize(layer);
+  }
+}).addTo(map);
+
+fetch(publicationsUrl, { credentials: 'same-origin' })
+  .then(r => r.json())
+  .then(geojson => {
+    publicationsPoints.addData(geojson);
+    if (layerControl) layerControl.addOverlay(publicationsPoints, 'Publications');
+  })
+  .catch(console.error);
+
 
 	 // ---- NOAA SLR (single overlay entry + dynamic content) ----
 
      let confOpacity = 0.6;      // separate opacity for uncertainty
      let confGrayscale = true;   // set false if you ever want the original colors
-     
+
      function applyConfFilters() {
        if (!confTile || !confTile.getContainer) return;
        const el = confTile.getContainer();
        if (!el) return;
        el.style.filter = confGrayscale ? 'grayscale(100%)' : '';
      }
-     
+
      function rebuildSlrTiles() {
        const tag = feetToTag(slrFeet);
        slrGroup.clearLayers();
-     
+
        // depth
        slrTile = L.tileLayer(slrUrl(tag), { maxZoom: 16, opacity: slrOpacity,
          attribution: 'NOAA OCM Sea Level Rise (screening)' }).addTo(slrGroup);
-     
+
        // uncertainty
        if (showConf) {
          confTile = L.tileLayer(confUrl(tag), { maxZoom: 16, opacity: confOpacity,
@@ -218,7 +308,7 @@
        } else {
          confTile = null;
        }
-     
+
        slrTile.bringToFront?.(); confTile?.bringToFront?.();
      }
 
@@ -339,18 +429,18 @@
           <label style="font-size:12px; display:flex; gap:6px; align-items:center; margin-top:4px;">
             <input id="slrConfChk" type="checkbox"> Show uncertainty
           </label>
-          
+
           <div id="confControls" style="display:none; margin:6px 0 0 0;">
             <label style="font-size:12px;">Uncertainty opacity</label>
             <input id="confOpacityRange" type="range" min="0" max="1" step="0.05"
                    value="0.6" style="width:100%; margin-top:2px;">
           </div>
-          
+
           <div style="margin-top:8px;">
             <div style="font-size:12px; opacity:.85;">Depth legend</div>
             <div id="slrLegend" style="margin-top:4px;"></div>
           </div>
-          
+
 	 	  <div id="confLegendWrap" style="margin-top:8px; display:none;">
 	 		<div style="font-size:12px; opacity:.85;">Uncertainty legend</div>
 	 		<div id="confLegend" style="margin-top:4px;"></div>
@@ -426,14 +516,14 @@
 
      slrGroup.addTo(map);
 
-	  
+
       // -------- Show slider + legend only when MODIS GIBS is toggled on --------
-      
+
       // Legend image (vertical SVG from GIBS for the IGBP land-cover layer)
       const gibsLegendUrl =
         //'https://gibs.earthdata.nasa.gov/legends/MODIS_IGBP_Land_Cover_Type_V.svg';
 		'https://svs.gsfc.nasa.gov/vis/a000000/a002200/a002264/legend.jpg';
-      
+
       // Minimal control with an opacity slider + legend image
       const GibsControl = L.Control.extend({
         options: { position: 'topright' },
@@ -444,7 +534,7 @@
           box.style.lineHeight = '1.1';
           box.style.minWidth = '160px';
           box.style.display = 'none'; // start hidden
-      
+
           box.innerHTML = `
             <div style="font-weight:600; margin-bottom:6px;">MODIS Land Cover</div>
             <label style="font-size:12px;">Opacity</label>
@@ -453,11 +543,11 @@
             <img src="${gibsLegendUrl}" alt="IGBP Legend"
                  style="width: 300px; height: auto; display:block; margin-top:4px;">
           `;
-      
+
           // block map interactions while using the UI
           L.DomEvent.disableClickPropagation(box);
           L.DomEvent.on(box, 'mousewheel', L.DomEvent.stopPropagation);
-      
+
           // wire the slider
           const slider = box.querySelector('#gibsOpacity');
           slider.addEventListener('input', e => {
@@ -467,7 +557,7 @@
             if (map.hasLayer(modisLC) && modisLC.bringToFront) modisLC.bringToFront();
        		slrTile.bringToFront?.(); confTile?.bringToFront?.();
           });
-      
+
           // stash for show/hide
           this._box = box;
           this._slider = slider;
@@ -477,9 +567,9 @@
         hide() { if (this._box) this._box.style.display = 'none'; },
         setSlider(v) { if (this._slider) this._slider.value = String(v); }
       });
-      
+
       const gibsControl = new GibsControl().addTo(map);
-      
+
       // helper to sync control visibility with overlay state
       function refreshGibsUi() {
         if (map.hasLayer(modisLC)) {
@@ -501,11 +591,11 @@
        		storiesLayer.bringToFront?.();
 		}
       }
-      
+
       // react to layer toggles from the layer control
       map.on('overlayadd',  e => { if (e.layer === modisLC) refreshGibsUi(); });
       map.on('overlayremove', e => { if (e.layer === modisLC) refreshGibsUi(); });
-      
+
       // also run once on init (in case you programmatically add modisLC by default)
       refreshGibsUi();
 
