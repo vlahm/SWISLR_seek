@@ -1,28 +1,30 @@
-uuid: 51b136c6-682e-4500-931b-574b2d544b27
+uuid: 9da504cd-a819-4fea-8f8c-a475c743c2b2
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.story_card
     - field.field.node.publication.field_abstract
     - field.field.node.publication.field_location
     - field.field.node.publication.field_tags
     - field.field.node.publication.field_url_doi
     - node.type.publication
   module:
+    - geofield
     - user
-id: node.publication.teaser
+id: node.publication.story_card
 targetEntityType: node
 bundle: publication
-mode: teaser
+mode: story_card
 content:
-  field_tags:
-    type: entity_reference_label
+  field_location:
+    type: geofield_default
     label: above
     settings:
-      link: true
+      output_format: wkt
+      output_escape: true
     third_party_settings: {  }
-    weight: 10
+    weight: 6
     region: content
   links:
     settings: {  }
@@ -31,5 +33,5 @@ content:
     region: content
 hidden:
   field_abstract: true
-  field_location: true
+  field_tags: true
   field_url_doi: true

@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.publication.field_abstract
+    - field.field.node.publication.field_location
     - field.field.node.publication.field_tags
     - field.field.node.publication.field_url_doi
     - node.type.publication
   module:
+    - geofield
     - link
     - text
     - user
@@ -20,6 +22,15 @@ content:
     type: text_default
     label: above
     settings: {  }
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_location:
+    type: geofield_default
+    label: above
+    settings:
+      output_format: wkt
+      output_escape: true
     third_party_settings: {  }
     weight: 105
     region: content

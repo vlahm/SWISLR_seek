@@ -1,0 +1,21 @@
+uuid: bdbd9562-aaee-4111-be1a-1558beb3f519
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_location
+    - node.type.publication
+  module:
+    - geofield
+id: node.publication.field_location
+field_name: field_location
+entity_type: node
+bundle: publication
+label: 'Location(s) of study - puts points/lines/polygons on main map, so be succinct'
+description: 'Location(s) of study - renders points/lines/polygons on main map, so be succinct'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: geofield

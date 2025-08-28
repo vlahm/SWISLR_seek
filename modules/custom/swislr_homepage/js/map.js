@@ -112,6 +112,9 @@ const storiesUrl = '/stories.geojson'; // from the Views GeoJSON display
 const publicationsUrl = '/publications.geojson';
 const datasetUrl = '/dataset.geojson';
 
+color_pubs = '#C1A32D';
+color_data = '#31882A';
+
 const storyIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -144,10 +147,13 @@ const datasetCluster = L.markerClusterGroup(); // clustered points
 // Shared popup builder (same content for every geometry of the same story)
 function buildPopupHTML(p) {
   const title = p?.name || 'Story';
-  const path  = p?.view_node || '#';
+  const path  = p?.field_url_doi || p?.view_node || '#';
+  const ext_sym = p?.field_url_doi ? '↗' : '';
+  const ext_lnk = p?.field_url_doi ? ' target="_blank"' : '';
   const date  = p?.field_date || '';
   const img   = p?.field_image || '';
   const tags  = Array.isArray(p?.field_tags) ? p.field_tags.join(', ') : (p?.field_tags || '');
+  const abstr = p?.field_abstract || '';
 
   const imgHtml = img
     ? `<div style="margin-bottom:.5rem;">
@@ -160,9 +166,10 @@ function buildPopupHTML(p) {
       ${imgHtml}
       <div>
         <h3 style="margin:.2rem 0 0.4rem 0; font-size:1rem;">
-          <a href="${path}" style="text-decoration:none;">${title}</a>
+          <a href="${path}"${ext_lnk} style="text-decoration:none;">${title}${ext_sym}</a>
         </h3>
         ${date ? `<div style="font-size:.85rem; opacity:.8;">${date}</div>` : ''}
+        ${abstr ? `<div style="font-size:.85rem; opacity:.8;">${abstr}</div>` : ''}
         ${tags ? `<div style="font-size:.85rem; margin-top:.25rem;">Tags: ${tags}</div>` : ''}
       </div>
     </div>
@@ -249,13 +256,13 @@ fetch(storiesUrl, { credentials: 'same-origin' })
 const publicationsPoints = L.geoJSON(null, {
   pointToLayer: (feature, latlng) => {
     const p = feature.properties || {};
-    const color = p.color || '#3b82f6'; // fallback blue
+    const color = color_pubs;
     return L.marker(latlng, { icon: publicationIcon });
   },
   style: (feature) => {
     // polygon styling; use same color logic to match points
     const p = feature.properties || {};
-    const color = p.color || '#3b82f6';
+    const color = color_pubs;
     return {
       color: color,
       weight: 1.25,
@@ -427,7 +434,7 @@ fetch(publicationsUrl, { credentials: 'same-origin' })
 	 			 value="${slrOpacity}" style="width:100%; margin:2px 0 6px 0;">
 
           <label style="font-size:12px; display:flex; gap:6px; align-items:center; margin-top:4px;">
-            <input id="slrConfChk" type="checkbox"> Show uncertainty
+            <input id="slrConfChk" type="checkbox"> Show uncertainty (only for integer depths)
           </label>
 
           <div id="confControls" style="display:none; margin:6px 0 0 0;">
