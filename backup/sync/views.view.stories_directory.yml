@@ -1215,6 +1215,7 @@ display:
     display_plugin: page
     position: 1
     display_options:
+      title: 'Stories from the Field'
       fields:
         title:
           id: title
@@ -1681,6 +1682,7 @@ display:
           separator: ''
           hide_empty: false
       defaults:
+        title: false
         css_class: false
         style: false
         row: false
