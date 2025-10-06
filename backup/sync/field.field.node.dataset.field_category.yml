@@ -1,0 +1,21 @@
+uuid: dafd4496-1e0a-4e10-9c06-fc920b98bcf6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_category
+    - node.type.dataset
+  module:
+    - options
+id: node.dataset.field_category
+field_name: field_category
+entity_type: node
+bundle: dataset
+label: Category
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

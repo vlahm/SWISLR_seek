@@ -57,6 +57,7 @@ module:
   shortcut: 0
   swislr_attach_theme_css: 0
   swislr_comment_spice: 0
+  swislr_datasets: 0
   swislr_homepage: 0
   swislr_invites: 0
   swislr_story: 0

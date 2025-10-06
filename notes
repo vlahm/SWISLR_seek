@@ -23,19 +23,44 @@ docker exec or composer		Use commands inside the running container, update code 
 composer require drupal/group
 composer require drupal/bootstrap5
 
-good to enter maintenance mode before doing these:
-	(or these: Use maintenance mode when making major updates, particularly if the updates could disrupt visitors or the update process. Examples include upgrading, importing or exporting content, modifying a theme, modifying content types, and making backups.)
+BACKUPS:
+(Use maintenance mode when upgrading, importing or exporting content, modifying a theme, modifying content types, and making backups.)
 
 drush archive:dump --destination=/var/www/html/modules/custom/backup.tar.gz  --exclude-code-paths=web/sites/default/settings.php
+	follow this with e.g.: mv modules/custom/backup.tar.gz backup2.tar.gz
 	backup files and database, excluding the settings file which contains secrets.
 	can put secrets in settings.local.php, but whatevs
 	for regular-basis backups during development, sql:dump is probs fine
 
-composer update "drupal/core-*" --with-all-dependencies
-	update core, but first recommended to clear all errors and run backup
-	then run: drush updatedb
-	then drush cr
+CONTRIB UPDATES (backup first):
+when GUI updating fails:
+drush sset system.maintenance_mode 1
+e.g.:
+	composer update drupal/bootstrap5 --with-all-dependencies
+OR (esp. if that fails [due to fixed version?]):
+	composer require drupal/bootstrap5:^5.3 --with-all-dependencies
+drush updb -y
+might need: drush cron
+might need: drush ev 'Drupal::service("update.manager")->refreshUpdateData();'
+drush cr
+drush sset system.maintenance_mode 0
 
+CORE UPDATES (clear all errors and backup first):
+drush sset system.maintenance_mode 1
+TRY: composer update "drupal/core-*" --with-all-dependencies
+IF IT FAILS, it's probaby because you've fixed the version? so use require: 
+composer require \
+  drupal/core-recommended:^10.5 \
+  drupal/core-composer-scaffold:^10.5 \
+  drupal/core-project-message:^10.5 \
+  --with-all-dependencies
+drush updb -y
+drush cron
+drush ev 'Drupal::service("update.manager")->refreshUpdateData();'
+drush cr
+drush sset system.maintenance_mode 0
+
+OTHER
 drush en <module>				enable module (-y flag if desired)
 drush pm:uninstall <module>		always run this before removing module files!
 drush wd-show					logs

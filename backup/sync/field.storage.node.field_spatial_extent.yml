@@ -1,0 +1,36 @@
+uuid: 6fd41474-0f90-462e-b8fe-b5c3f977f2ec
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_spatial_extent
+field_name: field_spatial_extent
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: global
+      label: Global
+    -
+      value: continental
+      label: Continental
+    -
+      value: regional
+      label: Regional
+    -
+      value: local
+      label: Local
+    -
+      value: other
+      label: Other
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

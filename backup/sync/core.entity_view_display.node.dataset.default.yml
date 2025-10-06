@@ -3,31 +3,38 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.dataset.field_bounds
+    - field.field.node.dataset.field_category
+    - field.field.node.dataset.field_description
     - field.field.node.dataset.field_file
-    - field.field.node.dataset.field_image
+    - field.field.node.dataset.field_location
+    - field.field.node.dataset.field_spatial_extent
     - field.field.node.dataset.field_tags
-    - field.field.node.dataset.field_title
-    - image.style.wide
+    - field.field.node.dataset.field_url_doi
     - node.type.dataset
   module:
     - file
     - geofield
-    - image
+    - link
+    - options
     - user
 id: node.dataset.default
 targetEntityType: node
 bundle: dataset
 mode: default
 content:
-  field_bounds:
-    type: geofield_default
+  field_category:
+    type: list_default
     label: above
-    settings:
-      output_format: wkt
-      output_escape: true
+    settings: {  }
     third_party_settings: {  }
-    weight: 105
+    weight: 1
+    region: content
+  field_description:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_file:
     type: file_default
@@ -35,18 +42,23 @@ content:
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    weight: 102
+    weight: 5
     region: content
-  field_image:
-    type: image
-    label: hidden
+  field_location:
+    type: geofield_default
+    label: above
     settings:
-      image_link: ''
-      image_style: wide
-      image_loading:
-        attribute: eager
+      output_format: wkt
+      output_escape: true
     third_party_settings: {  }
-    weight: -1
+    weight: 4
+    region: content
+  field_spatial_extent:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
     region: content
   field_tags:
     type: entity_reference_label
@@ -54,19 +66,23 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 10
+    weight: 0
     region: content
-  field_title:
-    type: string
+  field_url_doi:
+    type: link
     label: above
     settings:
-      link_to_entity: false
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
-    weight: 103
+    weight: 6
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 2
     region: content
 hidden: {  }

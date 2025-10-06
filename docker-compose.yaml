@@ -15,6 +15,7 @@ services:
       - drupal-themes:/var/www/html/themes
       - ./modules/custom:/var/www/html/modules/custom
       - ./themes/custom:/var/www/html/themes/custom
+      - ./docker/php/zz-overrides.ini:/usr/local/etc/php/conf.d/zz-overrides.ini:ro
     depends_on:
       - db
     restart: unless-stopped

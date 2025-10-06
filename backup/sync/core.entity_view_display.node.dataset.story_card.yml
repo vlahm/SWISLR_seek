@@ -1,9 +1,9 @@
-uuid: b7db18ea-21b2-45ca-817a-0aee728dba95
+uuid: f193b774-4fd8-4924-a973-21c5df2c249d
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.story_card
     - field.field.node.dataset.field_category
     - field.field.node.dataset.field_description
     - field.field.node.dataset.field_file
@@ -13,19 +13,21 @@ dependencies:
     - field.field.node.dataset.field_url_doi
     - node.type.dataset
   module:
+    - geofield
     - user
-id: node.dataset.teaser
+id: node.dataset.story_card
 targetEntityType: node
 bundle: dataset
-mode: teaser
+mode: story_card
 content:
-  field_tags:
-    type: entity_reference_label
+  field_location:
+    type: geofield_default
     label: above
     settings:
-      link: true
+      output_format: wkt
+      output_escape: true
     third_party_settings: {  }
-    weight: 10
+    weight: 6
     region: content
   links:
     settings: {  }
@@ -36,6 +38,6 @@ hidden:
   field_category: true
   field_description: true
   field_file: true
-  field_location: true
   field_spatial_extent: true
+  field_tags: true
   field_url_doi: true

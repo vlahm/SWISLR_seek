@@ -1,19 +1,19 @@
-uuid: c808c770-504a-4b69-996d-f351da2d9973
+uuid: bfc77fd6-7d31-4eb2-a49c-fbc1e21f30db
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_title
+    - field.storage.node.field_description
     - node.type.dataset
-id: node.dataset.field_title
-field_name: field_title
+id: node.dataset.field_description
+field_name: field_description
 entity_type: node
 bundle: dataset
-label: Title
+label: Description
 description: ''
 required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: string
+field_type: string_long

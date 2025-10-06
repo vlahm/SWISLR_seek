@@ -1,0 +1,48 @@
+uuid: 7cb74e22-8120-4efb-b9d9-8e85927eceb3
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_category
+field_name: field_category
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: field_measurements
+      label: 'Field measurements'
+    -
+      value: remote_sensing
+      label: 'Remote sensing'
+    -
+      value: sensor_data
+      label: 'Sensor data'
+    -
+      value: observational
+      label: Observational
+    -
+      value: survey
+      label: Survey
+    -
+      value: model_results
+      label: 'Model results'
+    -
+      value: administrative
+      label: Administrative
+    -
+      value: geospatial
+      label: Geospatial
+    -
+      value: experimental
+      label: Experimental
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

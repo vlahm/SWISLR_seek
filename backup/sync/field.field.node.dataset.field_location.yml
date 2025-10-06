@@ -1,0 +1,21 @@
+uuid: e5e67c68-fd58-4314-9e19-2cf0c3793474
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_location
+    - node.type.dataset
+  module:
+    - geofield
+id: node.dataset.field_location
+field_name: field_location
+entity_type: node
+bundle: dataset
+label: 'Location(s) of study - puts points/lines/polygons on main map, so be succinct'
+description: 'Location(s) of study - renders points/lines/polygons on main map, so be succinct'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: geofield

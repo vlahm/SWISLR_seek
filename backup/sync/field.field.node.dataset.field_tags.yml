@@ -12,7 +12,7 @@ entity_type: node
 bundle: dataset
 label: Tags
 description: 'Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio"'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

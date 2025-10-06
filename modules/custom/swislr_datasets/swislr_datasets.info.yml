@@ -1,0 +1,6 @@
+name: 'SWISLR Datasets'
+type: module
+description: 'Achieves conditional form inputs without field_states_ui'
+core_version_requirement: ^10 || ^11
+package: SWISLR
+

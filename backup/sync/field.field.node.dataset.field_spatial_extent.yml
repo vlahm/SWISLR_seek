@@ -1,21 +1,21 @@
-uuid: 436f2557-53e9-468e-98a2-aadff7de1073
+uuid: 7475f768-0832-4d63-8330-73451063c049
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_bounds
+    - field.storage.node.field_spatial_extent
     - node.type.dataset
   module:
-    - geofield
-id: node.dataset.field_bounds
-field_name: field_bounds
+    - options
+id: node.dataset.field_spatial_extent
+field_name: field_spatial_extent
 entity_type: node
 bundle: dataset
-label: Bounds
+label: 'Spatial Extent'
 description: ''
 required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: geofield
+field_type: list_string

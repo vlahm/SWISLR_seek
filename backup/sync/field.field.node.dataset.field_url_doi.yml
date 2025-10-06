@@ -1,19 +1,19 @@
-uuid: 2a2ecc24-a2e3-459b-95cf-58df4004e938
+uuid: 693a1e16-41ea-4312-be9d-20562a50169c
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_url_doi
-    - node.type.publication
+    - node.type.dataset
   module:
     - link
-id: node.publication.field_url_doi
+id: node.dataset.field_url_doi
 field_name: field_url_doi
 entity_type: node
-bundle: publication
+bundle: dataset
 label: URL/DOI
 description: 'A DOI is more persistent than a simple URL! If providing a DOI, please still structure it as a URL, i.e. <strong>https://doi.org/10.1086/283250</strong> instead of just <strong>10.1086/283250<strong>'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

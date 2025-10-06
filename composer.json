@@ -40,7 +40,7 @@
 		"drupal/date_popup": "^2.0",
 		"drupal/views_geojson": "^1.4",
 		"drupal/react_comments": "^2.0@beta",
-		"drupal/content_moderation_notifications": "^3.6",
+		"drupal/content_moderation_notifications": "^3.7",
 		"drupal/symfony_mailer": "^1.6"
     },
     "require-dev": {

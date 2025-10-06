@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: Dataset
 type: dataset
-description: null
+description: 'SWISLR-related data, either published elsewhere or uploaded here.'
 help: null
 new_revision: true
 preview_mode: 1

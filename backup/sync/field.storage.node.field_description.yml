@@ -1,17 +1,16 @@
-uuid: cf1c45af-d614-4e09-8375-3fa75f8368fc
+uuid: 18d500f4-50d6-44dd-a3d2-eceab1bb2ed4
 langcode: en
 status: true
 dependencies:
   module:
-    - geofield
     - node
-id: node.field_bounds
-field_name: field_bounds
+id: node.field_description
+field_name: field_description
 entity_type: node
-type: geofield
+type: string_long
 settings:
-  backend: geofield_backend_default
-module: geofield
+  case_sensitive: false
+module: core
 locked: false
 cardinality: 1
 translatable: true
