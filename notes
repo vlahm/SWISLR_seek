@@ -29,28 +29,28 @@ composer require drupal/group
 composer require drupal/bootstrap5
 
 
-TESTING BUILD BEFORE DEPLOY:
+PRE-DEPLOY:
 
+# test build
 docker-compose down
 docker-compose build --no-cache drupal
 composer require drush/drush
 . post_install_steps.sh
 drush cr
 
-# #not sure any of this is actually useful
-#build a lockfile from package versions specified in composer.json (run locally!)
-#	composer update --no-interaction
-#to do this you will need:
-#	sudo apt update
-#	sudo apt install -y php-cli unzip curl
-#	curl -sS https://getcomposer.org/installer -o composer-setup.php
-#	sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-#	rm composer-setup.php
-#	composer --version
-#if you get an error about missing PHP extensions, install with e.g.:
-#	sudo apt update
-#	sudo apt install -y php8.3-xml php8.3-curl
-#	sudo apt install -y php8.3-zip php8.3-mbstring php8.3-gd php8.3-intl php8.3-mysql
+# build a lockfile from package versions specified in composer.json (run locally!)
+	composer update --no-interaction
+to do this you will need to install composer on local machine:
+	sudo apt update
+	sudo apt install -y php-cli unzip curl
+	curl -sS https://getcomposer.org/installer -o composer-setup.php
+	sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+	rm composer-setup.php
+	composer --version
+if you get an error about missing PHP extensions, install with e.g.:
+	sudo apt update
+	sudo apt install -y php8.3-xml php8.3-curl
+	sudo apt install -y php8.3-zip php8.3-mbstring php8.3-gd php8.3-intl php8.3-mysql
 
 
 BACKUPS:

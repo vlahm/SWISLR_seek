@@ -853,7 +853,7 @@ display:
             more_link: false
             more_link_text: ''
             more_link_path: ''
-            strip_tags: false
+            strip_tags: true
             trim: false
             preserve_tags: ''
             html: false
@@ -872,11 +872,11 @@ display:
           click_sort_column: uri
           type: link
           settings:
-            trim_length: null
-            url_only: false
-            url_plain: false
+            trim_length: 80
+            url_only: true
+            url_plain: true
             rel: '0'
-            target: '0'
+            target: _blank
           group_column: ''
           group_columns: {  }
           group_rows: true

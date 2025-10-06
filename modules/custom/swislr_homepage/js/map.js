@@ -146,7 +146,7 @@ const datasetCluster = L.markerClusterGroup(); // clustered points
 
 // Shared popup builder (same content for every geometry of the same story)
 function buildPopupHTML(p) {
-  const title = p?.name || 'Story';
+  const title = p?.name || '';
   const path  = p?.field_url_doi || p?.view_node || '#';
   const ext_sym = p?.field_url_doi ? '↗' : '';
   const ext_lnk = p?.field_url_doi ? ' target="_blank"' : '';
