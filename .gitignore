@@ -5,3 +5,5 @@
 .env.cpt
 temp/
 aider*
+vendor/
+web/

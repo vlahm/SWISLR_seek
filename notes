@@ -40,6 +40,8 @@ drush cr
 
 # build a lockfile from package versions specified in composer.json (run locally!)
 	composer update --no-interaction
+	gitignore vendor/ and web/
+	commit .gitattributes, .editorconfig, and composer.lock
 to do this you will need to install composer on local machine:
 	sudo apt update
 	sudo apt install -y php-cli unzip curl
