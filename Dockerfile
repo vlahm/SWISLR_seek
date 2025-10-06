@@ -34,6 +34,20 @@ COPY misc_config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 #RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 #&& composer install --prefer-dist --no-dev --no-interaction
 
-RUN chown -R www-data:www-data web/modules/contrib && chmod -R u+w web/modules/contrib
-
 #RUN composer update --no-interaction #for deploy only?
+
+# ---- NEW: bake app code into the image (safe for dev; mounts override) ----
+# Your repo layout: vendor/ and web/ at repo root.
+# If you keep custom code outside web/ (you do), copy it in too.
+COPY web/ /var/www/html/
+COPY vendor/ /var/www/vendor/
+COPY modules/custom/ /var/www/html/modules/custom/
+COPY themes/custom/ /var/www/html/themes/custom/
+
+# Files/permissions
+#probably not necessary:
+RUN chown -R www-data:www-data web/modules/contrib && chmod -R u+w web/modules/contrib
+#necessary:
+RUN mkdir -p /var/www/private \
+ && chown -R www-data:www-data /var/www/html /var/www/private /var/www/vendor \
+ && if [ -d /var/www/html/modules/contrib ]; then chmod -R u+w /var/www/html/modules/contrib; fi

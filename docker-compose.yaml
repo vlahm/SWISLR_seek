@@ -2,19 +2,13 @@ version: '3.8'
 
 services:
   drupal:
-    image: drupal:10-apache
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # Build your site image in Dockerfile (FROM drupal:10-apache … copy code in)
+    image: yourrepo/drupal-app:latest
     ports:
-      - 8080:80
+      - "8080:80"
     volumes:
-      - drupal-modules:/var/www/html/modules
-      - drupal-profiles:/var/www/html/profiles
-      - drupal-sites:/var/www/html/sites
-      - drupal-themes:/var/www/html/themes
-      - ./modules/custom:/var/www/html/modules/custom
-      - ./themes/custom:/var/www/html/themes/custom
+      - drupal-files:/var/www/html/sites/default/files
+      - drupal-private:/var/www/private
       - ./docker/php/zz-overrides.ini:/usr/local/etc/php/conf.d/zz-overrides.ini:ro
     depends_on:
       - db
@@ -22,7 +16,6 @@ services:
 
   db:
     image: mariadb:10.6
-    restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -30,11 +23,10 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - drupal-db:/var/lib/mysql
+    restart: unless-stopped
 
 volumes:
-  drupal-modules:
-  drupal-profiles:
-  drupal-sites:
-  drupal-themes:
+  drupal-files:
+  drupal-private:
   drupal-db:
 
