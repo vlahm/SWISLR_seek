@@ -110,7 +110,7 @@
 // Stories from the Field layer (clustered points)
 const storiesUrl = '/stories.geojson'; // from the Views GeoJSON display
 const publicationsUrl = '/publications.geojson';
-const datasetUrl = '/dataset.geojson';
+const datasetsUrl = '/datasets.geojson';
 
 color_pubs = '#C1A32D';
 color_data = '#31882A';
@@ -153,7 +153,7 @@ function buildPopupHTML(p) {
   const date  = p?.field_date || '';
   const img   = p?.field_image || '';
   const tags  = Array.isArray(p?.field_tags) ? p.field_tags.join(', ') : (p?.field_tags || '');
-  const abstr = p?.field_abstract || '';
+  const abstr = p?.field_abstract || p?.field_description || '';
 
   const imgHtml = img
     ? `<div style="margin-bottom:.5rem;">
@@ -271,7 +271,7 @@ const publicationsPoints = L.geoJSON(null, {
   },
   onEachFeature: (feature, layer) => {
     const html = buildPopupHTML(feature.properties || {});
-    layer.bindPopup(html, { maxWidth: 340, className: 'story-popup' });
+    layer.bindPopup(html, { maxWidth: 340, className: 'publication-popup' });
     attachPopupAutoResize(layer);
   }
 }).addTo(map);
@@ -281,6 +281,38 @@ fetch(publicationsUrl, { credentials: 'same-origin' })
   .then(geojson => {
     publicationsPoints.addData(geojson);
     if (layerControl) layerControl.addOverlay(publicationsPoints, 'Publications');
+  })
+  .catch(console.error);
+
+// datasets
+const datasetsPoints = L.geoJSON(null, {
+  pointToLayer: (feature, latlng) => {
+    const p = feature.properties || {};
+    const color = color_data;
+    return L.marker(latlng, { icon: datasetIcon });
+  },
+  style: (feature) => {
+    // polygon styling; use same color logic to match points
+    const p = feature.properties || {};
+    const color = color_data;
+    return {
+      color: color,
+      weight: 1.25,
+      fillOpacity: 0.25
+    };
+  },
+  onEachFeature: (feature, layer) => {
+    const html = buildPopupHTML(feature.properties || {});
+    layer.bindPopup(html, { maxWidth: 340, className: 'dataset-popup' });
+    attachPopupAutoResize(layer);
+  }
+}).addTo(map);
+
+fetch(datasetsUrl, { credentials: 'same-origin' })
+  .then(r => r.json())
+  .then(geojson => {
+    datasetsPoints.addData(geojson);
+    if (layerControl) layerControl.addOverlay(datasetsPoints, 'Datasets');
   })
   .catch(console.error);
 
