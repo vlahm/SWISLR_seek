@@ -111,6 +111,15 @@ drush pm:uninstall <module>		always run this before removing module files!
 drush wd-show					logs
 drush pm:list --status=enabled --type=module
 
+
+DEPLOY
+
+start with hax/servers/server_setup.txt
+then clone repo. 
+recreate .env
+sudo usermod -aG docker $USER (log out and back in)
+
+
 ---------------- BUILD STEPS NOW AUTOMATED -----------------
 
 add to /var/www/html/sites/default/settings.php:
