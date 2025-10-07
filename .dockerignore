@@ -1,0 +1,12 @@
+Dockerfile*
+.dockerignore
+.git
+.gitignore
+README.md
+.env
+.env.local
+.cache
+backup
+*.swp
+.gitattributes
+.editorconfig

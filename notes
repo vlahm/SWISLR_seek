@@ -119,6 +119,30 @@ then clone repo.
 recreate .env
 sudo usermod -aG docker $USER (log out and back in)
 
+might have to change docker-compose.yaml to accept traffic on port 80
+sudo ufw allow 80/tcp
+sudo ufw enable
+sudo ufw status
+
+sudo apt-get update && sudo apt-get install -y docker.io docker-compose
+docker compose up -d db
+docker-compose -f docker-compose.yaml build --no-cache drupal
+dockercompose up -d drupal
+
+docker exec -it swislr_seek_drupal_1  bash #(e.g.)
+composer require drush/drush #(supposedly shouldn't need this, becuase drush is already included)
+
+if you have to change anything in the docker-compose.yaml, you'll probably have to wade through all this insane shit:
+docker-compose stop drupal
+docker-compose rm -f drupal
+docker-compose up -d --force-recreate --remove-orphans drupal
+(this will fail)
+docker images | awk '/drupal|swislr/ {print $3}' | xargs -r docker rmi
+(this will totally fail)
+docker-compose up -d --build drupal
+(but then this will still work)
+
+
 
 ---------------- BUILD STEPS NOW AUTOMATED -----------------
 
