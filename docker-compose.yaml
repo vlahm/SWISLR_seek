@@ -1,12 +1,22 @@
 version: '3.8'
 
 services:
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on:
+      - drupal
   drupal:
+    expose:
+      - "80"
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "8080:80"
     volumes:
       - drupal-files:/var/www/html/sites/default/files
       - drupal-private:/var/www/private
@@ -30,4 +40,5 @@ volumes:
   drupal-files:
   drupal-private:
   drupal-db:
+  caddy-data:
 

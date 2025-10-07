@@ -1,0 +1,5 @@
+seek.swislr.org {
+  encode gzip
+  reverse_proxy drupal:80
+}
+

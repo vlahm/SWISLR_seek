@@ -7,8 +7,8 @@ docker-compose restart
 
 docker-compose down           # Stops and removes containers, stops the network, database and data persist
 docker-compose down -v        # Also removes volumes, use for a fresh start
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up 		# use this in dev. composer specs are split because we don't want to use too many bind mounts in prod
-docker compose -f docker-compose.yml up -d								# use this in prod
+docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up 		# use this in dev. composer specs are split because we don't want to use too many bind mounts in prod
+docker compose -f docker-compose.yaml up -d									# use this in prod
 docker-compose up --build -d  # Starts or resumes your containers and builds Dockerfile
 docker-compose up -d	      # Starts or resumes your containers
 docker-compose build --no-cache drupal 									# eventually you'll want to rebuild the container locally. need to ignore cache for that, so up -d will fail
