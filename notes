@@ -9,6 +9,7 @@ docker-compose down           # Stops and removes containers, stops the network,
 docker-compose down -v        # Also removes volumes, use for a fresh start
 docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up 		# use this in dev. composer specs are split because we don't want to use too many bind mounts in prod
 docker compose -f docker-compose.yaml up -d									# use this in prod
+note that on prod there's a third container for the Caddy
 docker-compose up --build -d  # Starts or resumes your containers and builds Dockerfile
 docker-compose up -d	      # Starts or resumes your containers
 docker-compose build --no-cache drupal 									# eventually you'll want to rebuild the container locally. need to ignore cache for that, so up -d will fail
@@ -40,7 +41,7 @@ composer require drush/drush
 drush cr
 
 # build a lockfile from package versions specified in composer.json (run locally!)
-	composer update --no-interaction
+	composer update/install --no-interaction (update may change versions, so prefer install)
 	gitignore vendor/ and web/
 	commit .gitattributes, .editorconfig, and composer.lock
 to do this you will need to install composer on local machine:
@@ -117,17 +118,20 @@ DEPLOY
 start with hax/servers/server_setup.txt
 then clone repo. 
 recreate .env
-sudo usermod -aG docker $USER (log out and back in)
 
 might have to change docker-compose.yaml to accept traffic on port 80
-sudo ufw allow 80/tcp
 sudo ufw enable
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow ssh
 sudo ufw status
 
 sudo apt-get update && sudo apt-get install -y docker.io docker-compose
-docker compose up -d db
+sudo usermod -aG docker $USER #(log out and back in)
+docker-compose up -d db
 docker-compose -f docker-compose.yaml build --no-cache drupal
-dockercompose up -d drupal
+docker-compose up -d drupal
+docker-compose up -d caddy
 
 docker exec -it swislr_seek_drupal_1  bash #(e.g.)
 composer require drush/drush #(supposedly shouldn't need this, becuase drush is already included)
@@ -142,6 +146,33 @@ docker images | awk '/drupal|swislr/ {print $3}' | xargs -r docker rmi
 docker-compose up -d --build drupal
 (but then this will still work)
 
+visit seek.swislr.org for database setup. copy names/pws from .env.
+database host is the name of the database service as specified in docker-compose.yaml. in this case "db"
+
+site name: SWISLR Seek
+site email: mail@swislr.org
+admin name: swislradmin
+
+gotta add something like this to web/sites/default/settings.php: (why not automated?)
+$settings['trusted_host_patterns'] = [
+  '^seek\.swislr\.org$',
+  '^localhost$',
+  '^127\.0\.0\.1$',
+];
+
+. post_install_steps.sh
+
+copy over config files, e.g.:
+docker cp backup/sync/ b1a5a7c9b1b8:/opt/drupal/web/sites/default/files/config_gCohTr204_tUOHEoCSoqQdwbSTu87xtRCQZHJalG7RX3qSVKy3vy5Se3bI1B9pRplYijH-tFCA/
+
+now, in sync/ on the container:
+grep '^uuid:' system.site.yml #copy the resulting uuid and use it in the next step
+drush cset system.site uuid "<that uuid>" -y
+
+add to pathautho.pattern.story.yml: (though this will break local version), because that entity doesn't exist locally
+id: story
+label: 'Story URL pattern'
+type: 'canonical_entities:node'
 
 
 ---------------- BUILD STEPS NOW AUTOMATED -----------------

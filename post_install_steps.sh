@@ -7,8 +7,8 @@ drush en -y geofield geofield_map geocoder
 drush en -y token pathauto
 drush en -y entity_reference_revisions
 drush en -y webform
-drush en -y smtp
 drush en -y honeypot
+drush en -y smtp
 drush en -y email_registration
 drush en -y leaflet block_class
 drush en -y leaflet_views
@@ -25,6 +25,9 @@ drush en -y symfony_mailer
 drush en -y swislr_story
 drush en -y swislr_invites
 drush en -y swislr_attach_theme_css
+drush en -y swislr_comment_spice
+drush en -y swislr_datasets
+
 
 # Fix private file warning
 mkdir -p /opt/drupal_private

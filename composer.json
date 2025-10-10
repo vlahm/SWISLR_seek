@@ -36,6 +36,7 @@
         "drupal/orcid": "1.x-dev@dev",
         "drupal/pathauto": "^1.13",
         "drupal/react_comments": "^2.0@beta",
+        "drupal/smtp": "^1.4",
         "drupal/symfony_mailer": "^1.6",
         "drupal/token": "1.15",
         "drupal/user_register_notify": "dev-2.x",
