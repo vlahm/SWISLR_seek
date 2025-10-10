@@ -92,8 +92,8 @@ settings:
   widget_layout: stacked
   field_title_display: before
   component_layout: default
-  show_component_required_marker: false
-  flag_required_input: false
+  show_component_required_marker: true
+  flag_required_input: true
   credentials_inline: false
   override_format: default
   field_type:

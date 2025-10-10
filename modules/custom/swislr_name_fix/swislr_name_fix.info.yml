@@ -1,0 +1,6 @@
+name: SWISLR Name Fix
+type: module
+description: Replace _none components with empty strings in Name fields.
+core_version_requirement: ^10 || ^11
+package: SWISLR
+

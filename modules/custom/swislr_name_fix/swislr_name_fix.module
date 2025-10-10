@@ -1,0 +1,35 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function swislr_name_fix_entity_presave(EntityInterface $entity) {
+  // Adjust bundles/entities as needed. Example shown for user accounts.
+  if ($entity->getEntityTypeId() !== 'user') {
+    return;
+  }
+
+  foreach ($entity->getFieldDefinitions() as $field_name => $def) {
+    // Limit to Name-type fields only.
+    if ($def->getType() !== 'name') {
+      continue;
+    }
+    if (!$entity->hasField($field_name) || $entity->get($field_name)->isEmpty()) {
+      continue;
+    }
+
+    foreach ($entity->get($field_name) as $delta => $item) {
+      $values = $item->getValue();
+      // Replace any '_none' with '' (strict match).
+      foreach ($values as $k => $v) {
+        if ($v === '_none') {
+          $values[$k] = '';
+        }
+      }
+      $entity->get($field_name)->set($delta, $values);
+    }
+  }
+}
+
