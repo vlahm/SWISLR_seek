@@ -8,7 +8,7 @@ drush en -y token pathauto
 drush en -y entity_reference_revisions
 drush en -y webform
 drush en -y honeypot
-drush en -y smtp
+#drush en -y smtp
 drush en -y email_registration
 drush en -y leaflet block_class
 drush en -y leaflet_views

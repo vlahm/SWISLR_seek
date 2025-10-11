@@ -11,6 +11,7 @@ services:
       - caddy-data:/data
     depends_on:
       - drupal
+    restart: unless-stopped
   drupal:
     expose:
       - "80"
