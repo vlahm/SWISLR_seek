@@ -27,6 +27,7 @@ drush en -y swislr_invites
 drush en -y swislr_attach_theme_css
 drush en -y swislr_comment_spice
 drush en -y swislr_datasets
+drush en -y swislr_name_fix
 
 
 # Fix private file warning

@@ -113,6 +113,32 @@ drush wd-show					logs
 drush pm:list --status=enabled --type=module
 
 
+REDEPLOY
+
+!!! turns out docker-compose is the old version. needed to upgrade on prod. now it's docker compose
+
+dev host? (might actually be better to run these inside the container, to ensure identical environment on prod):
+composer update (doesn't fully update, unless you delete the lockfile, which could be risky?)
+composer install
+push, pull
+
+prod host:
+docker compose build --no-cache drupal
+docker compose update
+docker compose up -d
+
+prod container:
+drush sset system.maintenance_mode 1 -y && drush cr
+#drush updb -y (when necessary?)
+#drush cim, etc
+drush cr
+drush sset system.maintenance_mode 1 -y && drush cr
+
+check status report
+make sure basic site config is correct (e.g. email address for the site)
+config -> workflows -> content moderation notification -> make sure emails are set correctly
+
+
 DEPLOY
 
 start with hax/servers/server_setup.txt
@@ -126,6 +152,7 @@ sudo ufw allow 443/tcp
 sudo ufw allow ssh
 sudo ufw status
 
+#don't install default docker. update the next block based on this site: https://docs.docker.com/engine/install/ubuntu/
 sudo apt-get update && sudo apt-get install -y docker.io docker-compose
 sudo usermod -aG docker $USER #(log out and back in)
 docker-compose up -d db
@@ -133,18 +160,18 @@ docker-compose -f docker-compose.yaml build --no-cache drupal
 docker-compose up -d drupal
 docker-compose up -d caddy
 
-docker exec -it swislr_seek_drupal_1  bash #(e.g.)
+docker exec -it swislr_seek_drupal_1  bash #(e.g.; might have to use container ID)
 composer require drush/drush #(supposedly shouldn't need this, becuase drush is already included)
 
-if you have to change anything in the docker-compose.yaml, you'll probably have to wade through all this insane shit:
-docker-compose stop drupal
-docker-compose rm -f drupal
-docker-compose up -d --force-recreate --remove-orphans drupal
-(this will fail)
-docker images | awk '/drupal|swislr/ {print $3}' | xargs -r docker rmi
-(this will totally fail)
-docker-compose up -d --build drupal
-(but then this will still work)
+#if you have to change anything in the docker-compose.yaml, you'll probably have to wade through all this insane shit:
+#docker-compose stop drupal
+#docker-compose rm -f drupal
+#docker-compose up -d --force-recreate --remove-orphans drupal
+#(this will fail)
+#docker images | awk '/drupal|swislr/ {print $3}' | xargs -r docker rmi
+#(this will totally fail)
+#docker-compose up -d --build drupal
+#(but then this will still work)
 
 visit seek.swislr.org for database setup. copy names/pws from .env.
 database host is the name of the database service as specified in docker-compose.yaml. in this case "db"
@@ -153,17 +180,23 @@ site name: SWISLR Seek
 site email: mail@swislr.org
 admin name: swislradmin
 
-gotta add something like this to web/sites/default/settings.php: (why not automated?)
+add to web/sites/default/settings.php:
 $settings['trusted_host_patterns'] = [
   '^seek\.swislr\.org$',
-  '^localhost$',
-  '^127\.0\.0\.1$',
+  '^www.seek.swislr.org$',
+  '^104.236.33.140$',
 ];
+$settings['file_private_path'] = '/var/www/private';
+
+
+#might also need to point it to the correct config directory in web/sites/default/settings.php
+$settings['config_sync_directory'] = 'sites/default/files/config_kpbYqFzrMb1MfEyjwlhWR5qsQwkPR2JWrlBFlnUxEOk9LO7OvI0qsWLbzDKO2NwBAwhMbCNb3w/sync';
+
 
 . post_install_steps.sh
 
 copy over config files, e.g.:
-docker cp backup/sync/ b1a5a7c9b1b8:/opt/drupal/web/sites/default/files/config_gCohTr204_tUOHEoCSoqQdwbSTu87xtRCQZHJalG7RX3qSVKy3vy5Se3bI1B9pRplYijH-tFCA/
+docker cp backup/sync/ b1a5a7c9b1b8:/opt/drupal/web/sites/default/files/config_<hash>/
 
 now, in sync/ on the container:
 grep '^uuid:' system.site.yml #copy the resulting uuid and use it in the next step
@@ -174,8 +207,11 @@ id: story
 label: 'Story URL pattern'
 type: 'canonical_entities:node'
 
+check status report
+make sure basic site config is correct (e.g. email address for the site)
 
----------------- BUILD STEPS NOW AUTOMATED -----------------
+
+---------------- STEPS THAT MIGHT BE DANGLING. REVISIT THIS STUFF -----------------
 
 add to /var/www/html/sites/default/settings.php:
 $settings['trusted_host_patterns'] = [
@@ -185,40 +221,7 @@ $settings['trusted_host_patterns'] = [
   '^www\.swislr\.org$',
 ];
 
-composer require drupal/admin_toolbar
-drush en admin_toolbar admin_toolbar_tools
-drush en content_moderation (need to provide input [enter] here)
-composer require drupal/geofield
-drush en geofield
-composer require drupal/geofield_map drupal/geocoder
-drush en geofield_map geocoder
-
-#add content types. did this manually in dashboard
-#add permissions. this page has a table that helps: https://www.drupal.org/docs/8/core/modules/content-moderation/overview
-
-composer require drupal/token
-drush en token
-composer require drupal/pathauto
-drush en pathauto
-composer require drupal/entity_reference_revisions
-drush en entity_reference_revisions
-composer require drupal/webform
-drush en webform
-composer require drupal/smtp
-drush en smtp
-
-#install webform dependencies. don't actually need all of these. requires "y" input
-composer require wikimedia/composer-merge-plugin
-#add this to composer.json, under "extra":
-        "merge-plugin": {
-            "include": [
-                "web/modules/contrib/webform/composer.libraries.json"
-            ]
-        }
-
-composer update drupal/webform "drupal/webform-*" --with-dependencies
-
-#make a place for private files (resolves a warning)
+#make a place for private files (now configured in docker-compose.yaml, but still need to add line to settings.php)
 cd /opt
 mkdir drupal_private
 chown www-data:www-data drupal_private/
@@ -227,30 +230,14 @@ chmod 700 drupal_private
 $settings['file_private_path'] = '/opt/drupal_private';
 drush cr
 
-composer require drupal/honeypot
-drush en honeypot
-
-composer require drupal/email_registration
-drush en email_registration 
-
-#enabling these requires input
-composer require drupal/leaflet drupal/geofield_map drupal/block_class
-drush en leaflet geofield_map block_class 
-
 #enable custom modules
 mkdir -p /var/www/html/modules/custom
 
------ TO DO ----------
-composer require --dev drush/drush
-run the post install script
 might need to change ownership for all the files that are bind mounted
 
 when development is complete, copy composer.lock into the repo and version control it. ensure that it gets copied onto the container during build. it will lock dependencies
 
-
------ TIPS ----------
-
-if i'm ever going to develop themes or modules, do so outside the container, then mount from within
+when you develop themes or modules, do so outside the container, then mount from within
 volumes:
   - ./themes:/var/www/html/themes
   - ./modules:/var/www/html/modules
