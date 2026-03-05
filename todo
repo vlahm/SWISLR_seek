@@ -1,0 +1,86 @@
+map layers to include:
+	sea level rise projection
+	high tide flooding - from noaa
+	landcover - landsat?
+
+minimum priorities:
+	email newsletter is least necessary
+	content moderation
+	would need a way to report abusive content: could just be an email. swislrrcn@gmail.com
+
+maybe odn't worry about remote sense prodcts showing up on map
+	think about other solutions that could replace map viewing content. just "global" "national" etc.
+	maybe leverage google maps or something so we don't have to do too much gis stuff
+
+researcher verification is key
+	
+--------------
+
+X	cant make comments as normal user
+X	can't even click the comment link as an admin?
+x	keep overlays on top
+x	fix text/button color on map points
+X	moderation
+X	story submission
+X		only allow one gps point
+X		remove the textbox that shows the GPS points being selected
+X	can't create bio until verified user
+X	uninstall olivero!
+X	map broken
+X	need to include username in story card
+X	save button is in wrong place when submitting a pub. other data types?
+X	node pages for publications (click popup link) are cruddy. others too?
+X		some headers are links?
+X	fill out pub popups
+X	publicatoins view has no sorting/filtering at all
+X	"contribute" buttons need space before
+0	say why cant proceed if no map selection
+	
+----
+0	forum!
+X	dataset management
+X		fix multiple points on map popup rendering
+X		change language about multiple popups on the publications form
+X		wire up geojson for publications
+X		copy over and adapt for datasets
+X		do not require dataset to be uploaded. in fact, prefer a link
+X		why does it ask for lat/long bounds?
+X		save button wrong place
+X		need link in navbar
+X		file upload not working
+X		title not appearing in table
+X		still says 10mb limit when actually uploading
+X		global/regional/local/other (if location based)
+X			not a required field
+----
+before publish:
+	restore these as the recipients of moderation emails: emily.bernhardt@duke.edu, odonnellk25@ecu.edu, spencer.rhea@duke.edu
+X		use composer.lock at top level for this?
+X		backup db and sites/default/files
+0		but i want to wipe the db ultimately
+X		need volumes for sites/default/files (and private files if i ever need them)
+	update docker-compose.yaml with the name of my image after i build it
+ensure that caddy container starts on reboot
+https://medium.com/@sohail_saifi/from-zero-to-deployment-deploying-a-dockerized-app-to-digitalocean-8279810f0214
+	automated backups
+	log aggregation
+	health check
+	vulnerability check
+	troubleshooting
+	downsize droplet?
+still need smtp??
+didn't even need post-Install script last time
+change "adhoc emails" in config -> workflow -> cont mod notify: emily.bernhardt@duke.edu,spencer.rhea@duke.edu,odonnellk25@ecu.edu
+
+bugs:
+	apostrophe in username registers as escaped html
+	people are still able to draw boundaries around whole usa. how to prevent?
+	maybe need a little counter for "regional", "national", "global" datasets
+	navbar links not included in config? what else isn't included?
+	feedback link is invisible at bottom
+		also a drupal link in footer
+	maybe publications and stories should be filterable by region too
+	add extension/outreach domain to the registration
+	forum time has come - tags (or too much moderation?)
+	dataset cascading comment section? if doesn't exist, could
+	job postings would go to google group? but now there are two swislr places, so we could one day consolidate
