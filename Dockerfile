@@ -26,6 +26,7 @@ RUN curl -L https://github.com/drush-ops/drush-launcher/releases/latest/download
 COPY bashrc /root/.bashrc
 COPY post_install_steps.sh /opt/drupal/
 COPY composer.json composer.lock /opt/drupal/
+RUN cd /opt/drupal && composer install --no-dev --no-interaction --prefer-dist
 COPY misc_config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 #ENV PATH="/opt/vendor/bin:${PATH}"
 

@@ -157,14 +157,14 @@ dev host:
 	commit, push
 
 prod host:
-	pull
-	docker compose pull? (just recommended by claude)
+	pull (no need to docker cp, because composer.json and lock are copied in Dockerfile)
+	# this is good to run at times, but i haven't internalized it yet. there's a claude conversation about it.: docker compose pull
 	docker compose build --no-cache drupal
-	docker compose update (not a real command? did i mean pull? or is it real?)
 	docker compose up -d
+	#docker compose exec drupal drush updatedb (works? if so, don't need to enter the container at all. also, claude has a way to accomplish everything in scripts)
+	#docker compose exec drupal drush cache:rebuild
 
 prod container:
-	composer install
 	drush sset system.maintenance_mode 1 -y && drush cr
 	drush updb -y (always run. if no updates, is a no-op)
 	drush cim
