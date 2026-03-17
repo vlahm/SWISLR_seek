@@ -1,3 +1,11 @@
+------ RESUMING DEVELOPMENT AFTER A PAUSE -----------
+
+no need to run drush serve or anything. so long as the containers are running, you can access the site at http://127.0.0.1:8080
+verify containers are running: docker ps
+now jump down to the redeployment section
+
+-----------------------------------------------------
+
 
 DOCKER/COMPOSER COMMANDS:
 
@@ -113,7 +121,22 @@ drush wd-show					logs
 drush pm:list --status=enabled --type=module
 
 
-REDEPLOY
+REDEPLOY --------------------------------
+
+workflow:
+1. remote into the prod server (swislrserv)
+2. exec into the prod container
+3. drush cex
+4. docker cp to the repo.
+	make sure repo is clean, then rm -r existing backup/sync/ (full path below)
+	root@ubuntu-s-2vcpu-4gb-nyc3-01:/home/swislr/SWISLR_seek# docker cp 70e5192692e0:/opt/drupal/web/sites/default/files/config_kpbYqFzrMb1MfEyjwlhWR5qsQwkPR2JWrlBFlnUxEOk9LO7OvI0qsWLbzDKO2NwBAwhMbCNb3w/sync backup/
+	it might have nested sync/ dirs. the outer one has a derelict smtp.settings.php, so we want inner contents
+	dont forget about .htaccess file
+5. push/pull down to local
+6. docker cp to the container
+	
+7. drush config:status (to see what's about to change before you import)
+8. locally, drush cim from within the test container
 
 !!! turns out docker-compose is the old version. needed to upgrade on prod. now it's docker compose
 
