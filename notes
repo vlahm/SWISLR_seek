@@ -71,14 +71,15 @@ BACKUPS:
 # eventually you'll want to rebuild the container locally. need to ignore cache for that, so up -d will fail
 # need this: apt-get update && apt-get install -y --no-install-recommends mariadb-client
 #	but don't need it for production
+# can put secrets in settings.local.php, but whatevs
+# for regular-basis backups during development, sql:dump is probs fine
+# following code backs up files and database, excluding the settings file which contains secrets.
 
 drush sset system.maintenance_mode 1
-drush archive:dump --destination=/var/www/html/modules/custom/backup.tar.gz  --exclude-code-paths=web/sites/default/settings.php
+php -d memory_limit=-1 /opt/drupal/vendor/drush/drush/drush.php archive:dump --destination=/var/www/html/modules/custom/backup.tar.gz --exclude-code-paths=web/sites/default/settings.php
 drush sset system.maintenance_mode 0
-	follow this with e.g.: mv modules/custom/backup.tar.gz backup2.tar.gz
-	backup files and database, excluding the settings file which contains secrets.
-	can put secrets in settings.local.php, but whatevs
-	for regular-basis backups during development, sql:dump is probs fine
+E.G. (increment): mv modules/custom/backup.tar.gz backup2.tar.gz
+docker cp this out periodically?
 
 
 CONTRIB UPDATES (backup first):
@@ -99,7 +100,8 @@ drush sset system.maintenance_mode 0
 CORE UPDATES (clear all errors and backup first):
 
 drush sset system.maintenance_mode 1
-TRY: composer update "drupal/core-*" --with-all-dependencies
+TRY:
+	composer update "drupal/core-*" --with-all-dependencies
 IF IT FAILS, it's probaby because you've fixed the version? so use require: 
 composer require \
   drupal/core-recommended:^10.5 \
@@ -140,13 +142,19 @@ first, syncing remote changes made through the live admin interface:
 7. drush config:status (to see what's about to change before you import)
 8. locally, drush cim from within the test container
 
+second, updates:
+	never do these on prod! they'll get wiped when you push.
+	admin interface keeps failing. use code. follow the BACKUPS, CONTRIB_UPDATES, and CORE_UPDATES sections above before proceeding
+
 after development:
 
 inside dev container:
 	composer update (rewrites lockfile based on composer.json)
-	composer install (installs what's in the lockfile; redundant according to claude)
-	add and commit the lockfile!
-	push
+
+dev host:
+	docker cp  b1a5a7c9b1b8:/opt/drupal/composer.json .
+	docker cp  b1a5a7c9b1b8:/opt/drupal/composer.lock .
+	commit, push
 
 prod host:
 	pull
@@ -240,6 +248,9 @@ type: 'canonical_entities:node'
 check status report
 make sure basic site config is correct (e.g. email address for the site)
 gotta manually build navbar links? why?
+
+also make sure the container contains the right composer.json (and composer.lock if that already exists in the repo)
+	the container seems to get built with defaults for these, and i'm not sure if i've written the copy step into the build yet
 
 
 ---------------- STEPS THAT MIGHT BE DANGLING. REVISIT THIS STUFF -----------------

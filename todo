@@ -84,3 +84,8 @@ bugs:
 	forum time has come - tags (or too much moderation?)
 	dataset cascading comment section? if doesn't exist, could
 	job postings would go to google group? but now there are two swislr places, so we could one day consolidate
+
+package fixes (get them under control of composer)
+security updates
+contrib updates
+db dump on remote
