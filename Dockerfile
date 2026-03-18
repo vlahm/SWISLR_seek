@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
   unzip \
   curl \
   git \
-#  mariadb-client \
+  mariadb-client \
   && rm -rf /var/lib/apt/lists/*
 
 # Install Drush (global, not project-local)
@@ -28,6 +28,8 @@ COPY post_install_steps.sh /opt/drupal/
 COPY composer.json composer.lock /opt/drupal/
 RUN cd /opt/drupal && composer install --no-dev --no-interaction --prefer-dist
 COPY misc_config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+COPY backup/settings.php /opt/drupal/web/sites/default/
+COPY backup/sync /opt/drupal/config/sync
 #ENV PATH="/opt/vendor/bin:${PATH}"
 
 # Install Composer dependencies early to leverage caching
