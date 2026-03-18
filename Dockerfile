@@ -27,10 +27,14 @@ COPY bashrc /root/.bashrc
 COPY post_install_steps.sh /opt/drupal/
 COPY composer.json composer.lock /opt/drupal/
 RUN cd /opt/drupal && composer install --no-dev --no-interaction --prefer-dist
-COPY misc_config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 COPY backup/settings.php /opt/drupal/web/sites/default/
 COPY backup/sync /opt/drupal/config/sync
+COPY misc_config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 #ENV PATH="/opt/vendor/bin:${PATH}"
+
+#ensure drush CLI commands work on fresh install. no need for SSL between two containers on the same host
+RUN mkdir -p /opt/drupal/drush && \
+    printf 'command:\n  sql:\n    options:\n      extra: "--skip-ssl"\n' > /opt/drupal/drush/drush.yml
 
 # Install Composer dependencies early to leverage caching
 #COPY composer.json composer.lock /var/www/html/

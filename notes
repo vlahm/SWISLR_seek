@@ -164,8 +164,13 @@ prod host:
 	docker compose up -d
 
 prod container: (with modifications, all of this could be executed from the host)
+	docker exec -it swislr_seek-drupal-1 bash
 	drush sset system.maintenance_mode 1 -y && drush cr
 	drush updb -y (always run. if no updates, is a no-op)
+	drush sqlq "SELECT DISTINCT collection FROM config" --extra="--skip-ssl" (this is just a test to confirm we don't have a rogue sync/ collection in the db again. should be an empty string. if error:)
+		on host: docker compose exec db mariadb-dump --skip-ssl -u swislr -p swislr > backup_before_sync_delete.sql
+		in container: drush sqlq "DELETE FROM config WHERE collection = 'sync'" --extra="--skip-ssl"
+		drush cr
 	drush cim
 	drush cr
 	drush sset system.maintenance_mode 0 -y && drush cr

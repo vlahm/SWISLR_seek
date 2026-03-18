@@ -6,7 +6,6 @@ README.md
 .env
 .env.local
 .cache
-backup
 *.swp
 .gitattributes
 .editorconfig

@@ -85,7 +85,12 @@ bugs:
 	dataset cascading comment section? if doesn't exist, could
 	job postings would go to google group? but now there are two swislr places, so we could one day consolidate
 
-package fixes (get them under control of composer)
-security updates
-contrib updates
-db dump on remote
+X	package fixes (get them under control of composer)
+X	security updates
+X	contrib updates
+X	db dump on remote
+do i actually want to CP that drush/drush.yml in Dockerfilen now?
+successful rebuild
+actual updates
+ufw still needs to be run on container?
+tell emily and kiera not to update anything!
