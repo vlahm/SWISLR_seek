@@ -9,3 +9,5 @@ aider*
 vendor/
 web/
 pre-deploy-backup.sql
+backup/settings.php
+backup/default.settings.php
