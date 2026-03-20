@@ -10,14 +10,14 @@ set -uo pipefail
 # Resolve project root (one level up from this script's directory)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-BACKUP_DIR="${1:-$SCRIPT_DIR}"
+BACKUP_DIR="${1:-$SCRIPT_DIR/full_dump}"
 cd "$PROJECT_ROOT"
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 echo "==> Dumping database..."
-if ! docker compose exec -T drupal drush sql-dump --gzip \
-  > "$BACKUP_DIR/db-${TIMESTAMP}.sql.gz" 2>"$BACKUP_DIR/db-err-${TIMESTAMP}.log"; then
+if ! docker compose exec -T drupal drush sql-dump 2>"$BACKUP_DIR/db-err-${TIMESTAMP}.log" \
+  | gzip > "$BACKUP_DIR/db-${TIMESTAMP}.sql.gz"; then
   echo "    ERROR: database dump failed. See $BACKUP_DIR/db-err-${TIMESTAMP}.log"
   cat "$BACKUP_DIR/db-err-${TIMESTAMP}.log"
 fi
