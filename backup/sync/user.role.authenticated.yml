@@ -7,6 +7,7 @@ dependencies:
     - filter.format.restricted_html
     - filter.format.webform_default
     - node.type.dataset
+    - node.type.discussion
     - node.type.publication
     - node.type.story
     - node.type.suggested_member
@@ -37,15 +38,18 @@ permissions:
   - 'cancel account'
   - 'change own username'
   - 'create dataset content'
+  - 'create discussion content'
   - 'create publication content'
   - 'create story content'
   - 'create suggested_member content'
   - 'delete own dataset content'
+  - 'delete own discussion content'
   - 'delete own files'
   - 'delete own publication content'
   - 'delete own story content'
   - 'delete own suggested_member content'
   - 'edit own dataset content'
+  - 'edit own discussion content'
   - 'edit own story content'
   - 'edit own suggested_member content'
   - 'post comments'

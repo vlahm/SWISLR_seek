@@ -8,3 +8,8 @@ dataset:
     theme:
       css/dataset.css: {}
 
+forum:
+  css:
+    theme:
+      css/forum.css: {}
+

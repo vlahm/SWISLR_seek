@@ -1,0 +1,4 @@
+forum-node:
+  css:
+    component:
+      css/forum.css: {}

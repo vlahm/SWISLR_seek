@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function swislr_forum_theme($existing, $type, $theme, $path) {
+  return [
+    'node__discussion__full' => [
+      'template' => 'node--discussion',
+      'base hook' => 'node',
+      'path' => $path . '/templates',
+    ],
+    'node__discussion' => [
+      'template' => 'node--discussion',
+      'base hook' => 'node',
+      'path' => $path . '/templates',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function swislr_forum_theme_registry_alter(array &$registry) {
+  $path = \Drupal::service('extension.path.resolver')
+    ->getPath('module', 'swislr_forum') . '/templates';
+
+  foreach (['node__discussion', 'node__discussion__full'] as $key) {
+    if (isset($registry[$key])) {
+      $registry[$key]['path'] = $path;
+      $registry[$key]['template'] = 'node--discussion';
+    }
+  }
+}

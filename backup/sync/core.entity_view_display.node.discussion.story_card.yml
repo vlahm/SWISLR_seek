@@ -1,0 +1,38 @@
+uuid: fa0d6e00-d16d-433c-b8b1-f626fcf6be19
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment.default
+    - core.entity_view_mode.node.story_card
+    - field.field.node.discussion.body
+    - field.field.node.discussion.field_comment
+    - field.field.node.discussion.field_image
+    - field.field.node.discussion.field_tags
+    - node.type.discussion
+  module:
+    - comment
+    - user
+id: node.discussion.story_card
+targetEntityType: node
+bundle: discussion
+mode: story_card
+content:
+  field_comment:
+    type: comment_default
+    label: above
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  field_image: true
+  field_tags: true

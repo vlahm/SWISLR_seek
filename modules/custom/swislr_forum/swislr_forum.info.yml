@@ -1,0 +1,7 @@
+name: 'SWISLR Forum'
+type: module
+description: 'Forum/discussion node template and display logic'
+core_version_requirement: ^10 || ^11
+package: SWISLR
+dependencies:
+  - drupal:node

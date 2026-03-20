@@ -41,8 +41,6 @@ function swislr_datasets_theme_registry_alter(array &$registry) {
  * Hide Location when Spatial extent is Global or Continental.
  */
 function swislr_datasets_form_node_dataset_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  \Drupal::logger('swislr_datasets')->notice('form alter fired');
-
   $selector = ':input[name="field_spatial_extent"]';
 
   if (isset($form['field_location'])) {

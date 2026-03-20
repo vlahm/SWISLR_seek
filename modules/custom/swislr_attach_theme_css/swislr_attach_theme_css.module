@@ -16,6 +16,9 @@ function swislr_attach_theme_css_entity_view_alter(array &$build, EntityInterfac
     elseif ($bundle === 'dataset') {
       $build['#attached']['library'][] = 'swislr_attach_theme_css/dataset';
     }
+    elseif ($bundle === 'discussion') {
+      $build['#attached']['library'][] = 'swislr_attach_theme_css/forum';
+    }
   }
 }
 
