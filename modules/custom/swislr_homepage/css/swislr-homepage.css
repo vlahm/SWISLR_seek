@@ -86,3 +86,75 @@
   height: auto;
   display: block;
 }
+
+/* ── Footer links on the homepage: compact bottom-left buttons ── */
+body:has(.swislr-landing) footer[role="contentinfo"] {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  right: auto;
+  width: auto;
+  z-index: 1000;
+  background: transparent !important;
+  padding: 0;
+  margin: 0;
+}
+
+body:has(.swislr-landing) footer[role="contentinfo"] > .container {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+body:has(.swislr-landing) footer[role="contentinfo"] .block {
+  margin: 0;
+  padding: 0;
+}
+
+/* Footer menu links (e.g. Contact) — solid white buttons */
+body:has(.swislr-landing) footer[role="contentinfo"] #block-bootstrap5-footer a.nav-link {
+  background-color: white !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 4px;
+  text-decoration: none;
+  color: black !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  display: inline-block;
+  font-size: 0.85rem;
+}
+
+body:has(.swislr-landing) footer[role="contentinfo"] #block-bootstrap5-footer a.nav-link:hover {
+  background-color: #f0f0f0 !important;
+}
+
+/* "Powered by Drupal" — subtle white text, no background */
+body:has(.swislr-landing) footer[role="contentinfo"] .block-system-powered-by-block {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0.5rem 0;
+  color: white;
+  font-size: 0.8rem;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+/* "Drupal" link — white outlined button */
+body:has(.swislr-landing) footer[role="contentinfo"] .block-system-powered-by-block a {
+  background: transparent !important;
+  padding: 0.25rem 0.6rem;
+  border: 1.5px solid white;
+  border-radius: 4px;
+  text-decoration: none;
+  color: white !important;
+  box-shadow: none;
+  font-size: 0.8rem;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  display: inline-block;
+}
+
+body:has(.swislr-landing) footer[role="contentinfo"] .block-system-powered-by-block a:hover {
+  background-color: rgba(255,255,255,0.2) !important;
+}
