@@ -4,6 +4,55 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 
 /**
+ * Implements hook_page_attachments().
+ */
+function swislr_attach_theme_css_page_attachments(array &$attachments) {
+  // Attach navbar CSS globally.
+  $attachments['#attached']['library'][] = 'swislr_attach_theme_css/navbar';
+
+  // Inline JS to sync all Bootstrap5 navbar-collapse regions.
+  $js = <<<'JSEOF'
+(function(){
+  document.addEventListener("DOMContentLoaded",function(){
+    var navbars=document.querySelectorAll(".navbar");
+    navbars.forEach(function(navbar){
+      var collapses=Array.prototype.slice.call(navbar.querySelectorAll(".navbar-collapse"));
+      if(collapses.length<=1)return;
+      var master=collapses[0],others=collapses.slice(1),syncing=false;
+      function sync(){
+        if(syncing)return;syncing=true;
+        var open=master.classList.contains("show");
+        others.forEach(function(el){
+          if(open){el.classList.add("show");el.style.height="";el.style.display="";}
+          else{el.classList.remove("show");el.style.height="";}
+        });
+        syncing=false;
+      }
+      new MutationObserver(sync).observe(master,{attributes:true,attributeFilter:["class"]});
+      ["shown.bs.collapse","hidden.bs.collapse","show.bs.collapse","hide.bs.collapse"].forEach(function(e){
+        master.addEventListener(e,sync);
+      });
+      setInterval(sync,200);
+      var togglers=navbar.querySelectorAll(".navbar-toggler");
+      for(var i=1;i<togglers.length;i++)togglers[i].style.display="none";
+      sync();
+    });
+  });
+})();
+JSEOF;
+
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+      '#value' => $js,
+      '#attributes' => ['type' => 'text/javascript'],
+    ],
+    'swislr_navbar_sync',
+  ];
+}
+
+/**
  * Implements hook_entity_view_alter().
  */
 

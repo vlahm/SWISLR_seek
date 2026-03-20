@@ -13,3 +13,8 @@ forum:
     theme:
       css/forum.css: {}
 
+navbar:
+  css:
+    theme:
+      css/navbar.css: {}
+

@@ -662,14 +662,11 @@ fetch(datasetsUrl, { credentials: 'same-origin' })
           gibsControl.hide();
         }
 
-		if (map.hasLayer(slrTile)) {
+		if (slrTile && map.hasLayer(slrTile)) {
        		slrTile.bringToFront?.();
 		}
-		if (map.hasLayer(confTile)) {
+		if (confTile && map.hasLayer(confTile)) {
        		confTile.bringToFront?.();
-		}
-		if (map.hasLayer(storiesLayer)) {
-       		storiesLayer.bringToFront?.();
 		}
       }
 

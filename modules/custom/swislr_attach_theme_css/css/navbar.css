@@ -1,0 +1,82 @@
+/* ============================
+   SWISLR Responsive Navbar
+   JS syncs all collapse regions; CSS handles layout.
+   ============================ */
+
+/* ====== Compact links in the mid-range ====== */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .navbar .navbar-nav .nav-link {
+    padding: 0.35rem 0.35rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 1200px) {
+  .navbar .navbar-nav .nav-link {
+    padding: 0.5rem 0.65rem;
+    white-space: nowrap;
+  }
+}
+
+/* ====== Collapsed state: clean vertical stack ====== */
+.navbar .navbar-collapse .navbar-nav {
+  /* When collapsed, these become vertical */
+}
+
+@media (max-width: 991.98px) {
+  .navbar .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+    padding: 0.25rem 0;
+  }
+
+  .navbar .navbar-nav .nav-item {
+    width: 100%;
+  }
+
+  .navbar .navbar-nav .nav-link {
+    display: block;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 1rem;
+  }
+
+  .navbar .navbar-nav .nav-link:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .navbar .navbar-nav .nav-item:last-child .nav-link {
+    border-bottom: none;
+  }
+
+  /* Separator before secondary nav sections */
+  .navbar .navbar-collapse + .navbar-collapse .navbar-nav {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 0.25rem;
+    padding-top: 0.25rem;
+  }
+
+  /* Search form full-width */
+  .navbar .navbar-collapse form {
+    padding: 0.5rem 1rem;
+    width: 100%;
+  }
+
+  .navbar .navbar-collapse form input[type="search"],
+  .navbar .navbar-collapse form input[type="text"] {
+    width: 100%;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+  }
+
+  /* Extra togglers hidden via JS (navbar-sync.js) */
+}
+
+/* ====== General polish ====== */
+.navbar .nav-link.is-active,
+.navbar .nav-link.active {
+  font-weight: 600;
+}
