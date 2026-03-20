@@ -166,13 +166,17 @@ prod host:
 prod container: (with modifications, all of this could be executed from the host)
 	docker exec -it swislr_seek-drupal-1 bash
 	drush sset system.maintenance_mode 1 -y && drush cr
+	backup:
+		OLD: on host: docker compose exec db mariadb-dump --skip-ssl -u swislr -p swislr > backup_before_sync_delete.sql
+			NEW: on host: bash backup/backup_site.sh (writes to backup/full_dump/)
 	drush updb -y (always run. if no updates, is a no-op)
-	drush sqlq "SELECT DISTINCT collection FROM config" --extra="--skip-ssl" (this is just a test to confirm we don't have a rogue sync/ collection in the db again. should be an empty string. if error...)
-		on host: docker compose exec db mariadb-dump --skip-ssl -u swislr -p swislr > backup_before_sync_delete.sql
-		in container: drush sqlq "DELETE FROM config WHERE collection = 'sync'" --extra="--skip-ssl"
-		drush cr
+	make sure chill:
+		drush sqlq "SELECT DISTINCT collection FROM config" --extra="--skip-ssl" (this is just a test to confirm we don't have a rogue sync/ collection in the db again. should be an empty string. if error, read on)
+			SHOULDN'T NEED THIS AGAIN; ONLY IF IT'S DUPLICATING CONFIGS IN DB
+				in container: drush sqlq "DELETE FROM config WHERE collection = 'sync'" --extra="--skip-ssl"
+	drush cr
 	at this point, still have to step through some of the "deploy" steps below. i think just:
-		. post_install_steps.sh
+		. post_install_steps.sh (should be hella automatable now. doesn't even need the `drush en` lines anymore
 		edit that one pathauto config (shouldn't need this anymore)
 	drush cim
 	drush cr

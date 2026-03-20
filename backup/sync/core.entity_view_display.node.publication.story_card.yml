@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.story_card
     - field.field.node.publication.field_abstract
     - field.field.node.publication.field_location
+    - field.field.node.publication.field_spatial_extent
     - field.field.node.publication.field_tags
     - field.field.node.publication.field_url_doi
     - node.type.publication
@@ -33,5 +34,6 @@ content:
     region: content
 hidden:
   field_abstract: true
+  field_spatial_extent: true
   field_tags: true
   field_url_doi: true

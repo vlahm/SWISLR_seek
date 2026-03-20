@@ -144,6 +144,45 @@ const storiesCluster = L.markerClusterGroup(); // clustered points
 const publicationsCluster = L.markerClusterGroup(); // clustered points
 const datasetCluster = L.markerClusterGroup(); // clustered points
 
+// ---- Spatial-extent filter: skip oversized polygons ----
+// Returns approximate area of a GeoJSON geometry's bounding box in km².
+function bboxAreaKm2(geometry) {
+  if (!geometry || !geometry.coordinates) return 0;
+  // Flatten all coordinate arrays to get [lng, lat] pairs
+  const coords = [];
+  function extract(c) {
+    if (typeof c[0] === 'number') { coords.push(c); return; }
+    c.forEach(extract);
+  }
+  extract(geometry.coordinates);
+  if (coords.length === 0) return 0;
+  let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
+  coords.forEach(([lng, lat]) => {
+    if (lng < minLng) minLng = lng;
+    if (lng > maxLng) maxLng = lng;
+    if (lat < minLat) minLat = lat;
+    if (lat > maxLat) maxLat = lat;
+  });
+  // Approximate area using equirectangular projection
+  const midLat = (minLat + maxLat) / 2;
+  const dLat = (maxLat - minLat) * 111.32; // km per degree latitude
+  const dLng = (maxLng - minLng) * 111.32 * Math.cos(midLat * Math.PI / 180);
+  return dLat * dLng;
+}
+
+// Maximum bounding-box area (km²) for a polygon to render on the map.
+// ~500 000 km² ≈ Spain. Anything larger is probably a continent-scale bounding box.
+const MAX_POLYGON_BBOX_KM2 = 500000;
+
+// Filter function: returns false for oversized non-point geometries
+function shouldRenderFeature(feature) {
+  if (!feature.geometry) return false;
+  const t = feature.geometry.type;
+  // Always render points
+  if (t === 'Point' || t === 'MultiPoint') return true;
+  return bboxAreaKm2(feature.geometry) <= MAX_POLYGON_BBOX_KM2;
+}
+
 // Shared popup builder (same content for every geometry of the same story)
 function buildPopupHTML(p) {
   const title = p?.name || '';
@@ -219,6 +258,7 @@ function attachPopupAutoResize(layer) {
 
 // stories
 const storiesPoints = L.geoJSON(null, {
+  filter: shouldRenderFeature,
   pointToLayer: (feature, latlng) => {
     // simple circles with outline; color can come from a property, else fallback
     const p = feature.properties || {};
@@ -254,6 +294,7 @@ fetch(storiesUrl, { credentials: 'same-origin' })
 
 // publications
 const publicationsPoints = L.geoJSON(null, {
+  filter: shouldRenderFeature,
   pointToLayer: (feature, latlng) => {
     const p = feature.properties || {};
     const color = color_pubs;
@@ -286,6 +327,7 @@ fetch(publicationsUrl, { credentials: 'same-origin' })
 
 // datasets
 const datasetsPoints = L.geoJSON(null, {
+  filter: shouldRenderFeature,
   pointToLayer: (feature, latlng) => {
     const p = feature.properties || {};
     const color = color_data;

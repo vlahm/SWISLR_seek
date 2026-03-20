@@ -1,0 +1,21 @@
+uuid: 06a022ad-dc28-4095-b82b-3b376a624e1c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_spatial_extent
+    - node.type.publication
+  module:
+    - options
+id: node.publication.field_spatial_extent
+field_name: field_spatial_extent
+entity_type: node
+bundle: publication
+label: 'Spatial Extent'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

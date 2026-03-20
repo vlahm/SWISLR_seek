@@ -73,12 +73,12 @@ didn't even need post-Install script last time
 change "adhoc emails" in config -> workflow -> cont mod notify: emily.bernhardt@duke.edu,spencer.rhea@duke.edu,odonnellk25@ecu.edu
 
 bugs:
-	apostrophe in username registers as escaped html
+X		apostrophe in username registers as escaped html
 	people are still able to draw boundaries around whole usa. how to prevent?
 	maybe need a little counter for "regional", "national", "global" datasets
-	navbar links not included in config? what else isn't included?
-	feedback link is invisible at bottom
-		also a drupal link in footer
+0		navbar links not included in config? what else isn't included?
+X		feedback link is invisible at bottom
+X			also a drupal link in footer
 	maybe publications and stories should be filterable by region too
 	add extension/outreach domain to the registration
 	forum time has come - tags (or too much moderation?)
@@ -90,11 +90,12 @@ X	security updates
 X	contrib updates
 X	db dump on remote
 X	do i actually want to CP that drush/drush.yml in Dockerfilen now?
-successful rebuild
+X	successful rebuild
 actual updates
 ufw still needs to be run on container?
 tell emily and kiera not to update anything!
 
 X	on dev:
 X		run through initial build steps, then see if we can debug
-	are the pictures still broken on prod? how can i make sure they survive db rebuild?
+X		are the pictures still broken on prod? how can i make sure they survive db rebuild?
+after prod merge: edit publication spatial extents
