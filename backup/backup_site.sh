@@ -16,34 +16,18 @@ TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 echo "==> Dumping database..."
-docker compose exec -T drupal drush sql-dump \
+docker compose exec -T db bash -c \
+  'mariadb-dump --skip-ssl -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"' \
   > "$BACKUP_DIR/db-${TIMESTAMP}.sql" \
   2>"$BACKUP_DIR/db-err-${TIMESTAMP}.log"
 DB_EXIT=$?
 if [ $DB_EXIT -ne 0 ] || [ ! -s "$BACKUP_DIR/db-${TIMESTAMP}.sql" ]; then
-  echo "    ERROR: database dump failed (exit=$DB_EXIT, size=$(stat -c%s "$BACKUP_DIR/db-${TIMESTAMP}.sql" 2>/dev/null || echo 0))."
+  echo "    ERROR: database dump failed (exit=$DB_EXIT)."
   echo "    stderr log:"
   cat "$BACKUP_DIR/db-err-${TIMESTAMP}.log"
-  echo "    First 5 lines of output:"
-  head -5 "$BACKUP_DIR/db-${TIMESTAMP}.sql"
-  echo ""
-  echo "    Trying alternative: mysqldump directly..."
-  docker compose exec -T drupal bash -c \
-    'mysqldump -h db -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"' \
-    > "$BACKUP_DIR/db-${TIMESTAMP}.sql" \
-    2>"$BACKUP_DIR/db-err-${TIMESTAMP}.log"
-  DB_EXIT=$?
-  if [ $DB_EXIT -ne 0 ] || [ ! -s "$BACKUP_DIR/db-${TIMESTAMP}.sql" ]; then
-    echo "    ERROR: mysqldump also failed (exit=$DB_EXIT)."
-    cat "$BACKUP_DIR/db-err-${TIMESTAMP}.log"
-  fi
-fi
-if [ -s "$BACKUP_DIR/db-${TIMESTAMP}.sql" ]; then
+else
   gzip "$BACKUP_DIR/db-${TIMESTAMP}.sql"
   echo "    Database dump OK."
-else
-  rm -f "$BACKUP_DIR/db-${TIMESTAMP}.sql"
-  echo "    WARNING: No database dump produced."
 fi
 
 echo "==> Archiving uploaded files..."

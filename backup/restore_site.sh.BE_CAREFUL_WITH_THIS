@@ -11,7 +11,8 @@ FILES_TAR="${2:?Usage: $0 <db_dump.sql.gz> <files.tar.gz> [private.tar.gz]}"
 PRIVATE_TAR="${3:-}"
 
 echo "==> Restoring database from ${DB_DUMP}..."
-gunzip -c "$DB_DUMP" | docker compose exec -T drupal drush sql-cli
+gunzip -c "$DB_DUMP" | docker compose exec -T db bash -c \
+  'mariadb --skip-ssl -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"'
 
 echo "==> Restoring uploaded files from ${FILES_TAR}..."
 docker compose exec -T drupal \
