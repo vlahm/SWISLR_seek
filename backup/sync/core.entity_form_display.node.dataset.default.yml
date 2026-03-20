@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.dataset.field_category
+    - field.field.node.dataset.field_comment
     - field.field.node.dataset.field_description
     - field.field.node.dataset.field_file
     - field.field.node.dataset.field_location
@@ -12,6 +13,7 @@ dependencies:
     - field.field.node.dataset.field_url_doi
     - node.type.dataset
   module:
+    - comment
     - content_moderation
     - file
     - leaflet
@@ -31,6 +33,12 @@ content:
   field_category:
     type: options_select
     weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_comment:
+    type: comment_default
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }

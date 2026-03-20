@@ -60,7 +60,7 @@ X		backup db and sites/default/files
 0		but i want to wipe the db ultimately
 X		need volumes for sites/default/files (and private files if i ever need them)
 	update docker-compose.yaml with the name of my image after i build it
-ensure that caddy container starts on reboot
+X	ensure that caddy container starts on reboot
 https://medium.com/@sohail_saifi/from-zero-to-deployment-deploying-a-dockerized-app-to-digitalocean-8279810f0214
 	automated backups
 	log aggregation
@@ -68,21 +68,21 @@ https://medium.com/@sohail_saifi/from-zero-to-deployment-deploying-a-dockerized-
 	vulnerability check
 	troubleshooting
 	downsize droplet?
-still need smtp??
-didn't even need post-Install script last time
+X	still need smtp??
+0	didn't even need post-Install script last time
 change "adhoc emails" in config -> workflow -> cont mod notify: emily.bernhardt@duke.edu,spencer.rhea@duke.edu,odonnellk25@ecu.edu
 
 bugs:
 X		apostrophe in username registers as escaped html
-	people are still able to draw boundaries around whole usa. how to prevent?
-	maybe need a little counter for "regional", "national", "global" datasets
+X		people are still able to draw boundaries around whole usa. how to prevent?
+X		maybe need a little counter for "regional", "national", "global" datasets
 0		navbar links not included in config? what else isn't included?
 X		feedback link is invisible at bottom
 X			also a drupal link in footer
-	maybe publications and stories should be filterable by region too
-	add extension/outreach domain to the registration
+X		maybe publications and stories should be filterable by region too
+X		add extension/outreach domain to the registration
 	forum time has come - tags (or too much moderation?)
-	dataset cascading comment section? if doesn't exist, could
+X		dataset cascading comment section? if doesn't exist, could
 	job postings would go to google group? but now there are two swislr places, so we could one day consolidate
 
 X	package fixes (get them under control of composer)
@@ -91,9 +91,8 @@ X	contrib updates
 X	db dump on remote
 X	do i actually want to CP that drush/drush.yml in Dockerfilen now?
 X	successful rebuild
-actual updates
 ufw still needs to be run on container?
-tell emily and kiera not to update anything!
+0	tell emily and kiera not to update anything!
 
 X	on dev:
 X		run through initial build steps, then see if we can debug

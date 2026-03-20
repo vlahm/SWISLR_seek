@@ -24,6 +24,9 @@ settings:
       value: urban_planning
       label: 'Urban Planning'
     -
+      value: extension_outreach
+      label: Extension/Outreach
+    -
       value: policy
       label: Policy
     -

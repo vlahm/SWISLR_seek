@@ -43,6 +43,18 @@ function swislr_comment_spice_theme_registry_alter(array &$registry) {
     $registry['field__field_comments']['template'] = 'field--field-comments';
   }
 
+  // Dataset (and any bundle) using 'field_comment' as the machine name.
+  if (isset($registry['field__field_comment'])) {
+    $registry['field__field_comment']['path'] = $path;
+    $registry['field__field_comment']['template'] = 'field--comment';
+  }
+
+  // Comment wrapper (the <section> around the list + form).
+  if (isset($registry['comment_wrapper'])) {
+    $registry['comment_wrapper']['path'] = $path;
+    $registry['comment_wrapper']['template'] = 'comment-wrapper';
+  }
+
   // Keep your nice single-comment card too.
   if (isset($registry['comment'])) {
     $registry['comment']['path'] = $path;

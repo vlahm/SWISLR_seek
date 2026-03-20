@@ -3,6 +3,41 @@
 use Drupal\Core\Form\FormStateInterface;
 
 /**
+ * Implements hook_theme().
+ */
+function swislr_datasets_theme($existing, $type, $theme, $path) {
+  return [
+    'node__dataset__full' => [
+      'template' => 'node--dataset',
+      'base hook' => 'node',
+      'path' => $path . '/templates',
+    ],
+    'node__dataset' => [
+      'template' => 'node--dataset',
+      'base hook' => 'node',
+      'path' => $path . '/templates',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ *
+ * Ensure our module template wins over the theme for dataset nodes.
+ */
+function swislr_datasets_theme_registry_alter(array &$registry) {
+  $path = \Drupal::service('extension.path.resolver')
+    ->getPath('module', 'swislr_datasets') . '/templates';
+
+  foreach (['node__dataset', 'node__dataset__full'] as $key) {
+    if (isset($registry[$key])) {
+      $registry[$key]['path'] = $path;
+      $registry[$key]['template'] = 'node--dataset';
+    }
+  }
+}
+
+/**
  * Hide Location when Spatial extent is Global or Continental.
  */
 function swislr_datasets_form_node_dataset_form_alter(array &$form, FormStateInterface $form_state, $form_id) {

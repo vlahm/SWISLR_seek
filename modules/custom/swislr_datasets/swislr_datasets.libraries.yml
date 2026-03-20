@@ -1,0 +1,4 @@
+dataset-node:
+  css:
+    component:
+      css/dataset.css: {}

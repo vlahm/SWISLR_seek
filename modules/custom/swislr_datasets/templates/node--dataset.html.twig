@@ -1,0 +1,83 @@
+{{ attach_library('swislr_datasets/dataset-node') }}
+{{ attach_library('swislr_comment_spice/ui') }}
+
+{#
+  Custom full-page layout for Dataset nodes.
+  Fields: title, description, category, spatial extent, file, URL/DOI, location, tags, comments.
+#}
+
+{% set classes = [
+  'node',
+  'node--type-dataset',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'dataset-layout'
+] %}
+
+<article{{ attributes.addClass(classes) }}>
+  <header class="dataset-header">
+    <time class="dataset-date" datetime="{{ node.getCreatedTime|date('c') }}">
+      {{ node.getCreatedTime|date('M d, Y') }}
+    </time>
+  </header>
+
+  <div class="dataset-grid">
+    <main class="dataset-main">
+
+      {% if content.field_description is defined and content.field_description %}
+        <div class="dataset-description">
+          <h2 class="dataset-h2">Description</h2>
+          {{ content.field_description }}
+        </div>
+      {% endif %}
+
+      {% if content.field_category is defined and content.field_category %}
+        <div class="dataset-category">
+          {{ content.field_category }}
+        </div>
+      {% endif %}
+
+      {% if content.field_spatial_extent is defined and content.field_spatial_extent %}
+        <div class="dataset-spatial-extent">
+          {{ content.field_spatial_extent }}
+        </div>
+      {% endif %}
+
+      {% if content.field_url_doi is defined and content.field_url_doi %}
+        <div class="dataset-url">
+          {{ content.field_url_doi }}
+        </div>
+      {% endif %}
+
+      {% if content.field_file is defined and content.field_file %}
+        <div class="dataset-file">
+          {{ content.field_file }}
+        </div>
+      {% endif %}
+
+      {% if content.field_tags is defined and content.field_tags %}
+        <div class="dataset-tags">
+          {{ content.field_tags }}
+        </div>
+      {% endif %}
+
+    </main>
+
+    <aside class="dataset-aside">
+      {# Extra widgets/links can go here later. #}
+    </aside>
+  </div>
+
+  {% if content.field_comment is defined and content.field_comment %}
+    <section class="dataset-comments">
+      <br>
+      {{ content.field_comment }}
+    </section>
+  {% endif %}
+
+  {% if content.links is defined and content.links %}
+    <div class="dataset-links">
+      {{ content.links }}
+    </div>
+  {% endif %}
+  <br>
+</article>

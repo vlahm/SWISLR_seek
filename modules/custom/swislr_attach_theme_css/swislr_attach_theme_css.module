@@ -8,8 +8,14 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
  */
 
 function swislr_attach_theme_css_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  if ($entity->getEntityTypeId() === 'node' && $entity->bundle() === 'story') {
-    $build['#attached']['library'][] = 'swislr_attach_theme_css/story';
+  if ($entity->getEntityTypeId() === 'node') {
+    $bundle = $entity->bundle();
+    if ($bundle === 'story') {
+      $build['#attached']['library'][] = 'swislr_attach_theme_css/story';
+    }
+    elseif ($bundle === 'dataset') {
+      $build['#attached']['library'][] = 'swislr_attach_theme_css/dataset';
+    }
   }
 }
 

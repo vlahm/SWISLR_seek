@@ -3,8 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.comment.comment.default
     - core.entity_view_mode.node.story_card
     - field.field.node.dataset.field_category
+    - field.field.node.dataset.field_comment
     - field.field.node.dataset.field_description
     - field.field.node.dataset.field_file
     - field.field.node.dataset.field_location
@@ -13,6 +15,7 @@ dependencies:
     - field.field.node.dataset.field_url_doi
     - node.type.dataset
   module:
+    - comment
     - geofield
     - user
 id: node.dataset.story_card
@@ -20,6 +23,15 @@ targetEntityType: node
 bundle: dataset
 mode: story_card
 content:
+  field_comment:
+    type: comment_default
+    label: above
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 5
+    region: content
   field_location:
     type: geofield_default
     label: above

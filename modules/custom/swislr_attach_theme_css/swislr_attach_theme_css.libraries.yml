@@ -3,3 +3,8 @@ story:
     theme:
       css/story.css: {}
 
+dataset:
+  css:
+    theme:
+      css/dataset.css: {}
+

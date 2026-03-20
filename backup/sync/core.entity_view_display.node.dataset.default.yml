@@ -3,7 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.comment.comment.default
     - field.field.node.dataset.field_category
+    - field.field.node.dataset.field_comment
     - field.field.node.dataset.field_description
     - field.field.node.dataset.field_file
     - field.field.node.dataset.field_location
@@ -12,6 +14,7 @@ dependencies:
     - field.field.node.dataset.field_url_doi
     - node.type.dataset
   module:
+    - comment
     - file
     - geofield
     - link
@@ -28,6 +31,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_comment:
+    type: comment_default
+    label: above
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 104
     region: content
   field_description:
     type: basic_string

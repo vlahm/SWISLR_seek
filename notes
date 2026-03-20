@@ -185,6 +185,7 @@ prod container: (with modifications, all of this could be executed from the host
 check status report
 make sure basic site config is correct [config -> system -> basic site settings]
 	email should be: mail@swislr.org
+	what about: change "adhoc emails" in config -> workflow -> cont mod notify: emily.bernhardt@duke.edu,spencer.rhea@duke.edu,odonnellk25@ecu.edu
 config -> workflows -> content moderation notification -> make sure emails are set correctly
 gotta manually build navbar links? why?
 
