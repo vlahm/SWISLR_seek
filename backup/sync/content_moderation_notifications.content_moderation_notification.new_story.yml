@@ -12,6 +12,7 @@ roles:
   author: author
 author: false
 site_mail: false
+user_fields: {  }
 emails: vlahm13@gmail.com
 subject: '"[Review] New Story: [node:title]"'
 body:

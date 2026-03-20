@@ -95,5 +95,5 @@ actual updates
 ufw still needs to be run on container?
 tell emily and kiera not to update anything!
 
-on dev:
-	run through initial build steps, then see if we can debug
+X	on dev:
+X		run through initial build steps, then see if we can debug

@@ -5,3 +5,4 @@ services:
     volumes:
       - ./modules/custom:/opt/drupal/web/modules/custom
       - ./themes/custom:/opt/drupal/web/themes/custom
+      - ./backup/sync:/opt/drupal/config/sync

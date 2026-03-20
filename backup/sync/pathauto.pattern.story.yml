@@ -1,1 +1,12 @@
+uuid: 3d508c65-8381-4f36-9eea-ba6d80ee99f5
+langcode: en
+status: true
+dependencies: {  }
+id: story
+label: 'Story URL pattern'
+type: 'canonical_entities:node'
 pattern: 'stories/[node:title]'
+selection_criteria: {  }
+selection_logic: and
+weight: 0
+relationships: {  }

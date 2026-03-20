@@ -41,3 +41,4 @@ hidden:
   field_public_email: true
   field_role_job_title: true
   member_for: true
+  orcid: true
