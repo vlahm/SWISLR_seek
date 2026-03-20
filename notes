@@ -173,7 +173,7 @@ prod container: (with modifications, all of this could be executed from the host
 		drush cr
 	at this point, still have to step through some of the "deploy" steps below. i think just:
 		. post_install_steps.sh
-		edit that one pathauto config
+		edit that one pathauto config (shouldn't need this anymore)
 	drush cim
 	drush cr
 	drush sset system.maintenance_mode 0 -y && drush cr
