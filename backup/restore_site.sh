@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Restore a Drupal database dump and uploaded files.
+# Run from the project root (where docker-compose.yaml lives).
+#
+# Usage:  ./backup/restore_site.sh <db_dump.sql.gz> <files.tar.gz> [private.tar.gz]
+
+set -euo pipefail
+
+DB_DUMP="${1:?Usage: $0 <db_dump.sql.gz> <files.tar.gz> [private.tar.gz]}"
+FILES_TAR="${2:?Usage: $0 <db_dump.sql.gz> <files.tar.gz> [private.tar.gz]}"
+PRIVATE_TAR="${3:-}"
+
+echo "==> Restoring database from ${DB_DUMP}..."
+gunzip -c "$DB_DUMP" | docker compose exec -T drupal drush sql-cli
+
+echo "==> Restoring uploaded files from ${FILES_TAR}..."
+docker compose exec -T drupal \
+  tar xzf - -C /opt/drupal/web/sites/default < "$FILES_TAR"
+
+if [ -n "$PRIVATE_TAR" ]; then
+  echo "==> Restoring private files from ${PRIVATE_TAR}..."
+  docker compose exec -T drupal \
+    tar xzf - -C /var/www < "$PRIVATE_TAR"
+fi
+
+echo "==> Fixing permissions..."
+docker compose exec drupal chown -R www-data:www-data \
+  /opt/drupal/web/sites/default/files /var/www/private
+
+echo "==> Clearing caches..."
+docker compose exec drupal drush cr
+
+echo "Done."

@@ -97,3 +97,4 @@ tell emily and kiera not to update anything!
 
 X	on dev:
 X		run through initial build steps, then see if we can debug
+	are the pictures still broken on prod? how can i make sure they survive db rebuild?
