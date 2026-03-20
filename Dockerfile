@@ -48,7 +48,7 @@ RUN mkdir -p /opt/drupal/drush && \
 # If you keep custom code outside web/ (you do), copy it in too.
 #COPY web/ /var/www/html/
 #COPY vendor/ /var/www/vendor/
-COPY modules/custom/ /var/www/html/modules/custom/
+COPY modules/custom/ /opt/drupal/web/modules/custom/
 #COPY themes/custom/ /var/www/html/themes/custom/
 
 # Files/permissions

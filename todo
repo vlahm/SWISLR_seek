@@ -89,8 +89,11 @@ X	package fixes (get them under control of composer)
 X	security updates
 X	contrib updates
 X	db dump on remote
-do i actually want to CP that drush/drush.yml in Dockerfilen now?
+X	do i actually want to CP that drush/drush.yml in Dockerfilen now?
 successful rebuild
 actual updates
 ufw still needs to be run on container?
 tell emily and kiera not to update anything!
+
+on dev:
+	run through initial build steps, then see if we can debug

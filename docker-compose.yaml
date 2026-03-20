@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   caddy:
     image: caddy:2
@@ -19,9 +17,13 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - drupal-files:/var/www/html/sites/default/files
+      - drupal-files:/opt/drupal/web/sites/default/files
       - drupal-private:/var/www/private
       - ./docker/php/zz-overrides.ini:/usr/local/etc/php/conf.d/zz-overrides.ini:ro
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     depends_on:
       - db
     restart: unless-stopped
