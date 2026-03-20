@@ -5,7 +5,7 @@
 # Usage:  ./backup/backup_site.sh [backup_dir]
 #   backup_dir defaults to ./backup
 
-set -euo pipefail
+set -uo pipefail
 
 # Resolve project root (one level up from this script's directory)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -16,23 +16,32 @@ TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 echo "==> Dumping database..."
-docker compose exec -T drupal drush sql-dump --gzip \
-  > "$BACKUP_DIR/db-${TIMESTAMP}.sql.gz"
+if ! docker compose exec -T drupal drush sql-dump --gzip \
+  > "$BACKUP_DIR/db-${TIMESTAMP}.sql.gz" 2>"$BACKUP_DIR/db-err-${TIMESTAMP}.log"; then
+  echo "    ERROR: database dump failed. See $BACKUP_DIR/db-err-${TIMESTAMP}.log"
+  cat "$BACKUP_DIR/db-err-${TIMESTAMP}.log"
+fi
 
 echo "==> Archiving uploaded files..."
 if docker compose exec -T drupal test -d /opt/drupal/web/sites/default/files; then
-  docker compose exec -T drupal \
+  if ! docker compose exec -T drupal \
     tar czf - -C /opt/drupal/web/sites/default files \
-    > "$BACKUP_DIR/files-${TIMESTAMP}.tar.gz"
+    > "$BACKUP_DIR/files-${TIMESTAMP}.tar.gz" 2>"$BACKUP_DIR/files-err-${TIMESTAMP}.log"; then
+    echo "    ERROR: files archive failed. See $BACKUP_DIR/files-err-${TIMESTAMP}.log"
+    cat "$BACKUP_DIR/files-err-${TIMESTAMP}.log"
+  fi
 else
   echo "    (skipped — files directory not found)"
 fi
 
 echo "==> Archiving private files..."
 if docker compose exec -T drupal test -d /var/www/private; then
-  docker compose exec -T drupal \
+  if ! docker compose exec -T drupal \
     tar czf - -C /var/www private \
-    > "$BACKUP_DIR/private-${TIMESTAMP}.tar.gz"
+    > "$BACKUP_DIR/private-${TIMESTAMP}.tar.gz" 2>"$BACKUP_DIR/private-err-${TIMESTAMP}.log"; then
+    echo "    ERROR: private files archive failed. See $BACKUP_DIR/private-err-${TIMESTAMP}.log"
+    cat "$BACKUP_DIR/private-err-${TIMESTAMP}.log"
+  fi
 else
   echo "    (skipped — private directory not found)"
 fi
