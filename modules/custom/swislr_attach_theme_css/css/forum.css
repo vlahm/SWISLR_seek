@@ -215,7 +215,8 @@
 
 /* ====== Forum header (submit button) ====== */
 .view-forum .view-header {
-  margin-bottom: 18px;
+  max-width: 980px;
+  margin: 0 auto 18px;
   text-align: center;
 }
 
@@ -255,10 +256,17 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  max-width: 980px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  overflow: hidden;
 }
 
 .view-forum .views-row {
-  padding: 14px 18px;
+  padding: 16px 20px;
   border-bottom: 1px solid #e5e7eb;
   transition: background .12s ease;
 }
@@ -271,12 +279,17 @@
   border-bottom: none;
 }
 
-/* Title link */
+/* Title link — make it prominent */
+.view-forum .views-field-title {
+  margin-bottom: 4px;
+}
+
 .view-forum .views-field-title a {
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: #0f172a;
   text-decoration: none;
+  line-height: 1.3;
 }
 
 .view-forum .views-field-title a:hover {
@@ -284,36 +297,67 @@
   text-decoration: underline;
 }
 
-/* Meta fields (author, date, comment count) */
-.view-forum .views-field-uid,
-.view-forum .views-field-created,
-.view-forum .views-field-comment-count {
-  display: inline;
-  font-size: .88rem;
-  color: #6b7280;
+/* Hide field labels in the listing */
+.view-forum .views-row .views-label {
+  display: none;
 }
 
+/* Meta fields (author, date, comment count) — inline on one line */
+.view-forum .views-field-uid,
+.view-forum .views-field-created,
+.view-forum .views-field-comment-count,
+.view-forum .views-field-field-comment,
+.view-forum .views-field-comment-comment-count {
+  display: inline;
+  font-size: .85rem;
+  color: #6b7280;
+  line-height: 1.8;
+}
+
+.view-forum .views-field-uid .field-content,
+.view-forum .views-field-created .field-content,
+.view-forum .views-field-comment-count .field-content,
+.view-forum .views-field-field-comment .field-content,
+.view-forum .views-field-comment-comment-count .field-content {
+  display: inline;
+}
+
+/* Dot separators between inline meta */
 .view-forum .views-field-uid::after,
 .view-forum .views-field-created::after {
   content: " · ";
   color: #d1d5db;
 }
 
-/* Tags in listing */
+/* Body/description preview if present */
+.view-forum .views-field-body {
+  margin-top: 6px;
+  font-size: .92rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* Tags in listing — chip style */
 .view-forum .views-field-field-tags {
-  margin-top: 4px;
+  margin-top: 8px;
+}
+
+.view-forum .views-field-field-tags .field-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .view-forum .views-field-field-tags a {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 999px;
   background: #f3f4f6;
   border: 1px solid #e5e7eb;
   color: #374151;
   text-decoration: none;
   font-size: .82rem;
-  margin-right: 4px;
+  transition: border-color .12s ease, background .12s ease;
 }
 
 .view-forum .views-field-field-tags a:hover {
@@ -321,7 +365,7 @@
   background: #eff6ff;
 }
 
-/* Exposed filters bar */
+/* ====== Exposed filters bar ====== */
 .view-forum .views-exposed-form {
   display: flex;
   flex-wrap: wrap;
@@ -329,6 +373,9 @@
   align-items: flex-end;
   margin-bottom: 18px;
   padding: 14px 18px;
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
   background: #f9fafb;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -336,6 +383,13 @@
 
 .view-forum .views-exposed-form .form-item {
   margin: 0;
+}
+
+.view-forum .views-exposed-form label {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
 }
 
 .view-forum .views-exposed-form input[type="text"],
@@ -359,4 +413,20 @@
 
 .view-forum .views-exposed-form input[type="submit"]:hover {
   filter: brightness(1.08);
+}
+
+/* ====== Empty view message ====== */
+.view-forum .view-empty {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* ====== Pager ====== */
+.view-forum .pager {
+  max-width: 980px;
+  margin: 18px auto 0;
 }

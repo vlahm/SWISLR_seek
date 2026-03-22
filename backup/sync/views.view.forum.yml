@@ -572,8 +572,8 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: '<a href="/node/add/discussion" class="btn btn-primary">Start a Discussion</a>'
-            format: basic_html
+            value: "<div style=\"display:flex; justify-content:center; margin-bottom:0.75rem;\">\r\n  <a class=\"btn btn-primary\" href=\"/node/add/discussion?destination=/forum\">Start a Discussion</a>\r\n</div>"
+            format: full_html
           tokenize: false
       footer: {  }
       display_extenders: {  }

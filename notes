@@ -125,7 +125,7 @@ drush pm:list --status=enabled --type=module
 
 REDEPLOY --------------------------------
 
-first, syncing remote changes made through the live admin interface:
+first, sync remote changes made through the live admin interface:
 
 1. remote into the prod server (swislrserv)
 2. exec into the prod container
@@ -143,41 +143,49 @@ first, syncing remote changes made through the live admin interface:
 8. locally, drush cim from within the test container
 
 second, updates:
-	never do these on prod! they'll get wiped when you push.
+	never do these on prod! they'll get wiped when you push (unless you perform the above steps, but safer this way)
 	admin interface keeps failing. use code. follow the BACKUPS, CONTRIB_UPDATES, and CORE_UPDATES sections above before proceeding
 
 after development:
 
 inside dev container:
-	composer update (rewrites lockfile based on composer.json)
+	drush cex
+	drush cim --diff 											(verify no configs out of sync)
+	drush pm:list --type=module --status=enabled | grep swislr 	(verify custom modules are enabled and error-free)
+	drush cr
+	drush watchdog:show --severity=3 --count=20             	(check for PHP errors)
+	composer update 											(rewrite lockfile based on composer.json)
+	composer validate --no-check-all                            (verify .lock is current)
 
 dev host:
-	docker cp  b1a5a7c9b1b8:/opt/drupal/composer.json .
-	docker cp  b1a5a7c9b1b8:/opt/drupal/composer.lock .
+	docker cp  b87013a961c9:/opt/drupal/composer.json .
+	docker cp  b87013a961c9:/opt/drupal/composer.lock .
 	commit, push
 
+prod container:
+	to get into container, run this on host:
+		docker exec -it swislr_seek-drupal-1 bash
+	drush sset system.maintenance_mode 1 -y && drush cr
+
 prod host:
-	docker compose exec db mariadb-dump --skip-ssl -u swislr -p swislr > pre-deploy-backup.sql
-	pull (no need to docker cp, because composer.json and lock are copied in Dockerfile)
-	# this is good to run at times, but i haven't internalized it yet. there's a claude conversation about it.: docker compose pull
+	OLD METHOD: docker compose exec db mariadb-dump --skip-ssl -u swislr -p swislr > pre-deploy-backup.sql
+		INSTEAD DO THIS: bash backup/backup_site.sh
+	git pull (no need to docker cp, because composer.json and lock are copied in Dockerfile)
+	docker compose pull (necessary? risky?)
+		if building fresh (--no-cache), probably chill, but could introduce php/apache changes. skipping for now.
 	docker compose build --no-cache drupal
+		caching is fine for routine future deploys, but so much has changed this time that it's best to build fresh
 	docker compose up -d
 
 prod container: (with modifications, all of this could be executed from the host)
-	docker exec -it swislr_seek-drupal-1 bash
-	drush sset system.maintenance_mode 1 -y && drush cr
-	backup:
-		OLD: on host: docker compose exec db mariadb-dump --skip-ssl -u swislr -p swislr > backup_before_sync_delete.sql
-			NEW: on host: bash backup/backup_site.sh (writes to backup/full_dump/)
 	drush updb -y (always run. if no updates, is a no-op)
-	make sure chill:
+	verify:
 		drush sqlq "SELECT DISTINCT collection FROM config" --extra="--skip-ssl" (this is just a test to confirm we don't have a rogue sync/ collection in the db again. should be an empty string. if error, read on)
-			SHOULDN'T NEED THIS AGAIN; ONLY IF IT'S DUPLICATING CONFIGS IN DB
-				in container: drush sqlq "DELETE FROM config WHERE collection = 'sync'" --extra="--skip-ssl"
+			in container: drush sqlq "DELETE FROM config WHERE collection = 'sync'" --extra="--skip-ssl"
 	drush cr
 	at this point, still have to step through some of the "deploy" steps below. i think just:
-		. post_install_steps.sh (should be hella automatable now. doesn't even need the `drush en` lines anymore
-		edit that one pathauto config (shouldn't need this anymore)
+		. post_install_steps.sh (should be quite automatable now. doesn't even need the `drush en` lines anymore)
+		edit that one pathauto config (shouldn't need this anymore either)
 	drush cim
 	drush cr
 	drush sset system.maintenance_mode 0 -y && drush cr
@@ -189,6 +197,7 @@ make sure basic site config is correct [config -> system -> basic site settings]
 config -> workflows -> content moderation notification -> make sure emails are set correctly
 gotta manually build navbar links? why?
 
+-----------------------------------------------------------------------------------------------
 
 DEPLOY (* steps are now automated, ~ steps are only necessary for initial server setup, ! steps probably aren't necessary at all, ? = unknown)
 
@@ -253,16 +262,27 @@ might have to change docker-compose.yaml to accept traffic on port 80
 *	grep '^uuid:' system.site.yml #copy the resulting uuid and use it in the next step
 *	drush cset system.site uuid "<that uuid>" -y
 
-add to pathauto.pattern.story.yml: (though this will break local version), because that entity doesn't exist locally
-id: story
-label: 'Story URL pattern'
-type: 'canonical_entities:node'
+?	add to pathauto.pattern.story.yml: (though this will break local version), because that entity doesn't exist locally
+?	id: story
+?	label: 'Story URL pattern'
+?	type: 'canonical_entities:node'
 
 after this is is finally possible to run drush cim
 
 check status report
 make sure basic site config is correct (e.g. email address for the site)
 gotta manually build navbar links? why?
+
+ideal ufw setup:
+To                         Action      From
+--                         ------      ----
+80/tcp                     ALLOW       Anywhere                  
+22/tcp                     ALLOW       Anywhere                  
+443/tcp                    ALLOW       Anywhere                  
+80/tcp (v6)                ALLOW       Anywhere (v6)             
+22/tcp (v6)                ALLOW       Anywhere (v6)             
+443/tcp (v6)               ALLOW       Anywhere (v6)             
+
 
 also make sure the container contains the right composer.json (and composer.lock if that already exists in the repo)
 	the container seems to get built with defaults for these, and i'm not sure if i've written the copy step into the build yet

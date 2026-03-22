@@ -9,6 +9,8 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 function swislr_attach_theme_css_page_attachments(array &$attachments) {
   // Attach navbar CSS globally.
   $attachments['#attached']['library'][] = 'swislr_attach_theme_css/navbar';
+  // Attach forum listing CSS globally (scoped to .view-forum so safe on all pages).
+  $attachments['#attached']['library'][] = 'swislr_attach_theme_css/forum';
 
   // Inline JS to sync all Bootstrap5 navbar-collapse regions.
   $js = <<<'JSEOF'
