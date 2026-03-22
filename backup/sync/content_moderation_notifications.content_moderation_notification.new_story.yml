@@ -13,7 +13,7 @@ roles:
 author: false
 site_mail: false
 user_fields: {  }
-emails: vlahm13@gmail.com
+emails: "emily.bernhardt@duke.edu\r\nodonnellk25@ecu.edu"
 subject: '"[Review] New Story: [node:title]"'
 body:
   value: "<p>Hello SWISLR moderators,</p><p>A new story was submitted.</p><p><strong>Title:</strong> [node:title]<br><strong>Author:</strong> [node:author]<br><strong>Submitted:</strong> [current-date:long]</p><p><strong>First 500 words:</strong><br>[node:summary]</p><p><strong>Images (if any):</strong></p><p>- [node:field_image:0:entity:url]<br>- [node:field_image:1:entity:url]<br>- [node:field_image:2:entity:url]</p><p><strong>Review and moderate the story here:</strong><br>{{ url('entity.node.canonical', {'node': entity.id}) }}<br>&nbsp;</p>"
