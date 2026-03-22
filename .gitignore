@@ -13,3 +13,4 @@ backup/settings.php
 backup/default.settings.php
 backup/db/
 backup/full_dump/
+backup/db_baks_v1/
