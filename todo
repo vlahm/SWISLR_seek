@@ -86,12 +86,12 @@ X	ufw still needs to be run on container?
 X	on dev:
 X		run through initial build steps, then see if we can debug
 X		are the pictures still broken on prod? how can i make sure they survive db rebuild?
-after prod merge: edit publication spatial extents
+X	after prod merge: edit publication spatial extents
 
 
 THINGS STILL TO CHECK EVERY TIME
 
-restore these as the recipients of moderation emails: emily.bernhardt@duke.edu, odonnellk25@ecu.edu, spencer.rhea@duke.edu
+check basic site config and make sure email is correct (see redeploy workflow for correct value)
 change "adhoc emails" in config -> workflow -> cont mod notify: emily.bernhardt@duke.edu,spencer.rhea@duke.edu,odonnellk25@ecu.edu
 
 
