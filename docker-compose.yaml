@@ -24,6 +24,8 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      CARTO_API_KEY: ${CARTO_API_KEY:-}
+      DRUPAL_HASH_SALT: ${DRUPAL_HASH_SALT:-}
     depends_on:
       - db
     restart: unless-stopped

@@ -58,9 +58,16 @@
 
       // 2) CARTO Positron (light gray)
       //    Tip: use _nolabels for choropleths or to place your own labels
+      //    As of 2026-09-23 CARTO requires an API key on every tile URL
+      //    (keyless tiles are watermarked "API key required"). The key is
+      //    read from the CARTO_API_KEY env var and passed in via drupalSettings.
+      const cartoKey = (settings.swislrHomepage && settings.swislrHomepage.cartoApiKey) || '';
+      if (!cartoKey) {
+        console.warn('swislr: CARTO_API_KEY not set; basemap tiles will be watermarked.');
+      }
       const cartoPositron = L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-        { maxZoom: 19, attribution: 'Map tiles by CARTO, © OpenStreetMap' }
+        'https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png' + (cartoKey ? '?key=' + encodeURIComponent(cartoKey) : ''),
+        { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors, &copy; CARTO' }
       );
       //const cartoPositronNoLabels = L.tileLayer(
       //  'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
