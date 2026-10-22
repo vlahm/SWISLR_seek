@@ -33,3 +33,27 @@ function swislr_name_fix_entity_presave(EntityInterface $entity) {
   }
 }
 
+
+/**
+ * Implements hook_form_FORM_ID_alter() for user_register_form.
+ *
+ * email_registration 2.x hides the username field from anonymous registrants
+ * and derives the username (our public display name) from the email address.
+ * Restore the 1.x "require_username_on_registration" behavior so people
+ * choose their own display name. Done in a #process callback because that
+ * runs after all form alters, whatever order email_registration's runs in.
+ */
+function swislr_name_fix_form_user_register_form_alter(array &$form) {
+  $form['#process'][] = 'swislr_name_fix_require_username';
+}
+
+/**
+ * #process callback: show and require the username field.
+ */
+function swislr_name_fix_require_username(array $form) {
+  if (isset($form['account']['name'])) {
+    $form['account']['name']['#type'] = 'textfield';
+    $form['account']['name']['#required'] = TRUE;
+  }
+  return $form;
+}
