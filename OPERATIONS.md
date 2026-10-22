@@ -3,6 +3,23 @@
 How production is run, kept patched, and monitored. Feature development and
 the full redeploy checklist live in `notes` (see "REDEPLOY").
 
+## Housekeeping due
+
+- **On or after 2026-11-05: delete the rollback image tags left by the Oct 2026 upgrades.**
+  - Prod has run D11 without problems since 2026-10-22, and the tags take about 3.5 GB.
+  - Rolling back to D10 now would also need a DB restore from before the cutover, which would lose all content since then.
+  - The weekly job's `docker image prune` only removes untagged images, so these tags stay until someone deletes them.
+
+  ```bash
+  docker image rm swislr_seek-drupal:d10-final swislr_seek-drupal:pre-phase1 swislr_seek-drupal:pre-php-update
+  docker image prune -f
+  ```
+
+  - Leave `swislr_seek-drupal:latest`, which is the running image.
+  - The `seek-db-pre-*` dumps in the backup directory need no action. They match the weekly job's `seek-db-*` rotation and age out after 8 runs (about mid-Dec 2026).
+  - The `backup/full_dump/*-20261022-*` files from the upgrade are small and can be deleted at the same time.
+  - Remove this item once it's done.
+
 ## Layout
 
 | What | Where |
@@ -86,7 +103,7 @@ docker compose start drupal
   - All custom modules declare `^10 || ^11`. `upgrade_status` (dev-only) found no D11 issues in custom code.
   - Config changed by the module updates was exported from prod, not dev, so dev-only admin-UI differences didn't leak into `backup/sync`.
   - Removed the unused orcid module (never configured; empty data table). Uninstalled on prod first, then the code was removed.
-- **Drupal 11 upgrade (phase 2, dev; branch `drupal-11`).** Dev was reset to a copy of prod's DB, files and config.
+- **Drupal 11 upgrade (phase 2, dev; branch `drupal-11`, since merged and deleted).** Dev was reset to a copy of prod's DB, files and config.
   - `composer require drupal/core-*:^11 drush/drush:^13 -W` gave Drupal 11.4.11 and drush 13.8. drush had to be included, because its code generator pinned Symfony 6.
   - D11's `index.php` needs `symfony/runtime`'s Composer plugin, so it was added to `allow-plugins`, matching Drupal's project template.
   - `drush updb` ran system/views/search/etc. updates. Search is split into `search_node`/`search_help`. Config was re-exported from dev (= prod + D11 changes).
