@@ -21,7 +21,7 @@
         "drupal/block_class": "^4.0",
         "drupal/bootstrap5": "^4.0",
         "drupal/content_moderation_notifications": "^3.7",
-        "drupal/core-composer-scaffold": "^10.5",
+        "drupal/core-composer-scaffold": "^11.4",
         "drupal/core-project-message": "^10.5",
         "drupal/core-recommended": "^10.5",
         "drupal/date_popup": "^2.0",
