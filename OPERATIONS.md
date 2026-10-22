@@ -114,4 +114,10 @@ docker compose start drupal
   - `drush updb` ran cleanly. `drush cim` was **not** run: prod's updates created 8 config items (promote base-field overrides, search view modes) that matched dev's export except for UUIDs, so the import would have deleted and recreated them. Prod's versions were exported and committed instead.
   - Verified: anon and admin crawl, no new errors, cron ran, registration still requires a username.
   - Lesson for future major upgrades: items created by update hooks get fresh UUIDs on each site. After `updb` on prod, compare `config:status`. If the only differences are UUIDs, export from prod rather than importing.
-  - Known, predates D11: Drupal builds `http://` redirect URLs (Caddy upgrades them with a 308) because `settings.php` has no reverse-proxy config. Fixing it needs `$settings['reverse_proxy']` plus the Caddy container's address.
+  - Known, predates D11: Drupal builds `http://` redirect URLs (Caddy upgrades them with a 308) because `settings.php` has no reverse-proxy config. Fixed the same day; see the next entry.
+- **2026-10-22: reverse-proxy settings.** Drupal built `http://` URLs for redirects and emails because it didn't trust Caddy's `X-Forwarded-Proto` header.
+  - Added `$settings['reverse_proxy'] = TRUE` and `reverse_proxy_addresses = ['172.16.0.0/12']` (Docker's bridge address pools) to prod's `backup/settings.php`. That file is gitignored and is copied into the image at build time.
+  - Trusting the whole range is safe because only Caddy publishes ports; the drupal container can't be reached from outside.
+  - The previous file is at `/root/settings.php.pre-reverse-proxy-20261022`. To undo: copy it back, then rebuild and restart drupal.
+  - If the compose network is ever moved outside 172.16.0.0/12, update the range.
+  - Verified: redirects and RSS links use `https://`, the anon crawl is clean and the health check passes.
