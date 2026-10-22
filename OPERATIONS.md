@@ -55,7 +55,7 @@ will put that code live without its database updates.
 - **Major or minor version changes of base images.** Examples: MariaDB 10.11 → 11.4, Drupal 10 → 11, `caddy:2` → 3. Change the tag in `Dockerfile` or `docker-compose.yaml` and deploy by hand, with a fresh backup. Rollback is not safe after a database major upgrade, so restore from the dump instead.
 
 Coming up: MariaDB 10.11 is supported until Feb 2028. Drupal 11 is the
-current major; Drupal 12 shipped Dec 2026. `drupal/upgrade_status` (dev-only)
+current major; Drupal 12 is scheduled for Dec 2026. `drupal/upgrade_status` (dev-only)
 can scan for D12 readiness when it's time.
 
 ## Common tasks
