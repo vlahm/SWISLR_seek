@@ -1,0 +1,13 @@
+# Scheduled jobs for seek.swislr.org. Installed on the server with:
+#   install -m 644 /home/swislr/SWISLR_seek/scripts/seek-cron /etc/cron.d/seek
+# The server clock is UTC and Ubuntu's cron has no per-job timezone, so the
+# weekly update is scheduled at both 08:00 and 09:00 UTC and only proceeds
+# when it is 04:00 in America/New_York (handles EST/EDT automatically).
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Weekly image refresh: Sundays 04:00 US Eastern
+0 8,9 * * 0  root  [ "$(TZ=America/New_York date +\%H)" = 04 ] && /home/swislr/SWISLR_seek/scripts/update-containers.sh >> /var/log/seek-update.log 2>&1
+
+# Daily health check: 07:00 US Eastern (11:00 UTC; 06:00 Eastern in winter)
+0 11 * * *   root  /home/swislr/SWISLR_seek/scripts/healthcheck.sh >> /var/log/seek-health.log 2>&1

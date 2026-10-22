@@ -1,0 +1,35 @@
+# Dependabot opens PRs; nothing is deployed until a PR is merged AND the
+# redeploy procedure in OPERATIONS.md is run on the server.
+version: 2
+updates:
+  # Drupal core, contrib modules, drush (composer.json / composer.lock)
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      drupal-core:
+        patterns: ["drupal/core*"]
+      contrib-minor-patch:
+        update-types: [minor, patch]
+
+  # Base images in Dockerfile and docker-compose.yaml. Patch releases within
+  # our pinned tags are already picked up by scripts/update-containers.sh;
+  # these PRs only flag new minor tags. Major bumps are deliberate, manual work.
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: monthly
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]

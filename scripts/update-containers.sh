@@ -3,11 +3,11 @@
 # Pulls/rebuilds all images within their pinned tags, recreates containers,
 # health-checks the site, and rolls back to the previous images on failure.
 #
-# Install (as root on the server):
-#   echo '0 4 * * 0 root /home/swislr/SWISLR_seek/scripts/update-containers.sh >> /var/log/seek-update.log 2>&1' > /etc/cron.d/seek-update
+# Scheduled by scripts/seek-cron; see OPERATIONS.md.
 #
-# Optional alerting: set UPDATE_PING_URL in .env to a healthchecks.io (or similar)
-# ping URL. "/start" is pinged at start, the bare URL on success, "/fail" on failure.
+# Alerting: HEALTHCHECK_PING_URL in .env is a healthchecks.io ping URL (shared
+# with scripts/healthcheck.sh). "/start" is pinged at start, the bare URL on
+# success, "/fail" on failure.
 
 set -uo pipefail
 
@@ -18,7 +18,7 @@ KEEP_BACKUPS=8
 SERVICES=(db drupal caddy)
 
 cd "$PROJECT_DIR" || exit 1
-PING_URL="$(grep -E '^UPDATE_PING_URL=' .env 2>/dev/null | cut -d= -f2-)"
+PING_URL="$(grep -E '^HEALTHCHECK_PING_URL=' .env 2>/dev/null | cut -d= -f2-)"
 
 log() { echo "[$(date '+%F %T')] $*"; }
 ping_hc() { [ -n "$PING_URL" ] && curl -fsS -m 10 --retry 3 "$PING_URL$1" >/dev/null; true; }
