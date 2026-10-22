@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "093a6b991d44430ada5c969fac928607",
+    "content-hash": "6c8407b212b84204a41222bfb3ef12e5",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2627,56 +2627,6 @@
             }
         },
         {
-            "name": "drupal/orcid",
-            "version": "dev-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/orcid.git",
-                "reference": "63b1449d7acb50b32eacc25c367c059a70a82cfc"
-            },
-            "require": {
-                "drupal/core": "^8 || ^9 || ^10 || ^11",
-                "league/oauth2-client": "^2.7"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0+5-dev",
-                    "datestamp": "1763463350",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Alan_Stanley",
-                    "homepage": "https://www.drupal.org/user/871578"
-                },
-                {
-                    "name": "knurg",
-                    "homepage": "https://www.drupal.org/user/1778798"
-                },
-                {
-                    "name": "shenzhuxi",
-                    "homepage": "https://www.drupal.org/user/193802"
-                }
-            ],
-            "description": "Allow new users to create account and login with ORCID OAuth2. Allow registered users to associated their account with their ORCID.",
-            "homepage": "https://www.drupal.org/project/orcid",
-            "support": {
-                "source": "https://git.drupalcode.org/project/orcid"
-            }
-        },
-        {
             "name": "drupal/pathauto",
             "version": "1.14.0",
             "source": {
@@ -4170,71 +4120,6 @@
                 }
             ],
             "time": "2025-05-20T12:55:37+00:00"
-        },
-        {
-            "name": "league/oauth2-client",
-            "version": "2.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/oauth2-client.git",
-                "reference": "26e8c5da4f3d78cede7021e09b1330a0fc093d5e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-client/zipball/26e8c5da4f3d78cede7021e09b1330a0fc093d5e",
-                "reference": "26e8c5da4f3d78cede7021e09b1330a0fc093d5e",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "guzzlehttp/guzzle": "^6.5.8 || ^7.4.5",
-                "php": "^7.1 || >=8.0.0 <8.6.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.3.5",
-                "php-parallel-lint/php-parallel-lint": "^1.4",
-                "phpunit/phpunit": "^7 || ^8 || ^9 || ^10 || ^11",
-                "squizlabs/php_codesniffer": "^3.11"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "League\\OAuth2\\Client\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alex Bilbie",
-                    "email": "hello@alexbilbie.com",
-                    "homepage": "http://www.alexbilbie.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Woody Gilk",
-                    "homepage": "https://github.com/shadowhand",
-                    "role": "Contributor"
-                }
-            ],
-            "description": "OAuth 2.0 Client Library",
-            "keywords": [
-                "Authentication",
-                "SSO",
-                "authorization",
-                "identity",
-                "idp",
-                "oauth",
-                "oauth2",
-                "single sign on"
-            ],
-            "support": {
-                "issues": "https://github.com/thephpleague/oauth2-client/issues",
-                "source": "https://github.com/thephpleague/oauth2-client/tree/2.9.0"
-            },
-            "time": "2025-11-25T22:17:17+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -9023,7 +8908,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "drupal/email_registration": 5,
-        "drupal/orcid": 20,
         "drupal/react_comments": 10,
         "drupal/user_register_notify": 20
     },
