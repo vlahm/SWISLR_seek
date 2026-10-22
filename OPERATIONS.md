@@ -17,7 +17,7 @@ the full redeploy checklist live in `notes` (see "REDEPLOY").
 Three containers (`docker-compose.yaml`):
 
 - **caddy** (`caddy:2`): TLS termination and reverse proxy (`Caddyfile`). Certificates live in the `caddy-data` volume.
-- **drupal**: built locally from `Dockerfile` on `drupal:10-apache` (PHP 8.4, Apache). Drupal core and modules come from `composer.lock`, not from the base image.
+- **drupal**: built locally from `Dockerfile` on `drupal:11-php8.4-apache` (Drupal 11, PHP 8.4, Apache). The PHP minor version is pinned on purpose: the plain `drupal:11-apache` tag moves to new PHP minors (8.5 as of Oct 2026), which should be adopted deliberately. Drupal core and modules come from `composer.lock`, not from the base image.
 - **db** (`mariadb:10.11`): data in the `drupal-db` volume. `MARIADB_AUTO_UPGRADE=1` upgrades system tables automatically after a version bump.
 
 Host PHP (`php8.3-cli`) is only a CLI tool; it does not serve the site.
@@ -54,8 +54,9 @@ will put that code live without its database updates.
 - **Drupal core and modules.** Dependabot (`.github/dependabot.yml`) opens a grouped PR each week. Test the PR in the dev container (`drush updb`, `drush cr`, click through the site), merge it, then deploy with the REDEPLOY procedure in `notes`.
 - **Major or minor version changes of base images.** Examples: MariaDB 10.11 → 11.4, Drupal 10 → 11, `caddy:2` → 3. Change the tag in `Dockerfile` or `docker-compose.yaml` and deploy by hand, with a fresh backup. Rollback is not safe after a database major upgrade, so restore from the dump instead.
 
-Coming up: MariaDB 10.11 is supported until Feb 2028. Drupal 10 security
-support is expected to end around Dec 2026, so plan the Drupal 11 migration.
+Coming up: MariaDB 10.11 is supported until Feb 2028. Drupal 11 is the
+current major; Drupal 12 shipped Dec 2026. `drupal/upgrade_status` (dev-only)
+can scan for D12 readiness when it's time.
 
 ## Common tasks
 
@@ -84,4 +85,10 @@ docker compose start drupal
   - email_registration 1.4.0 → 2.0.0-rc9, the only D11-compatible line. 2.x dropped "require username on registration", which would have derived public display names from email addresses. `swislr_name_fix` restores the required username field with a form `#process` callback; a plain form alter lost to email_registration's alter.
   - All custom modules declare `^10 || ^11`. `upgrade_status` (dev-only) found no D11 issues in custom code.
   - Config changed by the module updates was exported from prod, not dev, so dev-only admin-UI differences didn't leak into `backup/sync`.
-  - Next: phase 2 (core 11 in dev, starting from prod's DB and config), then phase 3 (prod cutover with `drush cim`).
+  - Removed the unused orcid module (never configured; empty data table). Uninstalled on prod first, then the code was removed.
+- **Drupal 11 upgrade (phase 2, dev; branch `drupal-11`).** Dev was reset to a copy of prod's DB, files and config.
+  - `composer require drupal/core-*:^11 drush/drush:^13 -W` gave Drupal 11.4.11 and drush 13.8. drush had to be included, because its code generator pinned Symfony 6.
+  - D11's `index.php` needs `symfony/runtime`'s Composer plugin, so it was added to `allow-plugins`, matching Drupal's project template.
+  - `drush updb` ran system/views/search/etc. updates. Search is split into `search_node`/`search_help`. Config was re-exported from dev (= prod + D11 changes).
+  - Tested on a clean image build: crawl (anon 29 pages, admin 400 pages, all assets), registration with username, login by email and by username, every content type, story moderation, comments, invitations, GeoJSON feeds.
+  - Unused but still installed: `react_comments` and `ctools` (not enabled), `webform` (no submissions). Candidates for removal later.

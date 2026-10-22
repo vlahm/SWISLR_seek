@@ -1,6 +1,6 @@
 # SWISLR Seek
 
-Drupal 10 site served at https://seek.swislr.org from Docker containers (caddy, drupal, mariadb).
+Drupal 11 site served at https://seek.swislr.org from Docker containers (caddy, drupal, mariadb).
 
 - Production server layout, automated update/health-check jobs, backups, alerting, and change history: **OPERATIONS.md** (read before touching prod).
 - Dev workflow and the full prod redeploy checklist: `notes` (section "REDEPLOY").
