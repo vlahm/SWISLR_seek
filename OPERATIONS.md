@@ -92,3 +92,9 @@ docker compose start drupal
   - `drush updb` ran system/views/search/etc. updates. Search is split into `search_node`/`search_help`. Config was re-exported from dev (= prod + D11 changes).
   - Tested on a clean image build: crawl (anon 29 pages, admin 400 pages, all assets), registration with username, login by email and by username, every content type, story moderation, comments, invitations, GeoJSON feeds.
   - Unused but still installed: `react_comments` and `ctools` (not enabled), `webform` (no submissions). Candidates for removal later.
+- **2026-10-22 18:05–18:08 UTC: prod cut over to Drupal 11.4.11 / PHP 8.4.27 (phase 3).** About 3.5 minutes in maintenance mode.
+  - Rollback image: `swislr_seek-drupal:d10-final`. DB dumps: `seek-db-pre-d11-*` plus `backup/full_dump/*-20261022-180508*`. Rolling back needs **both** the image and a DB restore, because the D11 updates changed the schema.
+  - `drush updb` ran cleanly. `drush cim` was **not** run: prod's updates created 8 config items (promote base-field overrides, search view modes) that matched dev's export except for UUIDs, so the import would have deleted and recreated them. Prod's versions were exported and committed instead.
+  - Verified: anon and admin crawl, no new errors, cron ran, registration still requires a username.
+  - Lesson for future major upgrades: items created by update hooks get fresh UUIDs on each site. After `updb` on prod, compare `config:status`. If the only differences are UUIDs, export from prod rather than importing.
+  - Known, predates D11: Drupal builds `http://` redirect URLs (Caddy upgrades them with a 308) because `settings.php` has no reverse-proxy config. Fixing it needs `$settings['reverse_proxy']` plus the Caddy container's address.
