@@ -78,3 +78,4 @@ docker compose start drupal
   - Rebuilt the drupal image on a fresh base, bringing PHP to 8.4.27.
   - Upgraded MariaDB 10.6 (end of life since July 2026) to 10.11 and added `MARIADB_AUTO_UPGRADE`.
   - Added the weekly update job, the daily health check, healthchecks.io alerting, Dependabot and this document.
+  - Dependabot immediately flagged Drupal core 10.6.5 (SQL injection, critical; XSS and object injection, medium). Updated core to 10.6.20 in dev (`composer update "drupal/core-*" -W`, no pending DB updates), then deployed per REDEPLOY in `notes`. `drush cim` was skipped because no config files changed; prod config status was clean.
