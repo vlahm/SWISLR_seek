@@ -79,3 +79,9 @@ docker compose start drupal
   - Upgraded MariaDB 10.6 (end of life since July 2026) to 10.11 and added `MARIADB_AUTO_UPGRADE`.
   - Added the weekly update job, the daily health check, healthchecks.io alerting, Dependabot and this document.
   - Dependabot immediately flagged Drupal core 10.6.5 (SQL injection, critical; XSS and object injection, medium). Updated core to 10.6.20 in dev (`composer update "drupal/core-*" -W`, no pending DB updates), then deployed per REDEPLOY in `notes`. `drush cim` was skipped because no config files changed; prod config status was clean.
+- **2026-10-22, Drupal 11 prep (phase 1 of 3).** Drupal 10 reaches end of life 2026-12-09. These changes run on D10 and were deployed on their own:
+  - webform 6.2.10 → 6.3.1. The webform module is effectively unused: `/contact` is core's contact form and prod has no webform submissions.
+  - email_registration 1.4.0 → 2.0.0-rc9, the only D11-compatible line. 2.x dropped "require username on registration", which would have derived public display names from email addresses. `swislr_name_fix` restores the required username field with a form `#process` callback; a plain form alter lost to email_registration's alter.
+  - All custom modules declare `^10 || ^11`. `upgrade_status` (dev-only) found no D11 issues in custom code.
+  - Config changed by the module updates was exported from prod, not dev, so dev-only admin-UI differences didn't leak into `backup/sync`.
+  - Next: phase 2 (core 11 in dev, starting from prod's DB and config), then phase 3 (prod cutover with `drush cim`).
