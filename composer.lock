@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "20680aca7dae4cacc334a4134ff7e2bb",
+    "content-hash": "a60667eb160156dbf4b9a83e578918c4",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -124,21 +124,6 @@
             "time": "2025-06-01T13:48:30+00:00"
         },
         {
-            "name": "choices/choices",
-            "version": "9.0.1",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/Choices-js/Choices/archive/refs/tags/v9.0.1.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "choices"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "clue/stream-filter",
             "version": "v1.7.0",
             "source": {
@@ -203,21 +188,6 @@
                 }
             ],
             "time": "2023-12-20T15:40:13+00:00"
-        },
-        {
-            "name": "codemirror/codemirror",
-            "version": "5.65.12",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/components/codemirror/archive/refs/tags/5.65.12.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "codemirror"
-            },
-            "license": [
-                "MIT"
-            ]
         },
         {
             "name": "composer/installers",
@@ -2241,31 +2211,32 @@
         },
         {
             "name": "drupal/geofield",
-            "version": "1.67.0",
+            "version": "10.3.4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/geofield.git",
-                "reference": "8.x-1.67"
+                "reference": "10.3.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/geofield-8.x-1.67.zip",
-                "reference": "8.x-1.67",
-                "shasum": "c73bf312f3244be23d05caa57086f44310b0b4df"
+                "url": "https://ftp.drupal.org/files/projects/geofield-10.3.4.zip",
+                "reference": "10.3.4",
+                "shasum": "bd68709c400780504c01e126c21aabb88ddfcd57"
             },
             "require": {
-                "drupal/core": "^9 || ^10 || ^11",
+                "drupal/core": "^10.3 || ^11 || ^12",
                 "itamair/geophp": "^1.6"
             },
             "require-dev": {
                 "drupal/diff": "^1.3",
-                "drupal/feeds": "^3.0@beta"
+                "drupal/feeds": "^3.2",
+                "drupal/jsonapi_extras": "^3.28"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.67",
-                    "datestamp": "1768051870",
+                    "version": "10.3.4",
+                    "datestamp": "1773079821",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3410,16 +3381,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.16.0",
+            "version": "7.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "ffb62ec787050ae4fa9449cdd6b80335db69bda2"
+                "reference": "81755d989b3007ca7f88a069857553cd08e7dc2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/ffb62ec787050ae4fa9449cdd6b80335db69bda2",
-                "reference": "ffb62ec787050ae4fa9449cdd6b80335db69bda2",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/81755d989b3007ca7f88a069857553cd08e7dc2e",
+                "reference": "81755d989b3007ca7f88a069857553cd08e7dc2e",
                 "shasum": ""
             },
             "require": {
@@ -3518,7 +3489,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.16.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.16.1"
             },
             "funding": [
                 {
@@ -3534,7 +3505,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-18T13:38:36+00:00"
+            "time": "2026-10-25T21:35:21+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -3779,16 +3750,16 @@
         },
         {
             "name": "itamair/geophp",
-            "version": "1.10",
+            "version": "1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itamair/geoPHP.git",
-                "reference": "7403410f7252e4d0ce128a705ba8b40613195e16"
+                "reference": "e0f87ad0e45f3898892a8f3bc02e8717c01554fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itamair/geoPHP/zipball/7403410f7252e4d0ce128a705ba8b40613195e16",
-                "reference": "7403410f7252e4d0ce128a705ba8b40613195e16",
+                "url": "https://api.github.com/repos/itamair/geoPHP/zipball/e0f87ad0e45f3898892a8f3bc02e8717c01554fb",
+                "reference": "e0f87ad0e45f3898892a8f3bc02e8717c01554fb",
                 "shasum": ""
             },
             "require-dev": {
@@ -3820,144 +3791,9 @@
             "homepage": "https://github.com/itamair/geoPHP",
             "support": {
                 "issues": "https://github.com/itamair/geoPHP/issues",
-                "source": "https://github.com/itamair/geoPHP/tree/1.10"
+                "source": "https://github.com/itamair/geoPHP/tree/1.12"
             },
-            "time": "2026-03-09T17:22:59+00:00"
-        },
-        {
-            "name": "jquery/chosen",
-            "version": "1.8.7",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/harvesthq/chosen/releases/download/v1.8.7/chosen_v1.8.7.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "jquery.chosen"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "jquery/hotkeys",
-            "version": "0.2.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/jeresig/jquery.hotkeys/archive/refs/tags/0.2.0.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "jquery.hotkeys"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "jquery/image-picker",
-            "version": "0.3.1",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/rvera/image-picker/archive/refs/tags/0.3.1.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "jquery.image-picker"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "jquery/inputmask",
-            "version": "5.0.8",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/RobinHerbots/jquery.inputmask/archive/refs/tags/5.0.8.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "jquery.inputmask"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "jquery/intl-tel-input",
-            "version": "17.0.19",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/jackocnr/intl-tel-input/archive/refs/tags/v17.0.19.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "jquery.intl-tel-input"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "jquery/rateit",
-            "version": "1.1.5",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/gjunge/rateit.js/archive/refs/tags/1.1.5.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "jquery.rateit"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "jquery/select2",
-            "version": "4.0.13",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/select2/select2/archive/refs/tags/4.0.13.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "jquery.select2"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "jquery/textcounter",
-            "version": "0.9.1",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/ractoon/jQuery-Text-Counter/archive/refs/tags/0.9.1.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "jquery.textcounter"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "jquery/timepicker",
-            "version": "1.14.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/jonthornton/jquery-timepicker/archive/refs/tags/1.14.0.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "jquery.timepicker"
-            },
-            "license": [
-                "MIT"
-            ]
+            "time": "2026-04-02T10:02:52+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -5117,36 +4953,6 @@
             "time": "2021-09-22T16:57:06+00:00"
         },
         {
-            "name": "popperjs/popperjs",
-            "version": "2.11.6",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/@popperjs/core/-/core-2.11.6.tgz"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "popperjs"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "progress-tracker/progress-tracker",
-            "version": "2.0.7",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/NigelOToole/progress-tracker/archive/refs/tags/2.0.7.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "progress-tracker"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "psr/container",
             "version": "2.0.2",
             "source": {
@@ -5732,36 +5538,6 @@
                 }
             ],
             "time": "2026-08-25T15:35:54+00:00"
-        },
-        {
-            "name": "signature_pad/signature_pad",
-            "version": "2.3.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/szimek/signature_pad/archive/refs/tags/v2.3.0.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "signature_pad"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "svg-pan-zoom/svg-pan-zoom",
-            "version": "3.6.1",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/ariutta/svg-pan-zoom/archive/refs/tags/3.6.1.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "svg-pan-zoom"
-            },
-            "license": [
-                "BSD-2-Clause"
-            ]
         },
         {
             "name": "symfony/console",
@@ -8870,21 +8646,6 @@
             "time": "2026-10-12T12:34:30+00:00"
         },
         {
-            "name": "tabby/tabby",
-            "version": "12.0.3",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/cferdinandi/tabby/archive/refs/tags/v12.0.3.zip"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "tabby"
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "v2.4.0",
             "source": {
@@ -8938,21 +8699,6 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.4.0"
             },
             "time": "2025-12-02T11:56:42+00:00"
-        },
-        {
-            "name": "tippyjs/tippyjs",
-            "version": "6.3.7",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/tippy.js/-/tippy.js-6.3.7.tgz"
-            },
-            "type": "drupal-library",
-            "extra": {
-                "installer-name": "tippyjs"
-            },
-            "license": [
-                "MIT"
-            ]
         },
         {
             "name": "twig/html-extra",
@@ -9603,5 +9349,5 @@
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

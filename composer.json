@@ -28,7 +28,7 @@
         "drupal/email_registration": "^2.0@RC",
         "drupal/entity_reference_revisions": "^1.12",
         "drupal/geocoder": "4.30",
-        "drupal/geofield": "^1.64",
+        "drupal/geofield": "^10.3",
         "drupal/geofield_map": "^11.0",
         "drupal/honeypot": "^2.2",
         "drupal/leaflet": "^10.3",
